@@ -1,0 +1,92 @@
+
+server:
+    port: 8080
+    use-forward-headers: true
+    tomcat:
+        basedir: 
+        remote-ip-header: X-FORWARDED-FOR
+        accessLog:
+            enabled: true
+            rotate: true
+            buffered: true
+            directory: logs
+            pattern: '%h %{X-Forwarded-For}i %l %u %t "%r" %s %b %D'
+
+management:
+    port: 8081
+    address: 127.0.0.1
+#    context-path: /details
+    health:
+        enabled: true
+    security:
+        enabled: true
+    trace.enabled: true
+
+security:
+    basic:
+        enabled: true
+    user:
+        name: admin
+        password: admin    
+    sessions: stateless
+
+endpoints:
+    enabled: true
+    sensitive: false
+    actuator: 
+        enabled: true
+        sensitive: false
+
+    info:
+        id: info
+        sensitive: false
+        enabled: true
+    shutdown:
+        enabled: true
+
+info:
+    app:
+        name: Voice Manager by FreeSWITCH
+        description: FreeSWITCH Call Manager by ESL API
+        version: 0.0.1-SNAPSHOT
+
+mybatis:
+    type-aliases-package: im.yixin.voip.freeswitch.dao.domain
+    basePackage: im.yixin.voip.freeswitch.dao.mapper
+    mapper-locations: classpath:mybatis/mapper/*.xml
+    configuration:
+        cacheEnabled: false
+        map-underscore-to-camel-case: false
+        default-fetch-size: 100
+        default-statement-timeout: 30
+
+spring:
+    profiles:
+        active: dev # prod, test
+    jmx:
+        enabled: false
+    mvc:
+        favicon.enabled: false
+    aop:
+        auto: true
+        proxy-target-class: true
+    application:
+        admin:
+            enabled: false
+    http.converters.preferred-json-mapper: gson
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        username: hzzf
+        password: hzzf888888
+        url: jdbc:mysql://127.0.0.1:3306/idefense?useUnicode=true&characterEncoding=utf8
+        hikari:
+            connection-timeout: 3000
+            maximum-pool-size: 100
+    main:
+        banner-mode: 'off'
+
+    redis:
+         host: 127.0.0.1
+
+
