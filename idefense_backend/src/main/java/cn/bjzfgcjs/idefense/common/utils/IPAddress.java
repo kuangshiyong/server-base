@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
  * IPAddress.TryParse(IpStr, out ipaddress)
  * BitConverter.ToUInt32(ipaddress.GetAddressBytes(), 0)
  *
- * @author gkspencer
  */
 public class IPAddress {
 

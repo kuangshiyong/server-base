@@ -101,18 +101,16 @@ public class LCPlayback implements SoundAPI, InitializingBean, DisposableBean {
     }
 
     @Override
+    public void afterPropertiesSet() throws Exception {
+       
+    }
+
+    @Override
     public void destroy() throws Exception {
         playParam = LC_AUDIO_THR_DLL.lc_play_getmem();
         playParam.AudioBuf = null;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        if (playParam != null) {
-            LC_AUDIO_THR_DLL.lc_play_freemem(playParam);
-            playParam = null;
-        }
 
-    }
 }
 
