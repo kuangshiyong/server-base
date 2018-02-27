@@ -4,6 +4,7 @@ import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.core.web.WebResponse;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.mapper.DeviceInfoMapper;
+import cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback;
 import cn.bjzfgcjs.idefense.service.PubMessage;
 import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
@@ -28,6 +29,9 @@ public class XController {
     @Resource
     private PubMessage pubMessage;
 
+    @Resource
+    private LCPlayback lcPlayback;
+
 
     @GetMapping(value = "/test/ttm", produces = "application/json; charset=UTF-8")
     public Object runRedisPublish(@RequestParam String topic, @RequestParam String content) throws Exception {
@@ -42,7 +46,7 @@ public class XController {
 
     @GetMapping(value = "/test/audio", produces = "application/json; charset=UTF-8")
     public Object testAudio(@RequestParam String file) throws Exception {
-        pubMessage.soundHandle().addLast(file);
+        lcPlayback.playback("demo", 3);
         return WebResponse.write("", AppCode.OK);
     }
 }
