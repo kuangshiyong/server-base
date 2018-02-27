@@ -41,6 +41,10 @@ public interface LCAudioThrDll extends StdCallLibrary {
     public final static int ERR_SOCKET = -3;		//socket操作失败
     public final static int ERR_CODEC = -4;	//初始化编解码器失败。
 
+    public final static int ERR_MEM_FAULT = -6;		//读取文件失败
+    public final static int ERR_FILEFORMAT_FAULT = -7; //
+    public final static int ERR_BAD_BITRATE = -8;
+    public final static int ERR_DECODE_DISABLE = -9;	//应用程序禁用解码功能，而播放此文件需要解码
     /*Windows 消息定义*/
 //exception
     public final static int WM_USER = 0x400;
@@ -49,6 +53,7 @@ public interface LCAudioThrDll extends StdCallLibrary {
     public final static int WM_MSG_PAUSE	  = (WM_USER+102);
     public final static int WM_MSG_CONTINUE	  = (WM_USER+103);
     public final static int WM_MSG_AUDIOPOWER = (WM_USER+104);
+    public final static int WM_MSG_SOUNDCARD  =	(WM_USER+105);
 
 
     public class _FileInfo extends Structure {
@@ -106,12 +111,17 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
         public int   Bass_En;		//低音增益
 
-        public int   SourceType;	//输入源，0为文件，1为声卡
+        public int SourceType;	//输入源，0为文件，1为声卡
+
+        public int OptionByte;
 
         public int DeviceID;		//音频输入ID号 1～N
 
-        public byte[] MuxName = new byte[64]; //混音器的通道名字
+        //        public byte[] MuxName = new byte[64]; //混音器的通道名字
 
+        public int MaxBitrate;
+
+        public int[] Options = new int[15];
         public int nChannels; //采样的通道 1～2 CodecType
 
         public int nSamplesPerSec; //采样频率 8K，11.025K,22.05K,44.1K
@@ -128,7 +138,9 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("hWnd", "Priority", "MultiGroup", "CastMode", "IP", "Volume", "Tone", "Treble", "Bass", "Treble_En", "Bass_En", "SourceType", "DeviceID", "MuxName", "nChannels", "nSamplesPerSec", "AudioBufferLength", "AudioBuf", "PrivateData");
+            return Arrays.asList("hWnd", "Priority", "MultiGroup", "CastMode", "IP", "Volume", "Tone", "Treble", "Bass",
+                    "Treble_En", "Bass_En", "SourceType", "OptionByte", "DeviceID", "MaxBitrate", "Options", "nChannels",
+                    "nSamplesPerSec", "AudioBufferLength", "AudioBuf", "PrivateData");
         }
 
         public static class ByReference extends _PlayParam implements Structure.ByReference {
