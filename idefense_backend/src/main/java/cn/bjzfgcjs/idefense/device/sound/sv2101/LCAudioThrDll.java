@@ -261,10 +261,17 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
     public int lc_inputdata(_PlayParam.ByReference pParam, Pointer buf, int datalen);
 
+    //必须是192kbps一下mp3
+    public int lc_inputdata_mp3(_PlayParam.ByReference pParam, Pointer buf, int datalen);
+
+    public int lc_get_datasize(_PlayParam.ByReference pParam);	//查询流模式下，当前的播放缓存的数据量。
+
     public int lc_addip(_PlayParam.ByReference pParam, DWORD IP);
 
     public int lc_delip(_PlayParam.ByReference pParam, DWORD IP);
 
     public int lc_rec_delip(_PlayParam.ByReference pParam, DWORD IP);
+
+    public int lc_set_stream(_PlayParam.ByReference pParam, int enable);
 }
 
