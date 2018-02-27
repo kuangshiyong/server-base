@@ -1,6 +1,7 @@
 package cn.bjzfgcjs.idefense.service;
 
 import cn.bjzfgcjs.idefense.device.bean.HikHandlerBean;
+import org.redisson.api.RDeque;
 import org.redisson.api.RMap;
 import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
@@ -29,6 +30,8 @@ public class PubMessage implements InitializingBean {
 //    public RTopic<SysFaultBean> sysFaultMessage() {return client.getTopic("sys|fault"); }
 
     public RMap<String, HikHandlerBean> hikHandls() { return client.getMap("hikhandlers"); }
+
+    public RDeque<String> soundHandle() { return client.getDeque("sounds");}
 
     @Override
     public void afterPropertiesSet() throws Exception {

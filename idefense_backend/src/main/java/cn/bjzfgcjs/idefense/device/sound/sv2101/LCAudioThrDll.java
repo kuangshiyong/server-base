@@ -11,10 +11,10 @@ import com.sun.jna.win32.StdCallLibrary;
 import java.util.Arrays;
 import java.util.List;
 
-public interface LCAudioDll extends StdCallLibrary {
+public interface LCAudioThrDll extends StdCallLibrary {
 
-    LCAudioDll INSTANCE = (LCAudioDll) Native.loadLibrary("LCAudioThrDll",
-            LCAudioDll.class);
+    LCAudioThrDll INSTANCE = (LCAudioThrDll) Native.loadLibrary("LCAudioThrDll",
+            LCAudioThrDll.class);
 
     /*定义网络通信方式*/
     public final static int cUnicast = 0;	//单播
@@ -201,7 +201,7 @@ public interface LCAudioDll extends StdCallLibrary {
         };
     }
 
-    public Pointer lc_play_getmem();
+    public _PlayParam.ByReference lc_play_getmem();
 
     public int lc_play_freemem(_PlayParam.ByReference pParam);
 
