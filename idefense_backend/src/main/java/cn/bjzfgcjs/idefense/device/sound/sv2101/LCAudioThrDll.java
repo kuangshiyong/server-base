@@ -1,9 +1,7 @@
 package cn.bjzfgcjs.idefense.device.sound.sv2101;
 
-import com.sun.jna.Native;
-import com.sun.jna.NativeLong;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
+import com.sun.jna.*;
+import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.*;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
@@ -13,8 +11,9 @@ import java.util.List;
 
 public interface LCAudioThrDll extends StdCallLibrary {
 
-    LCAudioThrDll INSTANCE = (LCAudioThrDll) Native.loadLibrary("LCAudioThrDll",
-            LCAudioThrDll.class);
+    public static final String JNA_LIBRARY_NAME = "LCAudioThrDll";
+
+    LCAudioThrDll INSTANCE = (LCAudioThrDll) Native.loadLibrary(JNA_LIBRARY_NAME, LCAudioThrDll.class);
 
     /*定义网络通信方式*/
     public final static int cUnicast = 0;	    //单播
@@ -42,7 +41,7 @@ public interface LCAudioThrDll extends StdCallLibrary {
 //exception
     public final static int WM_USER = 0x400;
     //public final static int WM_MSG_EXCEPTION	= (WM_USER+100)
-    public final static int WM_MSG_COMPLETED =  (WM_USER+101);
+    public final static int WM_MSG_COMPLETED  = (WM_USER+101);
     public final static int WM_MSG_PAUSE	  = (WM_USER+102);
     public final static int WM_MSG_CONTINUE	  = (WM_USER+103);
     public final static int WM_MSG_AUDIOPOWER = (WM_USER+104);
@@ -282,5 +281,409 @@ public interface LCAudioThrDll extends StdCallLibrary {
     public int lc_rec_delip(_PlayParam.ByReference pParam, DWORD IP);
 
     public int lc_set_stream(_PlayParam.ByReference pParam, int enable);
+
 }
 
+
+// 配置接口
+interface NaSetup extends StdCallLibrary {
+    public static final String JNA_LIBRARY_NAME = "NaSetup";
+    public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(NaSetup.JNA_LIBRARY_NAME);
+    public static final NaSetup INSTANCE = (NaSetup)Native.loadLibrary(NaSetup.JNA_LIBRARY_NAME, NaSetup.class);
+
+    public static final int USER_LEN	=		16;
+    public static final int PASSWORD_LEN =		16;
+    public static final int DEVICE_NAME_LEN	 =	16;
+    public static final int VERSION_LEN	 =		32;
+    public static final int URL_LEN		=		32;
+    public static final int DEVICE_TYPENAME_LEN = 32;
+
+    //	**********	以下是返回值宏定义
+    public static final int NP_SUCCESS = 1;		//	函数操作成功，正确返回
+    public static final int NP_NET_INTERFACE_ERROR = -1;		//	网络操所错误
+    public static final int NP_DATA_ERROR     =		 -2;		//	返回不期望的数据，操作不成功
+    public static final int NP_DEVICE_NOT_EXIST	=	 -3;		//	无数据返回，无法联系设备
+    public static final int NP_WP_ERROR		  =		 -4;		//	参数保护，写错误
+    public static final int NP_PARAM_ERROR	  =		 -5;		//	入口参数错误
+    public static final int NP_PASSWORD_ERROR =		 -6;		//	密码错误
+    public static final int NP_MEMORY_ERROR	  =	     -7;		//	内存不足错误
+
+
+    //	**********	以下是定义通信流控对应参数
+    public static final int  FC_NONE	= 0;
+    public static final int  FC_RTC_CTS	= 1;
+
+    //	**********	以下是定义通信协议对应参数
+    public static final int UDP			= 0;
+    public static final int TCP			= 1;
+    public static final int REAL_COM	= 2;
+    public static final int MODBUS_TCP	= 3;
+
+    //	**********	以下是定义工作模式对应参数
+    public static final int SERVER_MODE	= 0;		//	服务器模式
+    public static final int AUTO_MODE	= 1;		//	自动模式
+    public static final int CLIENT_MODE	= 2;		//	客户端模式
+    public static final int MULTI_MODE	= 3;		//	多连接模式
+
+    //	**********	以下是定义串口校验方式对应参数
+    public static final int PR_NONE		= 0;		//	无校验
+    public static final int PR_ODD		= 1;		//	奇校验
+    public static final int PR_EVEN		= 2;		//	偶校验
+    public static final int PR_MARK		= 3;		//	标记校验
+    public static final int PR_SPACE	= 4;		//	空格校验
+
+    //	**********	以下是定义串口波特率对应参数
+    public static final int BAUD_1200BPS  = 12;		//1200bps
+    public static final int BAUD_2400BPS  = 24;		//2400bps
+    public static final int BAUD_4800BPS  = 48;		//4800bps
+    public static final int BAUD_9600BPS  = 96;		//9600bps
+    public static final int BAUD_19200BPS =	192;	//19200bps
+    public static final int BAUD_38400BPS =	384;	//38400bps
+    public static final int BAUD_57600BPS =	576;	//57600bps
+    public static final int BAUD_115200BPS= 1152;	//115200bps
+
+
+    /** <i>native declaration : line 55</i> */
+    public static class _Param extends Structure {
+        public byte DeviceType; //	设备类别
+
+        public byte[] Unuse0 = new byte[3]; //	未定义
+
+        public byte[] User = new byte[16];     // 用户名
+
+        public byte[] Password = new byte[16]; // 密码
+
+        public byte ComName;     //	需要访问的串口号。
+
+        public byte[] Unuse1 = new byte[3];  //	未定义
+
+        public byte[] Unuse2 = new byte[24]; //	未定义
+        public _Param() {
+            super();
+        }
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("DeviceType", "Unuse0", "User", "Password", "ComName", "Unuse1", "Unuse2");
+        }
+
+        public _Param(byte DeviceType, byte Unuse0[], byte User[], byte Password[], byte ComName, byte Unuse1[], byte Unuse2[]) {
+            super();
+            this.DeviceType = DeviceType;
+            if ((Unuse0.length != this.Unuse0.length))
+                throw new IllegalArgumentException("Wrong array size !");
+            this.Unuse0 = Unuse0;
+            if ((User.length != this.User.length))
+                throw new IllegalArgumentException("Wrong array size !");
+            this.User = User;
+            if ((Password.length != this.Password.length))
+                throw new IllegalArgumentException("Wrong array size !");
+            this.Password = Password;
+            this.ComName = ComName;
+            if ((Unuse1.length != this.Unuse1.length))
+                throw new IllegalArgumentException("Wrong array size !");
+            this.Unuse1 = Unuse1;
+            if ((Unuse2.length != this.Unuse2.length))
+                throw new IllegalArgumentException("Wrong array size !");
+            this.Unuse2 = Unuse2;
+        }
+        public static class ByReference extends _Param implements Structure.ByReference {
+
+        };
+        public static class ByValue extends _Param implements Structure.ByValue {
+
+        };
+    };
+
+    public static class _DeviceInfo extends Structure {
+        public byte DeviceType;                 //	设备类别
+
+        public byte[] Unuse0 = new byte[3];     //  未定义
+
+        public byte[] Version = new byte[32];   //	固件版本
+
+        public byte[] DeviceName = new byte[16];//	设备名称
+
+        public byte[] Mac = new byte[6];        //	设备MAC地址
+
+        public short LocalPort;                 //	设备监听端口
+
+        public short[] LocalIP = new short[2];  //	设备动态IP地址
+
+        public short[] PeerIP = new short[2];   //	服务器IP
+
+        public short[] NetMask = new short[2];  //  子网掩码
+
+        public short[] GatewayIP = new short[2];//	网关地址
+
+        public short[] Unuse1 = new short[2];   //	未定义
+        public short[] Unuse2 = new short[2];   //	未定义
+        public byte[] Unuse3 = new byte[28];    //	未定义
+
+        public byte[] DeviceTypeName = new byte[32]; //	设备类型字符串。
+
+        public short DeviceID;                  //	设备的ID号，设备的ID号，仅用于NL9080中
+
+        public byte UartNumber;                 //	设备具有的串口数量
+
+        public byte Unuse4;
+
+        public byte[] MultiGroup = new byte[4];  // 组播地址
+
+        public byte[] MultiGroup2 = new byte[4];
+
+        public short[] Interface = new short[2]; //	收到数据帧的网络接口，v2.1.0.3以上版本有效
+
+        public byte[] Unuse5 = new byte[200];    //	未定义
+
+        public _DeviceInfo() {
+            super();
+        }
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("DeviceType", "Unuse0", "Version", "DeviceName", "Mac", "LocalPort", "LocalIP", "PeerIP", "NetMask", "GatewayIP", "Unuse1", "Unuse2", "Unuse3", "DeviceTypeName", "DeviceID", "UartNumber", "Unuse4", "MultiGroup", "MultiGroup2", "Interface", "Unuse5");
+        }
+        public static class ByReference extends _DeviceInfo implements Structure.ByReference {
+
+        };
+        public static class ByValue extends _DeviceInfo implements Structure.ByValue {
+
+        };
+    };
+
+    public static class _Port extends Structure {
+        public short LocalPort;  //	本地端口
+
+        public short PeerPort;   //	远端端口
+
+        public short[] PeerIp = new short[2];  //	远端ip地址
+
+        public byte Protocol;    //	网络协议类型
+
+        public byte WorkMode;    //	工作模式
+
+        public byte Unuse0;      //  未定义
+
+        public byte KeepLive;    //  保活时间
+
+        public byte[] Unuse1 = new byte[32];  // 未定义
+
+        public byte[] Unuse2 = new byte[4];   // 未定义
+
+        public short Baud;       //	串口波特率
+
+        public byte[] Unuse3 = new byte[2];   // 未定义
+
+        public byte Databit;     //	串口数据位长度
+
+        public byte Parity;      //	串口数据位长度
+
+        public byte Stopbit;     //	串口数据位长度
+
+        public byte Flow_ctrl;   //	串口数据位长度
+
+        public short FrameSize;  //	串口最大数据包长度
+
+        public byte ByteInterval;//	串口最大字符间隔时间
+
+        public byte[] Unuse4 = new byte[9];   // 未定义
+
+        public _Port() {
+            super();
+        }
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("LocalPort", "PeerPort", "PeerIp", "Protocol", "WorkMode", "Unuse0", "KeepLive", "Unuse1", "Unuse2", "Baud", "Unuse3", "Databit", "Parity", "Stopbit", "Flow_ctrl", "FrameSize", "ByteInterval", "Unuse4");
+        }
+        public static class ByReference extends _Port implements Structure.ByReference {
+
+        };
+        public static class ByValue extends _Port implements Structure.ByValue {
+
+        };
+    };
+
+    public static class _Device extends Structure {
+        public byte Header;                //	帧头部
+
+        public byte DeviceType;            //	设备类型
+
+        public byte[] Mac = new byte[6];   //	设备类型
+
+        public byte UartNumber;            //	设备总的串口数量
+
+        public byte[] Unuse0 = new byte[3];
+
+        public byte[] DeviceTypeName = new byte[32]; //	设备类型字符串
+
+        public byte[] Version = new byte[32];        //	设备类型字符串
+
+        public short Unuse1;
+        public byte[] Unuse2 = new byte[2];
+
+        public byte[] UserName = new byte[16];    //	用户名
+
+        public byte[] Password = new byte[16];    //	密码
+
+        public byte[] DeviceName = new byte[16];  //	设备名
+
+        public byte[] MultiGroup = new byte[4];   //	组号
+
+        public short[] LocalIP = new short[2];    //	设备IP地址
+
+        public short[] NetMask = new short[2];    //	子网掩码
+
+        public short[] GatewayIP = new short[2];  //	网关地址
+
+        public byte DHCP;                         //	0：禁止DHCP,1:启用DHCP
+
+        public byte Unuse3;
+
+        public byte TmpGroup;                     //	未定义,临时组临时保存位置，不应使用这个值。
+
+        public byte TalkDialInCount;              //	对讲自动接通呼叫振铃次数，等于时间秒数。
+
+        public short[] ServerIP = new short[2];   //	服务器的IP地址，音频设备会定时向服务器报告消息。
+
+        public short ServerPort;                  //	服务器监听端口，与ServerIP配合使用。
+
+        public byte ComVolume;         //	串口设置的音量大小偏移量，
+
+        public byte TalkVolume;        //	对讲是本机的音量大小。
+
+        public byte DefaultSample;     //	录播时，默认的采样频率0 = 8K；1=16K；2 = 24K；3 = 32K
+
+        public byte DefaultAudioInput; //	对讲和录播时，默认的音频输入端口 0=mic，1=linein
+
+        public byte ButtonMode;        //	按键模式，0=触发模式，1=保持模式
+
+        public byte RecordVolume;      //	录播时，向远端发送数据的音量，默认值。
+
+        public short PADelayTime;      //	功放延时关闭参数，单位秒
+
+        public byte MicGain;           //	默认mic的增益大小0～100
+
+        public byte Unuse5;
+
+        public short[] AssistantIp = new short[2];    //	对讲呼叫转移设备ip地址，不用呼叫转移应填0.0.0.0
+
+        // CustomServiceIp[0]是第一客服IP
+        // CustomServiceIp[1]，CustomServiceIp[2]未用
+        // CustomServiceIp[4]是时间服务器IP地址
+        public short[] CustomServiceIp = new short[((4) * (2))];
+
+        public _Port[] Port = new _Port[7];
+
+        public byte UseAssistant;   //	是否允许呼叫转移
+
+        public byte Unuse4;
+
+        public byte TalkMode;        //	对讲模式，0=全双工模式，1=半双工模式
+
+        public byte AECEnable;       //	是否允许AEC，0=运行，1=禁止
+
+        public byte DefaultPlayMode; //	默认播放模式，0=播放模式，1=空闲模式
+
+        public byte[] unuse5 = new byte[2];
+
+        public byte[] MultiGroup2 = new byte[4]; //	第二组多播组，与MultiGroup组成8个组播组；
+
+        public byte[] Unuse = new byte[72];
+
+        public _Device() {
+            super();
+        }
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("Header", "DeviceType", "Mac", "UartNumber", "Unuse0", "DeviceTypeName", "Version", "Unuse1", "Unuse2", "UserName", "Password", "DeviceName", "MultiGroup", "LocalIP", "NetMask", "GatewayIP", "DHCP", "Unuse3", "TmpGroup", "TalkDialInCount", "ServerIP", "ServerPort", "ComVolume", "TalkVolume", "DefaultSample", "DefaultAudioInput", "ButtonMode", "RecordVolume", "PADelayTime", "MicGain", "Unuse5", "AssistantIp", "CustomServiceIp", "Port", "UseAssistant", "Unuse4", "TalkMode", "CodecType", "AECEnable", "DefaultPlayMode", "unuse5", "MultiGroup2", "Unuse");
+        }
+        public static class ByReference extends _Device implements Structure.ByReference {
+
+        };
+        public static class ByValue extends _Device implements Structure.ByValue {
+
+        };
+    };
+
+    /***********************************************************************************
+     函数名称：	np_search_all
+     函数功能：	在本地网内搜索NP系列设备
+     输入参数：	struct _DeviceInfo * devs	系统参数结构数组指针，用户在调用这个函数前应为这个结构分配空间。
+     分配空间不小于Number * sizeof(struct _DeviceInfo);
+     搜索到的设备参数写入这个结构中。
+     int * number		此指针传入系统开辟的缓存大小，（也就是可以容纳多少个设备的信息），返回搜索到的转换器个数。
+     返回值  ：	NP_SUCCESS：		表示操作成功
+     其它值：			表示操作出错，返回值请参考函数返回值宏定义。
+     其他说明：	搜索局域网内的所有NP设备。
+     ***********************************************************************************/
+    int np_search_all(_DeviceInfo.ByReference dev, IntByReference number);
+
+    /***********************************************************************************
+     函数名称：	np_search_one
+     函数功能：	搜索指定IP的NP设备，成功则将该设备的系统参数填入dev结构中
+     输入参数：	char * ip		目标转换器的IP地址。ip为以'\0'结尾的字符串。
+     struct _DeviceInfo * devs	系统参数结构指针，用户在调用这个函数前应为这个结构分配空间。
+     搜索到的设备参数写入这个结构中。
+     返回值  ：	NP_SUCCESS：		表示操作成功
+     其它值：			表示操作出错，返回值请参考函数返回值宏定义。
+     其他说明：	使用IP地址进行设备搜索时，应该注意，目标转换器的IP地址不属本网段而其物理连接实际在本网段的，使用该命令将搜索不到。
+     ***********************************************************************************/
+    int np_search_one(String ip, _DeviceInfo.ByReference dev);
+
+    /***********************************************************************************
+     函数名称：	np_login
+     函数功能：	在目标设备上进行登录操作，只有登录操作后，才能使用np_write_setting这个命令。
+     输入参数：	char* ip			目标转换器的ip地址。形如"192.168.0.2",以'\0'结尾的字符串。
+     char *mac			目标转换器的MAC地址。6个byte长度的数组指针。
+     struct _Param* Param调用函数前，用户应填充Param各成员。
+     DeviceType成员可通过np_search_all或np_search_one获取，下同。
+     返回值  ：	NP_SUCCESS：		表示操作成功
+     其它值：			表示操作出错，返回值请参考函数返回值宏定义。
+     其他说明：	函数登录指定ip地址的设备，如果ip地址为空，则登录在本网段符合指定mac地址的设备。ip或mac应至少有一个参数是有效的。
+     ***********************************************************************************/
+    int np_login(String ip, String mac, _Param Param);
+
+    /***********************************************************************************
+     函数名称：	np_logout
+     函数功能：	在目标设备上进行登出操作，使用np_login命令并操作完成后，应进行登出操作。
+     输入参数：	char* ip			目标转换器的ip地址。形如"192.168.0.2",以'\0'结尾的字符串。
+     char *mac			目标转换器的MAC地址。6个byte长度的数组指针。
+     struct _Param* Param调用函数前，用户应填充Param的DeviceType。
+     返回值  ：	NP_SUCCESS：		表示操作成功
+     其它值：			表示操作出错，返回值请参考函数返回值宏定义。
+     其他说明：	函数登出指定ip地址的设备，如果ip地址为空，则登出在本网段符合指定mac地址的设备。ip或mac应至少有一个参数是有效的。
+     ***********************************************************************************/
+    int np_logout(String ip, String mac, NaSetup._Param Param);
+
+    /***********************************************************************************
+     函数名称：	np_read_setting
+     函数功能：	读取指定IP或Mac地址的NP设备系统参数
+     输入参数：	char* ip			目标转换器的ip地址。形如"192.168.0.2",以'\0'结尾的字符串。
+     char *mac			目标转换器的MAC地址。6个byte长度的数组指针。
+     void* dev			系统参数缓存指针，用户在调用这个函数前应为这个缓存分配空间，缓存不小于sizeof(struct _DeviceEx);
+     读取的设备参数写入到这个缓冲中。
+     函数详细说明及调用实例请参考动态库使用说明。
+
+     struct _Param* Param搜索参数选项，调用函数前，用户应填充Param各成员。
+     返回值  ：	NP_SUCCESS：		表示操作成功。
+     其它值：			表示操作出错，返回值请参考函数返回值宏定义。
+     其他说明：	函数读取指定ip地址的设备参数，如果ip地址为空，函数在本网段读取符合指定mac地址设备的参数。ip或mac应至少有一个参数是有效的。
+     ***********************************************************************************/
+    int np_read_setting(String ip, String mac, Pointer dev, NaSetup._Param Param);
+
+    //下面的读参数函数适用设备固件版本>v2.5 设备
+    int np_read_setting2(String ip, String mac, Pointer dev, NaSetup._Param Param);
+
+    /***********************************************************************************
+     函数名称：	np_write_setting
+     函数功能：	设置指定指定IP或Mac地址的NP设备系统参数
+     输入参数：	char* ip			目标转换器的ip地址。以'\0'结尾的字符串。
+     char *mac			目标转换器的MAC地址。6个byte长度的数组指针。
+     void* dev			系统参数缓存，用户在调用这个函数前应为这个结构分配空间，读取的设备参数填入这个缓存中。
+     函数详细说明及调用实例请参考动态库使用说明。
+     int datalength		写入数据的长度。
+     struct _Param* Param搜索参数选项，调用函数前，用户应填充Param各成员。
+     返回值  ：	NP_SUCCESS：		表示操作成功
+     其它值：			表示操作出错，返回值请参考函数返回值宏定义。
+     其他说明：	函数设置指定ip地址的设备参数，如果ip地址为空，函数在本网段设置符合指定mac地址设备的参数。ip或mac应至少有一个参数是有效的。
+     ***********************************************************************************/
+    int np_write_setting(String ip, String mac, Pointer dev, int DataLength, NaSetup._Param Param);
+
+    // 下面的写参数函数适用设备固件版本>v2.5 设备
+    int np_write_setting2(String ip, String mac, Pointer dev, int DataLength, NaSetup._Param Param);
+}
