@@ -25,6 +25,7 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,8 +33,10 @@ import java.util.List;
 //SDK接口说明,HCNetSDK.dll
 public interface HCNetSDK extends StdCallLibrary {
 
-    HCNetSDK INSTANCE = (HCNetSDK) Native.loadLibrary("HCNetSDK",
-            HCNetSDK.class);
+    public static final String JNA_LIBRARY_NAME = "HCNetSDK";
+
+    HCNetSDK INSTANCE = (HCNetSDK) Native.loadLibrary(JNA_LIBRARY_NAME, HCNetSDK.class);
+
     /***宏定义***/
     //常量
 
@@ -118,6 +121,18 @@ public interface HCNetSDK extends StdCallLibrary {
     public static final int MAX_CHANNUM_V30 = (MAX_ANALOG_CHANNUM + MAX_IP_CHANNEL);//64
     public static final int MAX_ALARMOUT_V30 = (MAX_ANALOG_ALARMOUT + MAX_IP_ALARMOUT);//96
     public static final int MAX_ALARMIN_V30 = (MAX_ANALOG_ALARMIN + MAX_IP_ALARMIN);//160
+
+    public static final int MAX_IP_DEVICE_V40 = 64;
+
+     public static final int STREAM_ID_LEN = 32;
+    public static final int MAX_LICENSE_LEN = 16;
+    public static final int VCA_MAX_POLYGON_POINT_NUM = 10;
+
+    public static final int MAX_ID_NUM_LEN                =  32;  //最大身份证号长度
+    public static final int MAX_ID_NAME_LEN               = 128;   //最大姓名长度
+    public static final int MAX_ID_ADDR_LEN               = 280;   //最大住址长度
+    public static final int MAX_ID_ISSUING_AUTHORITY_LEN  = 128; //最大签发机关长度
+
 
     /*******************全局错误码 begin**********************/
     public static final int NET_DVR_NOERROR = 0;	//没有错误
@@ -523,7 +538,10 @@ public interface HCNetSDK extends StdCallLibrary {
     public static final int COMM_ALARM = 0x1100;	//8000报警信息主动上传
     public static final int COMM_TRADEINFO = 0x1500;  //ATMDVR主动上传交易信息
     public static final int COMM_ALARM_V30 = 0x4000;//9000报警信息主动上传
+    public static final int COMM_ALARM_RULE = 0x1102;//行为分析信息上传
     public static final int COMM_IPCCFG = 0x4001;//9000设备IPC接入配置改变报警信息主动上传
+    public static final int COMM_UPLOAD_FACESNAP_RESULT = 0x1112;  //人脸识别结果上传
+    public static final int COMM_SNAP_MATCH_ALARM = 0x2902;  //黑名单比对结果上传
     /*************操作异常类型(消息方式, 回调方式(保留))****************/
     public static final int EXCEPTION_EXCHANGE = 0x8000;//用户交互时异常
     public static final int EXCEPTION_AUDIOEXCHANGE = 0x8001;//语音对讲异常
@@ -738,6 +756,7 @@ public interface HCNetSDK extends StdCallLibrary {
     public static final int NET_DVR_GET_IVMS_ENTER_REGION = 175; //获取IVMS进入区域参数
     public static final int NET_DVR_SET_IVMS_BEHAVIORCFG = 176;//设置智能分析仪行为规则参数
     public static final int NET_DVR_GET_IVMS_BEHAVIORCFG = 177;	//获取智能分析仪行为规则参数
+    public static final int NET_DVR_GET_TRAVERSE_PLANE_DETECTION = 3360; //获取越界侦测配置
 
 
 
@@ -1410,6 +1429,77 @@ public interface HCNetSDK extends StdCallLibrary {
         }
     }
 
+    public static class NET_DVR_STATFRAME extends Structure { //单帧统计参数
+        public int dwRelativeTime;
+        public int dwAbsTime;  /*统计绝对时标*/
+        public byte[] byRes = new byte[92];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwRelativeTime", "dwAbsTime", "byRes");
+        }
+    }
+
+    public static class NET_DVR_STATTIME extends Structure { //单帧统计参数
+        public NET_DVR_TIME  tmStart;  //统计开始时间
+        public NET_DVR_TIME  tmEnd;    //统计结束时间
+        public byte[] byRes = new byte[92];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("tmStart", "tmEnd", "byRes");
+        }
+    }
+
+    public static class UNION_PDC_STATPARAM extends Union
+    {
+        // public byte[] byLen = new byte[140];
+        public NET_DVR_STATFRAME struStatFrame;
+        public NET_DVR_STATTIME  struStatTime;
+    }
+
+
+    public static class NET_DVR_PDC_ALRAM_INFO extends Structure { //通道录像参数配置
+        public int dwSize;
+        public byte byMode;  /*0-单帧统计结果，1-最小时间段统计结果*/
+        public byte byChannel;
+        public byte bySmart;         //专业智能返回0，Smart 返回 1
+        public byte byRes1;          // 保留字节
+        public NET_VCA_DEV_INFO  struDevInfo;          //前端设备信息
+        public UNION_PDC_STATPARAM uStatModeParam = new UNION_PDC_STATPARAM();
+        public int dwLeaveNum; /* 离开人数 */
+        public int dwEnterNum; /* 进入人数 */
+        public byte[] byRes2 = new byte[40];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwSize", "byMode", "byChannel", "bySmart", "byRes1", "struDevInfo",
+                    "dwLeaveNum", "dwEnterNum", "byRes2");
+        }
+
+        public void read()
+        {
+            super.read();
+            switch(byMode)
+            {
+                case 0:
+                    uStatModeParam.setType(NET_DVR_STATFRAME.class);
+                    break;
+                case 1:
+                    uStatModeParam.setType(NET_DVR_STATTIME.class);
+                    break;
+                default:
+                    break;
+            }
+            uStatModeParam.read();
+        }
+        public void write()
+        {
+            super.write();
+            uStatModeParam.write();
+        }
+    }
+
     //云台协议表结构配置
     public static class NET_DVR_PTZ_PROTOCOL extends Structure {
         public int dwType;               /*解码器类型值，从1开始连续递增*/
@@ -1621,23 +1711,35 @@ public interface HCNetSDK extends StdCallLibrary {
         }
     }
 
-//    public static class NET_DVR_ALARMINFO_V30 extends Structure {//上传报警信息(9000扩展)
-//        public int dwAlarmType;/*0-信号量报警,1-硬盘满,2-信号丢失,3－移动侦测,4－硬盘未格式化,5-读写硬盘出错,6-遮挡报警,7-制式不匹配, 8-非法访问, 0xa-GPS定位信息(车载定制)*/
-//        public int dwAlarmInputNumber;/*报警输入端口*/
-//        public byte[]  byAlarmOutputNumber = new byte[MAX_ALARMOUT_V30];/*触发的输出端口，为1表示对应输出*/
-//        public byte[]  byAlarmRelateChannel= new byte[MAX_CHANNUM_V30];/*触发的录像通道，为1表示对应录像, dwAlarmRelateChannel[0]对应第1个通道*/
-//        public byte[]  byChannel= new byte[MAX_CHANNUM_V30];/*dwAlarmType为2或3,6时，表示哪个通道，dwChannel[0]对应第1个通道*/
-//        public byte[]  byDiskNumber= new byte[MAX_DISKNUM_V30];/*dwAlarmType为1,4,5时,表示哪个硬盘, dwDiskNumber[0]对应第1个硬盘*/
-//    }
-//
-//    public static class NET_DVR_ALARMINFO extends Structure {
-//        public int dwAlarmType;/*0-信号量报警,1-硬盘满,2-信号丢失,3－移动侦测,4－硬盘未格式化,5-读写硬盘出错,6-遮挡报警,7-制式不匹配, 8-非法访问, 9-串口状态, 0xa-GPS定位信息(车载定制)*/
-//        public int dwAlarmInputNumber;/*报警输入端口, 当报警类型为9时该变量表示串口状态0表示正常， -1表示错误*/
-//        public int[] dwAlarmOutputNumber = new int[MAX_ALARMOUT];/*触发的输出端口，为1表示对应哪一个输出*/
-//        public int[] dwAlarmRelateChannel = new int[MAX_CHANNUM];/*触发的录像通道，dwAlarmRelateChannel[0]为1表示第1个通道录像*/
-//        public int[] dwChannel = new int[MAX_CHANNUM];/*dwAlarmType为2或3,6时，表示哪个通道，dwChannel[0]位对应第1个通道*/
-//        public int[] dwDiskNumber = new int[MAX_DISKNUM];/*dwAlarmType为1,4,5时,表示哪个硬盘, dwDiskNumber[0]位对应第1个硬盘*/
-//    }
+    public static class NET_DVR_ALARMINFO_V30 extends Structure {//上传报警信息(9000扩展)
+        public int dwAlarmType;/*0-信号量报警,1-硬盘满,2-信号丢失,3－移动侦测,4－硬盘未格式化,5-读写硬盘出错,6-遮挡报警,7-制式不匹配, 8-非法访问, 0xa-GPS定位信息(车载定制)*/
+        public int dwAlarmInputNumber;/*报警输入端口*/
+        public byte[]  byAlarmOutputNumber = new byte[MAX_ALARMOUT_V30];/*触发的输出端口，为1表示对应输出*/
+        public byte[]  byAlarmRelateChannel= new byte[MAX_CHANNUM_V30];/*触发的录像通道，为1表示对应录像, dwAlarmRelateChannel[0]对应第1个通道*/
+        public byte[]  byChannel= new byte[MAX_CHANNUM_V30];/*dwAlarmType为2或3,6时，表示哪个通道，dwChannel[0]对应第1个通道*/
+        public byte[]  byDiskNumber= new byte[MAX_DISKNUM_V30];/*dwAlarmType为1,4,5时,表示哪个硬盘, dwDiskNumber[0]对应第1个硬盘*/
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwAlarmType", "dwAlarmInputNumber", "byAlarmOutputNumber",
+                    "byAlarmRelateChannel", "byChannel", "byDiskNumber");
+        }
+    }
+
+    public static class NET_DVR_ALARMINFO extends Structure {
+        public int dwAlarmType;/*0-信号量报警,1-硬盘满,2-信号丢失,3－移动侦测,4－硬盘未格式化,5-读写硬盘出错,6-遮挡报警,7-制式不匹配, 8-非法访问, 9-串口状态, 0xa-GPS定位信息(车载定制)*/
+        public int dwAlarmInputNumber;/*报警输入端口, 当报警类型为9时该变量表示串口状态0表示正常， -1表示错误*/
+        public int[] dwAlarmOutputNumber = new int[MAX_ALARMOUT];/*触发的输出端口，为1表示对应哪一个输出*/
+        public int[] dwAlarmRelateChannel = new int[MAX_CHANNUM];/*触发的录像通道，dwAlarmRelateChannel[0]为1表示第1个通道录像*/
+        public int[] dwChannel = new int[MAX_CHANNUM];/*dwAlarmType为2或3,6时，表示哪个通道，dwChannel[0]位对应第1个通道*/
+        public int[] dwDiskNumber = new int[MAX_DISKNUM];/*dwAlarmType为1,4,5时,表示哪个硬盘, dwDiskNumber[0]位对应第1个硬盘*/
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwAlarmType", "dwAlarmInputNumber", "byAlarmOutputNumber",
+                    "byAlarmRelateChannel", "byChannel", "byDiskNumber");
+        }
+    }
 //
 //    public static class NET_DVR_ALARMINFO_EX extends Structure {//上传报警信息(杭州竞天定制 2006-07-28)
 //        public int dwAlarmType;/*0-信号量报警,1-硬盘满,2-信号丢失,3－移动侦测,4－硬盘未格式化,5-读写硬盘出错,6-遮挡报警,7-制式不匹配, 8-非法访问*/
@@ -3541,15 +3643,269 @@ EMAIL参数结构
     }
 
     //用于接收报警信息的缓存区
-    public static class RECV_ALARM extends Structure {
-        public byte[] RecvBuffer = new byte[400];//此处的400应不小于最大报警报文长度
+//    public static class RECV_ALARM extends Structure {
+//        public byte[] RecvBuffer = new byte[400];//此处的400应不小于最大报警报文长度
+//
+//        @Override
+//        protected List<String> getFieldOrder() {
+//            return Arrays.asList("RecvBuffer");
+//        }
+//    }
+
+    //布防参数
+    public static class NET_DVR_SETUPALARM_PARAM extends Structure
+    {
+        public int dwSize;
+        public byte byLevel;
+        public byte byAlarmInfoType;
+        public byte byRetAlarmTypeV40;
+        public byte byRetDevInfoVersion;
+        public byte byRetVQDAlarmType;
+        public byte byFaceAlarmDetection;
+        public byte bySupport;
+        public byte[] byRes1= new byte [9];
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("RecvBuffer");
+            return Arrays.asList("dwSize", "byLevel", "byAlarmInfoType", "byRetAlarmTypeV40", "byRetDevInfoVersion",
+                    "byRetVQDAlarmType", "byFaceAlarmDetection", "bySupport", "byRes1");
         }
     }
 
+    //区域框参数
+    public static class NET_VCA_RECT extends Structure
+    {
+        public float fX;
+        public float fY;
+        public float fWidth;
+        public float fHeight;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("fx", "fy", "fWidth", "fHeight");
+        }
+    }
+
+    //报警目标信息
+    public static class NET_VCA_TARGET_INFO extends Structure
+    {
+        public int dwID;
+        public NET_VCA_RECT struRect;
+        public byte[] byRes= new byte[4];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwID", "struRect", "byRes");
+        }
+    }
+
+    //前端设备信息
+    public static class NET_VCA_DEV_INFO extends Structure
+    {
+        public NET_DVR_IPADDR struDevIP;
+        public short wPort;
+        public byte byChannel;
+        public byte byIvmsChannel;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struDevIP", "wPort", "byChannel", "byIvmsChannel");
+        }
+    }
+
+    //事件规则信息
+    public static class NET_VCA_RULE_INFO extends Structure
+    {
+        public byte byRuleID;
+        public byte byRes;
+        public short wEventTypeEx;
+        public byte[] byRuleName= new byte[NAME_LEN];
+        public int dwEventType;
+        public NET_VCA_EVENT_UNION  uEventParam;
+        public void read() {
+            super.read();
+            switch (wEventTypeEx) {
+                case 1:
+                    uEventParam.setType(NET_VCA_TRAVERSE_PLANE.class);
+                    break;
+                case 2:
+                case 3:
+                    uEventParam.setType(NET_VCA_AREA.class);
+                    break;
+                default:
+                    break;
+            }
+            uEventParam.read();
+        }
+        public void write() {
+            super.write();
+            uEventParam.write();
+        }
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("byRuleID", "byRes", "wEventTypeEx", "byRuleName", "dwEventType", "uEventParam");
+        }
+    }
+
+    //警戒规则参数联合体
+    public static class NET_VCA_EVENT_UNION extends Union
+    {
+        public int[] uLen = new int[23];
+        public NET_VCA_TRAVERSE_PLANE struTraversePlane;
+        public NET_VCA_AREA  struArea;
+    }
+
+    //穿越警戒面参数
+    public static class NET_VCA_TRAVERSE_PLANE extends Structure
+    {
+        public NET_VCA_LINE struPlaneBottom;
+        public int dwCrossDirection;
+        public byte bySensitivity;
+        public byte byPlaneHeight;
+        public byte byDetectionTarget;/*检测目标：0- 所有目标，1- 人，2- 车   */
+        public byte[] byRes2= new byte[37];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struPlaneBottom", "dwCrossDirection", "bySensitivity", "byPlaneHeight", "byDetectionTarget",
+                    "byRes2");
+        }
+    }
+
+    public static class NET_DVR_HANDLEEXCEPTION_V40 extends Structure
+    {
+        public int    dwHandleType;/*处理方式，各种异常处理方式的"或"结果，异常处理方式：
+                                    0x00: 无响应    0x01: 监视器上警告  0x02: 声音警告  0x04: 上传中心
+                                    0x08: 触发报警输出  0x10: Jpeg抓图并上传EMail
+                                    0x20: 无线声光报警器联动    0x40: 联动电子地图(目前仅PCNVR支持)
+                                    0x200：抓图并上传ftp    0x400: 虚焦侦测联动聚焦
+                                    0x800: PTZ联动跟踪(球机跟踪目标)
+                                    E.g. dwHandleType==0x01|0x04 表示配置报警发生时联动监视器上警告并且将报警信息上传中心。 */
+        public int    dwMaxRelAlarmOutChanNum;/*设备最大支持的触发报警输出通道数（只读） */
+        public int    dwRelAlarmOutChanNum ;/*已配置的触发的报警输出通道个数，决定dwRelAlarmOut取前多少个数组下标 */
+        public int[]  dwRelAlarmOut = new int[MAX_CHANNUM_V30];/*触发报警输出通道，取数组前dwRelAlarmOutChanNum个值，
+                                        其值表示报警输出通道号(从1开始)，初始值是0xfffffffff(不关联通道)。
+                                        例如，dwRelAlarmOutChanNum=5，则可以配置触发报警输出通道dwRelAlarmOut[0]~dwRelAlarmOut[4]。 */
+        public byte[] byRes = new  byte[64]; /*保留，置为0 */
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwHandleType", "dwMaxRelAlarmOutChanNum", "dwRelAlarmOutChanNum", "dwRelAlarmOut", "byRes");
+        }
+    }
+
+
+    public static final int MAX_ALERTLINE_NUM = 8;
+
+    public static class NET_VCA_TRAVERSE_PLANE_DETECTION extends Structure
+    {
+        public int dwSize;
+        public byte byEnable;//使能
+        public byte byEnableDualVca;// 启用支持智能后检索 0-不启用，1-启用
+        public byte[] byRes1 = new byte[2];
+        public NET_VCA_TRAVERSE_PLANE[] struAlertParam = new NET_VCA_TRAVERSE_PLANE[MAX_ALERTLINE_NUM];  //警戒线参数
+        public NET_DVR_SCHEDTIMEWEEK[] struAlarmSched = new NET_DVR_SCHEDTIMEWEEK[MAX_DAYS];
+        public NET_DVR_HANDLEEXCEPTION_V40 struHandleException;  //异常处理方式
+        public int dwMaxRelRecordChanNum ;  //报警触发的录象通道 数（只读）最大支持数量
+        public int dwRelRecordChanNum ;     //报警触发的录象通道 数 实际支持的数量
+        public int[] byRelRecordChan = new int[MAX_CHANNUM_V30];//触发录像的通道号
+        public NET_DVR_SCHEDTIME[] struHolidayTime = new NET_DVR_SCHEDTIME[MAX_TIMESEGMENT_V30]; //假日布防时间
+        public byte[] byRes2 = new byte[100];
+
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwSize", "byEnable", "byEnableDualVca", "byEnableHumanMisinfoFilter",
+                    "byEnableVehicleMisinfoFilter", "struAlertParam", "struAlarmSched", "struHandleException",
+                    "dwMaxRelRecordChanNum", "dwRelRecordChanNum", "byRelRecordChan", "struHolidayTime", "byRes2");
+        }
+
+    }
+
+    public static class NET_DVR_CHANNEL_GROUP extends Structure
+    {
+        public int dwSize;
+        public int dwChannel;
+        public int dwGroup;
+        public byte byID;
+        public byte[] byRes1 = new byte[3];
+        public int dwPositionNo;
+        public byte[] byRes = new byte[56];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwSize", "dwChannel", "dwGroup", "byID", "byRes1", "dwPositionNo", "byRes");
+        }
+    }
+
+    //线结构参数
+    public static class NET_VCA_LINE extends Structure
+    {
+        public NET_VCA_POINT struStart;
+        public NET_VCA_POINT struEnd;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struStart", "struEnd");
+        }
+    }
+
+    //点坐标参数
+    public static class NET_VCA_POINT extends Structure
+    {
+        public float fX;
+        public float fY;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("fx", "fy");
+        }
+    }
+
+    //进入/离开区域参数
+    public static class NET_VCA_AREA extends Structure
+    {
+        public NET_VCA_POLYGON struRegion;
+        public byte[] byRes= new byte[8];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struRegion", "byRes");
+        }
+    }
+
+    //多边形结构体
+    public static class NET_VCA_POLYGON extends Structure
+    {
+        public int dwPointNum;
+        public NET_VCA_POINT[] struPos= new NET_VCA_POINT[VCA_MAX_POLYGON_POINT_NUM];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwPointNum", "struPos");
+        }
+    }
+
+    //行为分析报警
+    public static class NET_VCA_RULE_ALARM extends Structure
+    {
+        public int dwSize;
+        public int dwRelativeTime;
+        public int dwAbsTime;
+        public NET_VCA_RULE_INFO struRuleInfo;
+        public NET_VCA_TARGET_INFO struTargetInfo;
+        public NET_VCA_DEV_INFO struDevInfo;
+        public int dwPicDataLen;
+        public byte byPicType;
+        public byte[] byRes= new byte[3];
+        public int[] dwRes= new int[3];
+        public ByteByReference pImage;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwSize", "dwRelativeTime", "dwAbsTime", "struRuleInfo", "struTargetInfo", "struDevInfo",
+                    "dwPicDataLen", "byPicType", "byRes", "dwRes", "pImage");
+        }
+    }
 
     /***API函数声明,详细说明见API手册***/
     public static interface FRealDataCallBack_V30 extends StdCallCallback {
@@ -3558,7 +3914,8 @@ EMAIL参数结构
     }
 
     public static interface FMSGCallBack extends StdCallCallback {
-        public void invoke(NativeLong lCommand, NET_DVR_ALARMER pAlarmer, HCNetSDK.RECV_ALARM pAlarmInfo, int dwBufLen, Pointer pUser);
+        public void invoke(NativeLong lCommand, NET_DVR_ALARMER pAlarmer, Pointer pAlarmInfo, int dwBufLen, Pointer pUser);
+//        public void invoke(NativeLong lCommand, NET_DVR_ALARMER pAlarmer, HCNetSDK.RECV_ALARM pAlarmInfo, int dwBufLen, Pointer pUser);
     }
 
     public static interface FMessCallBack extends StdCallCallback {
@@ -3655,6 +4012,8 @@ EMAIL参数结构
     boolean NET_DVR_SetDVRMessageCallBack(FMessageCallBack fMessageCallBack, int dwUser);
 
     boolean NET_DVR_SetDVRMessageCallBack_V30(FMSGCallBack fMessageCallBack, Pointer pUser);
+
+//    boolean  NET_DVR_SetDVRMessageCallBack_V31(FMSGCallBack_V31 fMessageCallBack, Pointer pUser);
 
     boolean NET_DVR_SetConnectTime(int dwWaitTime, int dwTryTimes);
 
@@ -3851,6 +4210,7 @@ EMAIL参数结构
     boolean NET_DVR_CloseAlarmChan(NativeLong lAlarmHandle);
 
     NativeLong NET_DVR_SetupAlarmChan_V30(NativeLong lUserID);
+    NativeLong  NET_DVR_SetupAlarmChan_V41(NativeLong lUserID, NET_DVR_SETUPALARM_PARAM lpSetupParam);
 
     boolean NET_DVR_CloseAlarmChan_V30(NativeLong lAlarmHandle);
 
@@ -4092,6 +4452,8 @@ EMAIL参数结构
     boolean NET_DVR_ShutDownDVR(NativeLong lUserID);
 
     //参数配置 begin
+    boolean  NET_DVR_GetDeviceConfig(NativeLong lUserID, int dwCommand,int dwCount, Pointer lpInBuffer, int dwInBufferSize, Pointer lpStatusList,Pointer lpOutBuffer, int dwOutBufferSize);
+
     boolean NET_DVR_GetDVRConfig(NativeLong lUserID, int dwCommand, NativeLong lChannel, Pointer lpOutBuffer, int dwOutBufferSize, IntByReference lpBytesReturned);
 
     boolean NET_DVR_SetDVRConfig(NativeLong lUserID, int dwCommand, NativeLong lChannel, Pointer lpInBuffer, int dwInBufferSize);
@@ -4151,6 +4513,7 @@ EMAIL参数结构
     boolean NET_DVR_SetRtspConfig(NativeLong lUserID, int dwCommand, NET_DVR_RTSPCFG lpInBuffer, int dwInBufferSize);
 
     boolean NET_DVR_GetRtspConfig(NativeLong lUserID, int dwCommand, NET_DVR_RTSPCFG lpOutBuffer, int dwOutBufferSize);
+
 }
 
 //播放库函数声明,PlayCtrl.dll
