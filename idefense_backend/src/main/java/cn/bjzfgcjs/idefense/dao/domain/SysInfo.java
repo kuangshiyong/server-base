@@ -10,6 +10,9 @@ public class SysInfo implements Serializable {
     @Id
     private String ID;
 
+    //add colum, 2018-2-25 wuchao
+    private Short Operation;
+
     private Integer Deploy;
 
     private Long Scenario;
@@ -34,9 +37,15 @@ public class SysInfo implements Serializable {
 
     private String Snapshotdir;
 
-    private String Snapshorttype;
+    //modify Snapshorttype to Snapshottype 2018-2-25 wuchao
+    private String Snapshottype;
 
     private Short Activity;
+
+    //add 2 column 2018-2-25 wuchao
+    private String FrontSys;
+
+    private String BackendSys;
 
     private Long ctime;
 

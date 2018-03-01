@@ -1,3 +1,4 @@
+//add class 2018-2-25 wuchao
 package cn.bjzfgcjs.idefense.dao.domain;
 
 import javax.persistence.Id;

@@ -18,6 +18,9 @@ public class Position {
 
     private Integer Group;
 
+    //add column 2018-2-25 wuchao
+    private Integer hasPTZ;
+
     private String Model;
 
     private String Config;

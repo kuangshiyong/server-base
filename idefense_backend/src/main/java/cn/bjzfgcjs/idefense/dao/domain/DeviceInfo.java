@@ -17,17 +17,25 @@ public class DeviceInfo implements Serializable {
 
     private String UserName = "";
 
-    private String Password = "";
+    //modify Password to PassWord 2018-2-25 wuchao
+    private String PassWord = "";
 
     private Byte Type;
 
-    private String Mode = "";
+    //modify Mode to Model 2018-2-25 wuchao
+    private String Model = "";
 
     private String Firmware = "";
 
     private String Manufacturer = "";
 
     private Long Date = 0L;
+
+    //addColumn 2018-2-25 wuchao
+    private String Serial = "";
+
+
+
 
 //    TODO: 待协商
 //    private String serialno;

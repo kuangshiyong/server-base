@@ -12,7 +12,8 @@ public class Tactics implements Serializable {
     @Id
     private Long ID;
 
-    private String Name;
+    //modify Name to TacticsName 2018-2-25 wuchao
+    private String TacticsName;
 
     private String Publisher;
 

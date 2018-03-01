@@ -26,7 +26,9 @@ public class EventRecord implements Serializable {
 
     private String SoundLogFile;
 
-    private String CountriesandRegions;
+    //modify CountriesandRegions to CountriesandRegionsCode 2018-02-25 wuchao
+    private String CountriesandRegionsCode;
+    private String CountriesandRegionsCodeTest;
 
     private Long ctime;
 }
