@@ -1,6 +1,13 @@
 package cn.bjzfgcjs.idefense.common.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.StringTokenizer;
+
+// SV-2101 音频卡 数据结构所用
 
 /**
  * TCP/IP Address Utility Class:
@@ -12,6 +19,7 @@ import java.util.StringTokenizer;
  *
  */
 public class IPAddress {
+    private static final Logger logger = LoggerFactory.getLogger(IPAddress.class);
 
     public final static long parseAddress(String ipaddr) {
         //  Check if the string is valid
@@ -35,7 +43,9 @@ public class IPAddress {
 
                 ipInt |= ipVal << ( count * 8);
             }
-            catch (NumberFormatException ex) {
+            catch (NumberFormatException e) {
+                logger.error("parse ip for playback");
+                e.printStackTrace();
                 return 0;
             }
             count ++;
@@ -43,5 +53,17 @@ public class IPAddress {
 
         //  Return the integer address
         return ipInt;
+    }
+
+    public static String getLocalIp() {
+        String ip = "";
+        try {
+            InetAddress address = InetAddress.getLocalHost();
+            ip = address.getHostAddress();
+        } catch (UnknownHostException e) {
+            logger.error("get local ip for playback");
+            e.printStackTrace();
+        }
+        return ip;
     }
 }

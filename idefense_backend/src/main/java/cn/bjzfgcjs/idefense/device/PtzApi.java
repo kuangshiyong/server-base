@@ -1,8 +1,10 @@
 package cn.bjzfgcjs.idefense.device;
 
+import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
+
 public interface PtzApi {
 
-    public Boolean ptzCtl(String deviceId, int command, int speed, int start);
+    public Boolean ptzCtl(DeviceInfo deviceInfo, int command, int speed, int start);
 
     // 设置PreSet
     public int ptzManage();

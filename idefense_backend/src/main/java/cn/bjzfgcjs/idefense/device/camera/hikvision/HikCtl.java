@@ -1,132 +1,125 @@
 package cn.bjzfgcjs.idefense.device.camera.hikvision;
 
-import cn.bjzfgcjs.idefense.core.DataCache;
+import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
+import cn.bjzfgcjs.idefense.dao.domain.Position;
+import cn.bjzfgcjs.idefense.dao.service.DeviceStorge;
 import cn.bjzfgcjs.idefense.service.PubMessage;
 import cn.bjzfgcjs.idefense.device.PtzApi;
-import cn.bjzfgcjs.idefense.device.bean.HikHandlerBean;
 import cn.bjzfgcjs.idefense.device.camera.CameraAPI;
-import com.sun.jna.NativeLong;
+import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+@Service
 public class HikCtl implements CameraAPI, PtzApi {
 
-        private static final Logger logger = LoggerFactory.getLogger(HikCtl.class);
+    private static final Logger logger = LoggerFactory.getLogger(HikCtl.class);
 
-        private static HCNetSDK hCNetSDK = Login.hCNetSDK;
+    private static HCNetSDK hCNetSDK = HikInit.hCNetSDK;
 
-        private String deviceId;
 
-        private NativeLong userID;
+    // 编码格式：h264、MPEG-4、mpeg4
+    private static final String videoCodec = "h264";
+    // 通道号，起始为1
+    private static final String channel = "ch1";
+    // 码流类型，主码流为main,子码流为sub
+    private static final String subtype = "main";
+    private static final String rtspTemplate =
+            "rtsp://${username}:${passwd}@${ip}:554/${codec}/${channel}/${subtype}/av_stream";
 
-        private HikHandlerBean hikHandlerBean;
+    @Resource
+    private HikInit hikInit;
 
-//        @Resource
-        private Login login;
+    @Resource
+    private DeviceStorge deviceStorge;
 
-//        private Device cameraInfo;
-//        @Resource
-//        private DeviceMapper deviceMapper;
-//
-//        @Resource
-//        private PositionMapper positionMapper;
+    @Resource
+    private PubMessage pubMessage;
 
-        @Resource
-        private PubMessage pubMessage;
 
-        public HikCtl(String deviceId) {
-            this.deviceId = deviceId;
-//
-//        cameraInfo = deviceMapper.selectByPrimaryKey(deviceId);
-//        if (cameraInfo != null)
-//            logger.debug("camera info: {}", GsonTool.toJson(cameraInfo));
-//            cameraInfo = new Device();
-//            cameraInfo.setId("192.168.1.64");
-//            cameraInfo.setPosition(1);
-//            cameraInfo.setPort(554);
-//            cameraInfo.setUsername("admin");
-//            cameraInfo.setPassword("hzzf888888");
-//            cameraInfo.setChannel(1);
-//            cameraInfo.setPtz(true);
-        }
+    @Override
+    public String getRtspUrl(DeviceInfo deviceInfo) {
+        Map<String, String> paramsMap = new HashMap<String, String>();
+        paramsMap.put("username", deviceInfo.getUserName());
+        paramsMap.put("passwd", deviceInfo.getPassWord());
+        paramsMap.put("ip", deviceInfo.getIPAddress());
+        paramsMap.put("codec", videoCodec);
+        paramsMap.put("channel", channel);
+        paramsMap.put("subtype", subtype);
+        StrSubstitutor sub = new StrSubstitutor(paramsMap);
+        return sub.replace(rtspTemplate);
+    }
 
-        public boolean isAvailable(String deviceId) {
-            try {
-                if (hikHandlerBean == null) {
-                    hikHandlerBean = DataCache.getHikHandler(deviceId);
-                    logger.debug("还没登录摄像头");
-                }
-                if (hikHandlerBean == null) {
-                    login.doLogin(deviceId,"192.168.1.64", (short)8000, "admin", "hzzf888888");
-                    return true;
-                }
-            } catch (Exception e) {
-                logger.error("camera unavailable: {}", e);
-            } finally {
-                return false;
-            }
-        }
+    // http://<username>:<password>@<address>:<httpport>/Streaming/Channels/1/picture
+    @Override
+    public String getSnapshot(DeviceInfo deviceInfo) throws Exception {
+        hikInit.login(deviceInfo.getID(), deviceInfo.getIPAddress(), deviceInfo.getIPPort(),
+                deviceInfo.getUserName(), deviceInfo.getPassWord());
+        HikHandler handler = getHandler(deviceInfo);
 
-        /** 摄像机支持PTZ且该机位配置有PTZ，才可以控制
-         * @return
-         */
-        @Override
-        public boolean hasPTZ(String deviceId) {
-//            HikHandlerBean hikHandlerBean = DataCache.getHikHandler(deviceId);
-            return true;
-//            if (cameraInfo != null && cameraInfo.getPtz()) {
-//                Integer positionNo = cameraInfo.getPosition();
-//                return true;
-////            Position position = positionMapper.selectByPrimaryKey(positionNo);
-////            if (position != null && position.getPtz()) {
-////                return true;
-////            }
-//            }
-//            return false;
-        }
+        HCNetSDK.NET_DVR_JPEGPARA jpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
+        jpegPara.wPicQuality = 0;
+        jpegPara.wPicSize = 1;
+        // TODO: 读取存储路径，
+        // 截图文件命名规则：filename: 日期_UUID.jpeg
+        String filename = UUID.randomUUID().toString() + ".jpeg";
+        hCNetSDK.NET_DVR_CaptureJPEGPicture(handler.getUserId(), handler.getChannel(), jpegPara,filename);
+        return filename;
+    }
 
-        // rtsp://<username>:<password>@<address>:<port>/Streaming/Channels/<id>/
-        // id: channel + 01（主码流））
-        @Override
-        public String getRtspURl(String deviceId) {
-            return "rtsp://admin:hzzf888888@192.168.1.64:554/h264/ch1/main/av_stream";
-//            if (cameraInfo != null) {
-//                StringBuffer buffer = new StringBuffer();
-//                buffer.append("rtsp://");
-//                buffer.append(cameraInfo.getUsername()).append(":").append(cameraInfo.getPassword());
-//                buffer.append("@");
-//                buffer.append(cameraInfo.getIp()).append(":").append(cameraInfo.getPort());
-//                buffer.append("/Streaming/Channels/").append(cameraInfo.getChannel()).append("01");
-//                buffer.append("/?transportmode=unicast");
-//                return buffer.toString();
-//            }
-//
-//            return null;
-        }
+    @Override
+    public void startRecord(DeviceInfo deviceInfo) {
 
-        // http://<username>:<password>@<address>:<httpport>/Streaming/Channels/1/picture
-        @Override
-        public String getSnapshot(String deviceId) {
+    }
+
+    // set OSD
+
+    // 布防，撤控
+
+
+    /** 摄像机支持PTZ且该机位配置有PTZ，才可以控制
+     * @return
+     */
+    @Override
+    public boolean hasPTZ(DeviceInfo deviceInfo) {
+        Position position = deviceStorge.getPosByPostionCode(deviceInfo.getPosition());
+        return (position.getHasPTZ() > 0);
+    }
+
+    // rtsp://<username>:<password>@<address>:<port>/Streaming/Channels/<id>/
+    // id: channel + 01（主码流））
+    private HikHandler getHandler(DeviceInfo deviceInfo) {
+        try {
+            hikInit.login(deviceInfo.getID(), deviceInfo.getIPAddress(), deviceInfo.getIPPort(),
+                    deviceInfo.getUserName(), deviceInfo.getPassWord());
+            return hikInit.getHikHandler(deviceInfo.getID());
+        } catch (Exception e) {
+            logger.error("ptz control failed");
             return null;
         }
+    }
 
-        @Override
-        public void startRecord(String deviceId) {
-
+//    @Override
+    public Boolean ptzCtl(DeviceInfo deviceInfo, int command, int speed, int start) {
+        HikHandler handler = getHandler(deviceInfo);
+        if (handler != null) {
+            return hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(handler.getUserId(),
+                    handler.getChannel(), command, start, speed);
+        } else {
+            return false;
         }
 
-        @Override
-        public Boolean ptzCtl(String deviceId, int command, int speed, int start) {
-            HikHandlerBean hikHandlerBean = DataCache.getHikHandler(deviceId);
-            return  hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(hikHandlerBean.getUserId(),
-                    hikHandlerBean.getChannel(), command, start, speed);
-        }
+    }
 
-        @Override
-        public int ptzManage() {
-            return 0;
-        }
+    @Override
+    public int ptzManage() {
+        return 0;
+    }
 }
 

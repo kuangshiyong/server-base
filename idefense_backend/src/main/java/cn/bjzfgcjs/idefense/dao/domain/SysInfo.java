@@ -1,5 +1,8 @@
 package cn.bjzfgcjs.idefense.dao.domain;
 
+import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
+
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -8,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "zf_sysinfo")
 public class SysInfo implements Serializable {
     @Id
+    @Column(name = "ID")
     private String ID;
 
     //add colum, 2018-2-25 wuchao
@@ -17,6 +21,7 @@ public class SysInfo implements Serializable {
 
     private Long Scenario;
 
+    @Column(name = "ProjectName")
     private String ProjectName;
 
     private String Customername;
@@ -25,30 +30,195 @@ public class SysInfo implements Serializable {
 
     private String Location;
 
+    @Column(name = "GPS")
     private String GPS;
 
+    @Column(name = "SonudDir")
     private String SonudDir;
 
+    @Column(name = "LogDir")
     private String LogDir;
 
+    @Column(name = "VideoDir")
     private String VideoDir;
 
     private Integer Videotime;
 
     private String Snapshotdir;
 
-    //modify Snapshorttype to Snapshottype 2018-2-25 wuchao
     private String Snapshottype;
 
     private Short Activity;
 
-    //add 2 column 2018-2-25 wuchao
+    @Column(name = "FrontSys")
     private String FrontSys;
 
+    @Column(name = "BackendSys")
     private String BackendSys;
 
+    @JsonSkipTag
     private Long ctime;
 
+    @JsonSkipTag
     private Long utime;
 
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public Short getOperation() {
+        return Operation;
+    }
+
+    public void setOperation(Short operation) {
+        Operation = operation;
+    }
+
+    public Integer getDeploy() {
+        return Deploy;
+    }
+
+    public void setDeploy(Integer deploy) {
+        Deploy = deploy;
+    }
+
+    public Long getScenario() {
+        return Scenario;
+    }
+
+    public void setScenario(Long scenario) {
+        Scenario = scenario;
+    }
+
+    public String getProjectName() {
+        return ProjectName;
+    }
+
+    public void setProjectName(String projectName) {
+        ProjectName = projectName;
+    }
+
+    public String getCustomername() {
+        return Customername;
+    }
+
+    public void setCustomername(String customername) {
+        Customername = customername;
+    }
+
+    public String getDesc() {
+        return Desc;
+    }
+
+    public void setDesc(String desc) {
+        Desc = desc;
+    }
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    public String getGPS() {
+        return GPS;
+    }
+
+    public void setGPS(String GPS) {
+        this.GPS = GPS;
+    }
+
+    public String getSonudDir() {
+        return SonudDir;
+    }
+
+    public void setSonudDir(String sonudDir) {
+        SonudDir = sonudDir;
+    }
+
+    public String getLogDir() {
+        return LogDir;
+    }
+
+    public void setLogDir(String logDir) {
+        LogDir = logDir;
+    }
+
+    public String getVideoDir() {
+        return VideoDir;
+    }
+
+    public void setVideoDir(String videoDir) {
+        VideoDir = videoDir;
+    }
+
+    public Integer getVideotime() {
+        return Videotime;
+    }
+
+    public void setVideotime(Integer videotime) {
+        Videotime = videotime;
+    }
+
+    public String getSnapshotdir() {
+        return Snapshotdir;
+    }
+
+    public void setSnapshotdir(String snapshotdir) {
+        Snapshotdir = snapshotdir;
+    }
+
+    public String getSnapshottype() {
+        return Snapshottype;
+    }
+
+    public void setSnapshottype(String snapshottype) {
+        Snapshottype = snapshottype;
+    }
+
+    public Short getActivity() {
+        return Activity;
+    }
+
+    public void setActivity(Short activity) {
+        Activity = activity;
+    }
+
+    public String getFrontSys() {
+        return FrontSys;
+    }
+
+    public void setFrontSys(String frontSys) {
+        FrontSys = frontSys;
+    }
+
+    public String getBackendSys() {
+        return BackendSys;
+    }
+
+    public void setBackendSys(String backendSys) {
+        BackendSys = backendSys;
+    }
+
+    public Long getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(Long ctime) {
+        this.ctime = ctime;
+    }
+
+    public Long getUtime() {
+        return utime;
+    }
+
+    public void setUtime(Long utime) {
+        this.utime = utime;
+    }
 }

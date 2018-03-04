@@ -136,7 +136,7 @@ struct _Device
     char  TmpGroup;								//	未定义,临时组临时保存位置，不应使用这个值。
     char  TalkDialInCount;						//	对讲自动接通呼叫振铃次数，等于时间秒数。	
     
-    WORD  ServerIP[2];							//	服务器的IP地址，音频设备会定时向服务器报告消息。
+    WORD ServerIP[2];							//	服务器的IP地址，音频设备会定时向服务器报告消息。
     WORD ServerPort;							//	服务器监听端口，与ServerIP配合使用。
 
 	char ComVolume;								//	串口设置的音量大小偏移量，
@@ -154,7 +154,7 @@ struct _Device
 												//	CustomServiceIp[1]，CustomServiceIp[2]未用
 												//	CustomServiceIp[4]是时间服务器IP地址
 	struct _Port Port[7];
-	char UseAssistant;							//	是否允许呼叫转移
+	char UseAssistant;							 
 	char Unuse4;
 	char TalkMode;								//	对讲模式，0=全双工模式，1=半双工模式
 	char CodecType;								//	对讲数据编码格式，0=pcm，1=adpcm
@@ -183,7 +183,7 @@ extern "C" int __stdcall np_search_all(struct _DeviceInfo* devs, int* number);
 /***********************************************************************************
 函数名称：	np_search_one
 函数功能：	搜索指定IP的NP设备，成功则将该设备得系统参数填入dev结构中
-输入参数：	char * ip		目标转换器得IP地址。ip为以'\0'结尾的字符串。
+输入参数：	char * ip		目标转换器的IP地址。ip为以'\0'结尾的字符串。
 			struct _DeviceInfo * devs	系统参数结构指针，用户在调用这个函数前应为这个结构分配空间。
 								搜索到的设备参数写入这个结构中。
 返回值  ：	NP_SUCCESS：		表示操作成功

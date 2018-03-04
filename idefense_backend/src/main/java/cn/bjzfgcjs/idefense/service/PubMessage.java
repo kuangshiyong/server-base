@@ -1,6 +1,6 @@
 package cn.bjzfgcjs.idefense.service;
 
-import cn.bjzfgcjs.idefense.device.bean.HikHandlerBean;
+import cn.bjzfgcjs.idefense.device.camera.hikvision.HikHandler;
 import org.redisson.api.RDeque;
 import org.redisson.api.RMap;
 import org.redisson.api.RTopic;
@@ -9,11 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 @Service
 public class PubMessage implements InitializingBean {
@@ -29,7 +25,7 @@ public class PubMessage implements InitializingBean {
     // 发布系统机位故障信息
 //    public RTopic<SysFaultBean> sysFaultMessage() {return client.getTopic("sys|fault"); }
 
-    public RMap<String, HikHandlerBean> hikHandls() { return client.getMap("hikhandlers"); }
+    public RMap<String, HikHandler> hikHandls() { return client.getMap("hikhandlers"); }
 
     public RDeque<String> soundHandle() { return client.getDeque("sounds");}
 

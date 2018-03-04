@@ -56,9 +56,10 @@ mybatis:
     mapper-locations: classpath:mybatis/mapper/*.xml
     configuration:
         cacheEnabled: false
-        map-underscore-to-camel-case: false
+        map-underscore-to-camel-case: true
         default-fetch-size: 100
         default-statement-timeout: 30
+        use-actual-param-name: true
 
 spring:
     profiles:
@@ -76,10 +77,11 @@ spring:
     http.converters.preferred-json-mapper: gson
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
+
         driver-class-name: com.mysql.jdbc.Driver
         username: hzzf
         password: hzzf888888
-        url: jdbc:mysql://127.0.0.1:3306/idefense?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://127.0.0.1:3306/idefense?useUnicode=true&characterEncoding=utf8&useSSL=false
         hikari:
             connection-timeout: 3000
             maximum-pool-size: 100

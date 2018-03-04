@@ -25,7 +25,7 @@
     <logger name="im.yixin.voip.freeswitch" level="DEBUG"/>
 	<logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="INFO"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
