@@ -134,8 +134,6 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
         public int[] Options = new int[15]; //选项
 
-//        public byte[] MuxName = new byte[64];
-
         public int nChannels;   //采样的通道 1～2 CodecType
 
         public int nSamplesPerSec; //采样频率 8K，11.025K,22.05K,44.1K
@@ -148,12 +146,9 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("hWnd", "Priority", "MultiGroup", "CastMode", "IP", "Volume", "Tone", "Treble", "Bass",
-                    "Treble_En", "Bass_En", "SourceType", "OptionByte", "DeviceID",
-                    "MaxBitrate", "Options",
-//                    "MuxName",
-                    "nChannels",
-                    "nSamplesPerSec", "AudioBufferLength", "AudioBuf", "PrivateData");
+            return Arrays.asList("hWnd", "Priority", "MultiGroup", "CastMode", "IP", "Volume", "Tone", "Treble",
+                    "Bass", "Treble_En", "Bass_En", "SourceType", "OptionByte", "DeviceID", "MaxBitrate",
+                    "Options", "nChannels", "nSamplesPerSec", "AudioBufferLength", "AudioBuf", "PrivateData");
         }
 
         public static class ByReference extends _PlayParam implements Structure.ByReference {

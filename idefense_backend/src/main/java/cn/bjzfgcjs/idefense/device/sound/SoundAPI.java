@@ -1,8 +1,15 @@
 package cn.bjzfgcjs.idefense.device.sound;
 
+import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
+
 public interface SoundAPI {
 
-//    public boolean isAvailable(String deviceId);
+    public static final int ALWAYS = -1;
 
-//    public void playback(String deviceId, Integer tacticId);
+    public int playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, int loop);
+
+    public int stop(DeviceInfo deviceInfo);
+
+    public int setVolume(DeviceInfo deviceInfo, byte volume);
+
 }

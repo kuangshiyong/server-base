@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author heyueling
+ * author: 钟生辉
  */
 public enum AppCode {
     /**
@@ -41,60 +41,49 @@ public enum AppCode {
     WRONG_NUMBER(822, "WRONG_NUMBER"), // 号码错误
     WRONG_PRODUCT(823, "WRONG_PRODUCT"), // 非法客户端类型
 
-    /**
-     * user [1000,2000)
-     */
-    USER_UNAUTHENTICATED(1002, "unauthenticated"),
-    USER_NOT_FOUND(1003, "User not found."),
-    USER_NOT_MODIFIED(1004, "Not Modified."),
-    USER_NOT_BOUND(1005, "User not bound."),
-    AUTH_TOO_FREQUENCY(1006, "Auth request too frequency."),
-    AUTH_LIMITED(1007, "Auth limited."),
-    AUTH_USER_EXISTS(1008, "Can't create user, already exists."),
-    AUTH_CODE_INVALID(1009, "Auth code invalid"),
-    AUTH_SESSION_NOT_MATCH(1010, "Session not match"),      // 被踢下线
+    // 设备通用代码：[1000, 1100)
+    DEV_OK(1000, "DEV_OK"),        // 设备正常
+    DEV_BUSY(1001, "DEV_BUSY"),    // 设备忙
+
+
+    // 第三方厂商的设备错误码 都要转为 标准错误码
 
     /**
-     * family [2000,3000)
+     * dev: audio card [1100,2000) IP音频卡
      */
-    FAMILY_INVITE_LIMIT(2000, "family invite limit"),               //用户家庭上限（该用户已拥有20个家庭圈，无法邀请）
-    FAMILY_CREATE_LIMIT(2001, "family create limit"),               //用户创建家庭上限
-    USER_PERMISSION_LIMIT(2002, "user have no permission"),         //用户没有权限操作家庭
-    FAMILY_MEMBER_LIMIT(2003, "family member limit"),               //家庭用户上限（包括邀请中用户）
-    USER_ALREADY_EXISTS(2004, "user exist in the family"),          //该用户已被邀请过
-    USER_FAMILY_EMPTY(2005, "user do not have family"),             //用户目前没有家庭圈
-    FAMILY_NOT_FIND(2006, "family not find"),                       //家庭圈没有找到
-    MODE_FAMILY_INFO_FAIL(2007, "mode family info fail"),           //家庭编辑失败
-    MODE_FAMILY_MARK_DAY_FAIL(2008, "mode family mark day fail"),   //纪念日修改失败
-    DEL_FAMILY_MARK_DAY_FAIL(2009, "del family mark day fail"),     //纪念日删除失败
-    DEL_FAMILY_MEMBER_FAIL(2010, "del family member fail"),         //删除成员失败
-    MARK_DAY_CREATE_LIMIT(2011, "mark day create limit"),           //纪念日达到上限
-    CREATOR_LEAVE_LIMIT(2012, "creator leave limit"),               //家庭owner不予许离开家庭（保护逻辑）
-    CREATOR_DELETE_LIMIT(2013, "creator delete limit"),             //家庭owner不能自删（保护逻辑）
-    PHONE_ALREADY_EXISTS(2014, "phone exist in the family"),        //该手机已被邀请过
-    PHONE_INVITE_LIMIT(2015, "phone invite limit"),                 //该手机被邀请的家庭圈达到上限
-    PHONE_AREA_LIMIT(2016, "phone area limit"),                     //国际号码暂时不能加入家庭圈
-    MEMBER_NOT_IN_FAMILY(2017, "member not in family"),             //用户不在该家庭中
-    FAMILY_MARK_DAY_ALREADY_DEAL(2018, "family mark day already deal"),     //纪念日已删除
-    DEL_OWN_LIMIT(2019, "del myself limit"),                         //不能删自己
-    FAMILY_MEMBER_ALREADY_DEAL(2020, "family member already deal"),  //成员已删除
+    // 网络配置接口方面
+    AUDIO_NP_SUCC(1100, "AUDIO_NP_SUCC"),
+    AUDIO_NP_EINET(1101, "AUDIO_NP_EINET"),     // 网卡错误
+    AUDIO_NP_ERESP(1102, "AUDIO_NP_ERESP"),     // 返回数据错误
+    AUDIO_NP_NONEXIST(1103, "AUDIO_DEV_NONEXIST"), // 设备失联
+    AUDIO_NP_EWRITE(1104, "AUDIO_NP_EWRITE"),      // 写配置错误
+    AUDIO_NP_EAUTH(1105, "AUDIO_NP_EAUTH"),        // 密码验证错误
+    AUDIO_NP_EMEM(1106, "AUDIO_NP_EMEM"),          // 内存不足
+    AUDIO_NP_EPARAM(1107, "AUDIO_NP_EPARAM"),      // 参数错误
+
+    // 播放接口
+    AUDIO_OP_OK(1200,  "AUDIO_OP_OK"),          // 操作成功
+    AUDIO_OP_EPARAM(1201, "AUDIO_OP_EPARAM"),   // 操作参数错误
+    AUDIO_OP_ERROR(1201, "AUDIO_OP_ERROR"),     // 执行错误
+    AUDIO_OP_ESOCKET(1202, "AUDIO_OP_ESOCKET"), // socket操作错误
+    AUDIO_OP_ECODEC(1203, "AUDIO_OP_ECODEC"),   // 解码器初始化失败
+    AUDIO_OP_EFILE(1204, "AUDIO_OP_FILE"),      // 音频加载失败
+    AUDIO_OP_EFORMAT(1205, "AUDIO_OP_EFORMAT"), // 音频类型错误, 支持mp3、wav
+    AUDIO_OP_BAD_BITRATE(1206, "AUDIO_OP_BAD_BITRATE"),
+    AUDIO_OP_DECODE_BAN(1207, "AUDIO_OP_DECODE_BAN"); // 禁用解码功能，而播放此文件需要解码
 
     /**
-     * feed [3000,4000)
+     * dev: camera [2000,5000)  摄像机
      */
-    FEED_NOT_EXIST(3000, "feed not exist or deleted."),
-    RESOURCE_NOT_EXIST(3001, "resource not exist or deleted."),
-    COMMENT_NOT_EXIST(3002, "comment not exist or deleted."),
-    REPLYCOMM_NOT_EXIST(3003, "to reply comment not exist or deleted."),
-    SHOOT_TIME_NULL(3004, "feed shoot time need."),
-    FEED_DEL_DENIED(3005, "FEED_DEL_DENIED"), // 拒绝删除他人动态
-    GET_SHARE_ID_FAIL(3006, "get share feedId failed."),
+
 
     /**
-     * web [10000,20000)
+     * dev: terrence  [3000,4000) 云台
      */
-    // 福气值活动 [10100 - 10120]
-    ACTIVE_GOODFORTUNE_END(10100, "goodfortune active end."); // 枚举结束点
+
+    /**
+     * dev:radar [4000,5000)  雷达
+     */
 
     private int code;
     private String message;

@@ -1,13 +1,16 @@
 package cn.bjzfgcjs.idefense.device.sound.sv2101;
 
 import cn.bjzfgcjs.idefense.common.utils.IPAddress;
+import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.domain.Position;
 import cn.bjzfgcjs.idefense.dao.service.DeviceStorge;
+import cn.bjzfgcjs.idefense.device.DevManager;
+import cn.bjzfgcjs.idefense.device.CodeTranslator;
+import cn.bjzfgcjs.idefense.device.sound.SoundAPI;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.WinDef.*;
-import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.platform.win32.WinDef;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +33,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 @Service
-public class LCPlayback implements InitializingBean, DisposableBean {
+public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, DisposableBean {
 
     private static final Logger logger = LoggerFactory.getLogger(LCPlayback.class);
 
@@ -53,7 +56,7 @@ public class LCPlayback implements InitializingBean, DisposableBean {
     private DeviceStorge deviceStorge;
 
     @Resource
-    private PlaybackMsgWnd playbackMsgWnd;
+    private DevManager devManager;
 
     // 由设备查找对应的handler
     private static final ConcurrentHashMap<String, LCHandler> lckCache = new ConcurrentHashMap<>();
@@ -66,6 +69,27 @@ public class LCPlayback implements InitializingBean, DisposableBean {
     @Resource
     private TaskExecutor taskExecutor;
 
+    // 保存所有音频卡的操作资源
+    public static class LCHandler {
+        private LCAudioThrDll._PlayParam.ByReference playParam;
+
+        public LCHandler() {
+            playParam = new LCAudioThrDll._PlayParam.ByReference();
+            playParam.hWnd = new WinDef.HWND(Pointer.NULL);
+            playParam.Priority = 10;
+            playParam.Treble = 100;
+            playParam.Treble_En = 100;
+            playParam.Bass = 100;
+            playParam.Bass_En = 100;
+            playParam.OptionByte = 0;
+            playParam.MaxBitrate = 0;
+            playParam.Options[0] = 0;
+        }
+
+        public LCAudioThrDll._PlayParam.ByReference getPlayParam() {
+            return playParam;
+        }
+    }
 
     /**
      * @param deviceInfo
@@ -74,142 +98,84 @@ public class LCPlayback implements InitializingBean, DisposableBean {
      * @param loop
      * @throws Exception
      */
-    public void playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, final int loop) {
-        LCHandler lcHandler = getLcHandler(deviceInfo);
-        if (!lcHandler.isSpare()) {
-            logger.info("audio card no spare time: " + deviceInfo.getID());
-            return;
-        }
+    @Override
+    public int playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, final int loop) {
+        if (devManager.canUse(deviceInfo))
+            devManager.acqurire(deviceInfo);
+        else
+            return AppCode.DEV_BUSY.getCode();
+
+        LCHandler lcHandler = lckCache.get(deviceInfo.getID());
 
         logger.info("播放的文件：{}", audioFile);
-
         taskExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     int count = StringUtils.isBlank(audioFile) ? 1 : loop;
-                    while (count-- > 0) {
+                    while (count-- > 0 || loop == SoundAPI.ALWAYS) {
                         anounce(deviceInfo, audioFile, volume);
                         if (LC_AUDIO_THR_DLL.lc_wait(lcHandler.getPlayParam()) == LCAudioThrDll.R_OK) {
-                            lcHandler.free();
                             continue;
                         }
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    lcHandler.getPlayLock().set(0);
+                    devManager.release(deviceInfo);
                 }
             }
         });
+        return AppCode.OK.getCode();
     }
 
     /** 检查状态不对，就得上报情况。
      * @param deviceInfo
      * @return
      */
-    public boolean isAvailable(DeviceInfo deviceInfo) {
-        int ret = NA_SETUP.np_search_one(deviceInfo.getIPAddress(), dev);
-        if (ret == 1) {
-            logger.info("Device {}, mac {}", deviceInfo.getIPAddress(), dev);
+    public int checkStatus(DeviceInfo deviceInfo) {
+        int res = NA_SETUP.np_search_one(deviceInfo.getIPAddress(), dev);
+        if (res == NaSetup.NP_SUCCESS) {
+            return AppCode.DEV_OK.getCode();
         } else {
-            logger.info("search audio card: sv2101 failed, code {}", ret);
-        }
+            // TODO: 加入库，及上报调用。
 
-        return (ret == 1);
+            return configCode(res);
+        }
     }
 
-    public void anounce(DeviceInfo deviceInfo, String audioFile, Integer volume) throws Exception {
-
+    @Override
+    public int stop(DeviceInfo deviceInfo) {
         LCHandler lcHandler = getLcHandler(deviceInfo);
-        if (lcHandler.getPlayParam() == null) {
-        }
-        logger.info("锁呢：{}", lcHandler.getPlayLock());
-        if (!lcHandler.check()) return;
+        devManager.release(deviceInfo);
 
-        lcHandler.get();
+        return operateCode(LC_AUDIO_THR_DLL.lc_stop(lcHandler.getPlayParam()));
+    }
 
+    @Override
+    public int setVolume(DeviceInfo deviceInfo, byte volume) {
+        LCHandler lcHandler = getLcHandler(deviceInfo);
+        return operateCode(LC_AUDIO_THR_DLL.lc_set_volume(lcHandler.getPlayParam(), volume));
+    }
+
+    private int anounce(DeviceInfo deviceInfo, String audioFile, Integer volume) throws Exception {
+        LCHandler lcHandler = getLcHandler(deviceInfo);
         LCAudioThrDll._PlayParam.ByReference playParam = lcHandler.getPlayParam();
-//
-//        LCAudioThrDll._PlayParam.ByReference playParam = new LCAudioThrDll._PlayParam.ByReference();
-//        playParam.Priority = 10;
-//        playParam.Treble = 100;
-//        playParam.Treble_En = 100;
-//        playParam.Bass = 100;
-//        playParam.Bass_En = 100;
-//        playParam.OptionByte = 0;
-////        playParam.MuxName[0] = 0;
-        playParam.MaxBitrate = 0;
-        playParam.Options[0] = 0;
-
-//        initParamGroup(deviceInfo, playParam);
+        initParamGroup(deviceInfo, playParam);
         initParamSource(audioFile, playParam);
-
-        playParam.MultiGroup = 0;
-        playParam.CastMode = LC_AUDIO_THR_DLL.cUnicast;
-        playParam.IP = new NativeLong(IPAddress.parseAddress(deviceInfo.getIPAddress()));
-
-//        playParam.SourceType = LC_AUDIO_THR_DLL.SCR_TYPE_AUDIOCARD;
-//        playParam.DeviceID   = 0;
-//        playParam.nChannels  = 2;
-//        playParam.nSamplesPerSec = 44100;
-//        playParam.hWnd = new HWND(Pointer.NULL);
         playParam.Volume = volume;
 
-        LCAudioThrDll._WaveInInfo.ByReference info = new LCAudioThrDll._WaveInInfo.ByReference();
-        IntByReference i = new IntByReference();
-        LC_AUDIO_THR_DLL.lc_rec_devinfo(info, i);
-        logger.info("信息是: {}, n:{}", info,  i);
-
-
-        logger.info("参数有错: {}", playParam);
-//        audioFile = "d:/play.mp3";
-//        audioFile="";
-        int res = LC_AUDIO_THR_DLL.lc_init(audioFile, playParam);
-        if (res == LC_AUDIO_THR_DLL.R_OK) {
-
-            needMic(audioFile);
-            if(LC_AUDIO_THR_DLL.lc_play(playParam) == 0){
-                releaseMic();
-                lcHandler.free();
-                throw new Exception("init playback thread failed");
+        int ret = LC_AUDIO_THR_DLL.lc_init(audioFile, playParam);
+        if (ret == LCAudioThrDll.R_OK) {
+            if(LC_AUDIO_THR_DLL.lc_play(playParam) == 0){ // 返回线程ID
+                //  "init playback thread failed"
+                ret = LCAudioThrDll.ERR_OPT;
 
             } else {
-                logger.info("开始播音了吗？");
-                LC_AUDIO_THR_DLL.lc_getlasterror(playParam);
+                ret = LC_AUDIO_THR_DLL.lc_getlasterror(playParam);
             }
-
-        } else {
-            logger.info("初始化失败了, {}", res);
         }
-        lcHandler.getPlayLock().set(0);
-    }
-
-    public void stop(DeviceInfo deviceInfo) throws Exception {
-        LCHandler lcHandler = getLcHandler(deviceInfo);
-        LC_AUDIO_THR_DLL.lc_stop(lcHandler.getPlayParam());
-            releaseMic();
-            lcHandler.getPlayLock().set(0);
-
-            logger.info("lock: {}, ", lcHandler.getPlayLock().get());
-    }
-
-    public void setVolume(DeviceInfo deviceInfo, byte volume) {
-        LCHandler lcHandler = getLcHandler(deviceInfo);
-        LC_AUDIO_THR_DLL.lc_set_volume(lcHandler.getPlayParam(), volume);
-    }
-
-    private void needMic(String audioFile) throws Exception {
-        if (!StringUtils.isBlank(audioFile)) return;
-
-        if (micLock.get() > 0)
-            throw new Exception("microhphone in use");
-        micLock.getAndIncrement();
-    }
-
-    private void releaseMic() {
-        micLock.getAndDecrement();
+        return ret;
     }
 
     private LCHandler getLcHandler(DeviceInfo deviceInfo) {
@@ -230,9 +196,10 @@ public class LCPlayback implements InitializingBean, DisposableBean {
         }
     }
 
-    private void initParamSource(String file, LCAudioThrDll._PlayParam.ByReference playParam) throws Exception {
+    private int initParamSource(String file, LCAudioThrDll._PlayParam.ByReference playParam) {
+        int respCode = AppCode.OK.getCode();
+
         if (StringUtils.isBlank(file)) {   // Mic
-            logger.info("启用麦克风");
             playParam.SourceType = LC_AUDIO_THR_DLL.SCR_TYPE_AUDIOCARD;
             playParam.DeviceID   = 0;
             playParam.nChannels  = 2;
@@ -241,12 +208,16 @@ public class LCPlayback implements InitializingBean, DisposableBean {
         } else {       // File
             playParam.SourceType = LC_AUDIO_THR_DLL.SCR_TYPE_FILE;
             LCAudioThrDll._FileInfo.ByReference pFileInfo = new LCAudioThrDll._FileInfo.ByReference();
-            if (LC_AUDIO_THR_DLL.lc_get_fileinfo(file, pFileInfo) == LCAudioThrDll.R_OK) {
+            int res = LC_AUDIO_THR_DLL.lc_get_fileinfo(file, pFileInfo);
+
+            if ( res == LCAudioThrDll.R_OK) {
                 playParam.nSamplesPerSec = pFileInfo.SampleRate / 1000;
             } else {
-                throw new Exception("playback failed to load audio file: " + file);
+                // playback failed to load audio file
+                respCode = operateCode(res);
             }
         }
+        return respCode;
     }
 
     private void initResource(){
@@ -271,5 +242,70 @@ public class LCPlayback implements InitializingBean, DisposableBean {
     }
 
 
-}
+    @Override
+    public int configCode(Integer errno) {
+        switch(errno) {
+            case NaSetup.NP_SUCCESS:
+                return AppCode.OK.getCode();
 
+            case NaSetup.NP_NET_INTERFACE_ERROR:
+                return AppCode.AUDIO_NP_EINET.getCode();
+
+            case NaSetup.NP_DATA_ERROR:
+                return AppCode.AUDIO_NP_ERESP.getCode();
+
+            case NaSetup.NP_DEVICE_NOT_EXIST:
+                return AppCode.AUDIO_NP_NONEXIST.getCode();
+
+            case NaSetup.NP_WP_ERROR:
+                return AppCode.AUDIO_NP_EWRITE.getCode();
+
+            case NaSetup.NP_PARAM_ERROR:
+                return AppCode.AUDIO_NP_EPARAM.getCode();
+
+            case NaSetup.NP_PASSWORD_ERROR:
+                return AppCode.AUDIO_NP_EAUTH.getCode();
+
+            case NaSetup.NP_MEMORY_ERROR:
+                return AppCode.AUDIO_NP_EMEM.getCode();
+
+            default:
+                return AppCode.UNKNOWN.getCode();
+        }
+    }
+
+    @Override
+    public int operateCode(Integer errno) {
+        switch (errno) {
+            case LCAudioThrDll.R_OK:
+                return AppCode.OK.getCode();
+
+            case LCAudioThrDll.ERR_PARAM:
+                return AppCode.AUDIO_OP_EPARAM.getCode();
+
+            case LCAudioThrDll.ERR_OPT:
+                return AppCode.AUDIO_OP_ERROR.getCode();
+
+            case LCAudioThrDll.ERR_SOCKET:
+                return AppCode.AUDIO_OP_ESOCKET.getCode();
+
+            case LCAudioThrDll.ERR_CODEC:
+                return AppCode.AUDIO_OP_ECODEC.getCode();
+
+            case LCAudioThrDll.ERR_MEM_FAULT:
+                return AppCode.AUDIO_OP_EFILE.getCode();
+
+            case LCAudioThrDll.ERR_FILEFORMAT_FAULT:
+                return AppCode.AUDIO_OP_EFORMAT.getCode();
+
+            case LCAudioThrDll.ERR_BAD_BITRATE:
+                return AppCode.AUDIO_OP_BAD_BITRATE.getCode();
+
+            case LCAudioThrDll.ERR_DECODE_DISABLE:
+                return AppCode.AUDIO_OP_DECODE_BAN.getCode();
+
+            default:
+                return AppCode.UNKNOWN.getCode();
+        }
+    }
+}
