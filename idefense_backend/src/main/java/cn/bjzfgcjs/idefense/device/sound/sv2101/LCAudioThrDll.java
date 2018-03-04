@@ -1,7 +1,6 @@
 package cn.bjzfgcjs.idefense.device.sound.sv2101;
 
 import com.sun.jna.*;
-import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.*;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.win32.StdCallLibrary;
@@ -9,6 +8,9 @@ import com.sun.jna.win32.StdCallLibrary;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.sun.jna.platform.win32.WinUser.WM_USER;
+
+// 播放接口
 public interface LCAudioThrDll extends StdCallLibrary {
 
     public static final String JNA_LIBRARY_NAME = "LCAudioThrDll";
@@ -21,10 +23,10 @@ public interface LCAudioThrDll extends StdCallLibrary {
     public final static int cBroadcast	= 2;	//广播
     public final static int cMulticast2	= 3;	//二类组播
 
-    public final static int SCR_TYPE_FILE = 0;			//数据来源是文件
-    public final static int SCR_TYPE_AUDIOCARD = 1;	    //数据来源是声卡
-    public final static int SCR_TYPE_BUFFER = 2;		//数据来源是内存缓存
-    public final static int SCR_TYPE_STREAM = 3;		//数据来源是数据流//V2.0.3.0
+    public final static short SCR_TYPE_FILE = 0;			//数据来源是文件
+    public final static short SCR_TYPE_AUDIOCARD = 1;	    //数据来源是声卡
+    public final static short SCR_TYPE_BUFFER = 2;		//数据来源是内存缓存
+    public final static short SCR_TYPE_STREAM = 3;		//数据来源是数据流//V2.0.3.0
 
     /*定义函数返回值*/
     public final static int R_OK = 0;		        //成功
@@ -39,12 +41,11 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
     /* Windows 消息定义 */
 //exception
-    public final static int WM_USER = 0x400;
     //public final static int WM_MSG_EXCEPTION	= (WM_USER+100)
     public final static int WM_MSG_COMPLETED  = (WM_USER+101);
     public final static int WM_MSG_PAUSE	  = (WM_USER+102);
     public final static int WM_MSG_CONTINUE	  = (WM_USER+103);
-    public final static int WM_MSG_AUDIOPOWER = (WM_USER+104);
+    public final static int WM_MSG_AUDIOPOWER = (WM_USER+104);   // sample message
     public final static int WM_MSG_SOUNDCARD  =	(WM_USER+105);
 
     //_PlayParam.CtrlByte控制字定义
@@ -98,6 +99,7 @@ public interface LCAudioThrDll extends StdCallLibrary {
     }
 
     public class _PlayParam extends Structure {
+
         public HWND hWnd; //主窗口的句柄，如果不为0，则线程有事件会向该窗口发送消息
 
         public int Priority;   //优先级
@@ -120,9 +122,9 @@ public interface LCAudioThrDll extends StdCallLibrary {
 
         public int Bass_En;		//低音增益
 
-        public int SourceType;	//输入源，0为文件，1为声卡
+        public short SourceType;	//输入源，0为文件，1为声卡
 
-        public int OptionByte;  //选项字，默认为0; bit0=1
+        public short OptionByte;  //选项字，默认为0; bit0=1
 
         public int DeviceID;		//音频输入ID号 1～N
 
@@ -131,6 +133,8 @@ public interface LCAudioThrDll extends StdCallLibrary {
         public int MaxBitrate;  //允许最大的比特率组合，如果源文件高于此比特率，将被重压缩至此比特率。
 
         public int[] Options = new int[15]; //选项
+
+//        public byte[] MuxName = new byte[64];
 
         public int nChannels;   //采样的通道 1～2 CodecType
 
@@ -145,7 +149,10 @@ public interface LCAudioThrDll extends StdCallLibrary {
         @Override
         protected List<String> getFieldOrder() {
             return Arrays.asList("hWnd", "Priority", "MultiGroup", "CastMode", "IP", "Volume", "Tone", "Treble", "Bass",
-                    "Treble_En", "Bass_En", "SourceType", "OptionByte", "DeviceID", "MaxBitrate", "Options", "nChannels",
+                    "Treble_En", "Bass_En", "SourceType", "OptionByte", "DeviceID",
+                    "MaxBitrate", "Options",
+//                    "MuxName",
+                    "nChannels",
                     "nSamplesPerSec", "AudioBufferLength", "AudioBuf", "PrivateData");
         }
 
@@ -218,7 +225,7 @@ public interface LCAudioThrDll extends StdCallLibrary {
         };
     }
 
-    public Pointer lc_play_getmem();
+    public _PlayParam.ByReference lc_play_getmem();
 
     public int lc_play_freemem(_PlayParam.ByReference pParam);
 
@@ -300,7 +307,7 @@ interface NaSetup extends StdCallLibrary {
 
     //	**********	以下是返回值宏定义
     public static final int NP_SUCCESS = 1;		//	函数操作成功，正确返回
-    public static final int NP_NET_INTERFACE_ERROR = -1;		//	网络操所错误
+    public static final int NP_NET_INTERFACE_ERROR = -1;		//	网络操作错误
     public static final int NP_DATA_ERROR     =		 -2;		//	返回不期望的数据，操作不成功
     public static final int NP_DEVICE_NOT_EXIST	=	 -3;		//	无数据返回，无法联系设备
     public static final int NP_WP_ERROR		  =		 -4;		//	参数保护，写错误
@@ -342,8 +349,6 @@ interface NaSetup extends StdCallLibrary {
     public static final int BAUD_57600BPS =	576;	//57600bps
     public static final int BAUD_115200BPS= 1152;	//115200bps
 
-
-    /** <i>native declaration : line 55</i> */
     public static class _Param extends Structure {
         public byte DeviceType; //	设备类别
 
@@ -394,9 +399,10 @@ interface NaSetup extends StdCallLibrary {
     };
 
     public static class _DeviceInfo extends Structure {
-        public byte DeviceType;                 //	设备类别
 
-        public byte[] Unuse0 = new byte[3];     //  未定义
+        public BYTE DeviceType;                 //	设备类别
+
+        public BYTE[] Unuse0 = new BYTE[3];     //  未定义
 
         public byte[] Version = new byte[32];   //	固件版本
 
@@ -404,23 +410,25 @@ interface NaSetup extends StdCallLibrary {
 
         public byte[] Mac = new byte[6];        //	设备MAC地址
 
-        public short LocalPort;                 //	设备监听端口
+        public WORD LocalPort;                 //	设备监听端口
 
-        public short[] LocalIP = new short[2];  //	设备动态IP地址
+        public WORD[] LocalIP = new WORD[2];  //	设备动态IP地址
 
-        public short[] PeerIP = new short[2];   //	服务器IP
+        public WORD[] PeerIP = new WORD[2];   //	服务器IP
 
-        public short[] NetMask = new short[2];  //  子网掩码
+        public WORD[] NetMask = new WORD[2];  //  子网掩码
 
-        public short[] GatewayIP = new short[2];//	网关地址
+        public WORD[] GatewayIP = new WORD[2];//	网关地址
 
-        public short[] Unuse1 = new short[2];   //	未定义
-        public short[] Unuse2 = new short[2];   //	未定义
+        public WORD[] Unuse1 = new WORD[2];   //	未定义
+
+        public WORD[] Unuse2 = new WORD[2];   //	未定义
+
         public byte[] Unuse3 = new byte[28];    //	未定义
 
         public byte[] DeviceTypeName = new byte[32]; //	设备类型字符串。
 
-        public short DeviceID;                  //	设备的ID号，设备的ID号，仅用于NL9080中
+        public WORD DeviceID;                  //	设备的ID号，设备的ID号，仅用于NL9080中
 
         public byte UartNumber;                 //	设备具有的串口数量
 
@@ -430,7 +438,7 @@ interface NaSetup extends StdCallLibrary {
 
         public byte[] MultiGroup2 = new byte[4];
 
-        public short[] Interface = new short[2]; //	收到数据帧的网络接口，v2.1.0.3以上版本有效
+        public WORD[] Interface = new WORD[2]; //	收到数据帧的网络接口，v2.1.0.3以上版本有效
 
         public byte[] Unuse5 = new byte[200];    //	未定义
 
@@ -449,11 +457,12 @@ interface NaSetup extends StdCallLibrary {
     };
 
     public static class _Port extends Structure {
-        public short LocalPort;  //	本地端口
 
-        public short PeerPort;   //	远端端口
+        public WORD LocalPort;  //	本地端口
 
-        public short[] PeerIp = new short[2];  //	远端ip地址
+        public WORD PeerPort;   //	远端端口
+
+        public WORD[] PeerIp = new WORD[2];  //	远端ip地址
 
         public byte Protocol;    //	网络协议类型
 
@@ -467,29 +476,31 @@ interface NaSetup extends StdCallLibrary {
 
         public byte[] Unuse2 = new byte[4];   // 未定义
 
-        public short Baud;       //	串口波特率
+        public WORD Baud;       //	串口波特率
 
-        public byte[] Unuse3 = new byte[2];   // 未定义
+        public BYTE[] Unuse3 = new BYTE[2];   // 未定义
 
-        public byte Databit;     //	串口数据位长度
+        public BYTE Databit;     //	串口数据位长度
 
-        public byte Parity;      //	串口数据位长度
+        public BYTE Parity;      //	串口数据位长度
 
-        public byte Stopbit;     //	串口数据位长度
+        public BYTE Stopbit;     //	串口数据位长度
 
-        public byte Flow_ctrl;   //	串口数据位长度
+        public BYTE Flow_ctrl;   //	串口数据位长度
 
-        public short FrameSize;  //	串口最大数据包长度
+        public WORD FrameSize;  //	串口最大数据包长度
 
-        public byte ByteInterval;//	串口最大字符间隔时间
+        public BYTE ByteInterval;//	串口最大字符间隔时间
 
-        public byte[] Unuse4 = new byte[9];   // 未定义
+        public BYTE[] Unuse4 = new BYTE[9];   // 未定义
 
         public _Port() {
             super();
         }
         protected List<String> getFieldOrder() {
-            return Arrays.asList("LocalPort", "PeerPort", "PeerIp", "Protocol", "WorkMode", "Unuse0", "KeepLive", "Unuse1", "Unuse2", "Baud", "Unuse3", "Databit", "Parity", "Stopbit", "Flow_ctrl", "FrameSize", "ByteInterval", "Unuse4");
+            return Arrays.asList("LocalPort", "PeerPort", "PeerIp", "Protocol", "WorkMode", "Unuse0",
+                    "KeepLive", "Unuse1", "Unuse2", "Baud", "Unuse3", "Databit", "Parity", "Stopbit",
+                    "Flow_ctrl", "FrameSize", "ByteInterval", "Unuse4");
         }
         public static class ByReference extends _Port implements Structure.ByReference {
 
@@ -500,22 +511,24 @@ interface NaSetup extends StdCallLibrary {
     };
 
     public static class _Device extends Structure {
-        public byte Header;                //	帧头部
 
-        public byte DeviceType;            //	设备类型
+        public Byte Header;                //	帧头部
 
-        public byte[] Mac = new byte[6];   //	设备类型
+        public BYTE DeviceType;            //	设备类型
 
-        public byte UartNumber;            //	设备总的串口数量
+        public BYTE[] Mac = new BYTE[6];   //	设备类型
 
-        public byte[] Unuse0 = new byte[3];
+        public BYTE UartNumber;            //	设备总的串口数量
 
-        public byte[] DeviceTypeName = new byte[32]; //	设备类型字符串
+        public BYTE[] Unuse0 = new BYTE[3];
 
-        public byte[] Version = new byte[32];        //	设备类型字符串
+        public BYTE[] DeviceTypeName = new BYTE[32]; //	设备类型字符串
 
-        public short Unuse1;
-        public byte[] Unuse2 = new byte[2];
+        public BYTE[] Version = new BYTE[32];        //	设备类型字符串
+
+        public WORD Unuse1;
+
+        public BYTE[] Unuse2 = new BYTE[2];
 
         public byte[] UserName = new byte[16];    //	用户名
 
@@ -523,13 +536,13 @@ interface NaSetup extends StdCallLibrary {
 
         public byte[] DeviceName = new byte[16];  //	设备名
 
-        public byte[] MultiGroup = new byte[4];   //	组号
+        public BYTE[] MultiGroup = new BYTE[4];   //	组号
 
-        public short[] LocalIP = new short[2];    //	设备IP地址
+        public WORD[] LocalIP = new WORD[2];    //	设备IP地址
 
-        public short[] NetMask = new short[2];    //	子网掩码
+        public WORD[] NetMask = new WORD[2];    //	子网掩码
 
-        public short[] GatewayIP = new short[2];  //	网关地址
+        public WORD[] GatewayIP = new WORD[2];  //	网关地址
 
         public byte DHCP;                         //	0：禁止DHCP,1:启用DHCP
 
@@ -539,9 +552,9 @@ interface NaSetup extends StdCallLibrary {
 
         public byte TalkDialInCount;              //	对讲自动接通呼叫振铃次数，等于时间秒数。
 
-        public short[] ServerIP = new short[2];   //	服务器的IP地址，音频设备会定时向服务器报告消息。
+        public WORD[] ServerIP = new WORD[2];   //	服务器的IP地址，音频设备会定时向服务器报告消息。
 
-        public short ServerPort;                  //	服务器监听端口，与ServerIP配合使用。
+        public WORD ServerPort;                  //	服务器监听端口，与ServerIP配合使用。
 
         public byte ComVolume;         //	串口设置的音量大小偏移量，
 
@@ -561,12 +574,12 @@ interface NaSetup extends StdCallLibrary {
 
         public byte Unuse5;
 
-        public short[] AssistantIp = new short[2];    //	对讲呼叫转移设备ip地址，不用呼叫转移应填0.0.0.0
+        public WORD[] AssistantIp = new WORD[2];    //	对讲呼叫转移设备ip地址，不用呼叫转移应填0.0.0.0
 
         // CustomServiceIp[0]是第一客服IP
         // CustomServiceIp[1]，CustomServiceIp[2]未用
         // CustomServiceIp[4]是时间服务器IP地址
-        public short[] CustomServiceIp = new short[((4) * (2))];
+        public WORD[] CustomServiceIp = new WORD[((4) * (2))];
 
         public _Port[] Port = new _Port[7];
 
@@ -594,11 +607,11 @@ interface NaSetup extends StdCallLibrary {
         }
         public static class ByReference extends _Device implements Structure.ByReference {
 
-        };
+        }
         public static class ByValue extends _Device implements Structure.ByValue {
 
-        };
-    };
+        }
+    }
 
     /***********************************************************************************
      函数名称：	np_search_all
