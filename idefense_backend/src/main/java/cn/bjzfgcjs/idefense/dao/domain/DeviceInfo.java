@@ -1,7 +1,6 @@
 package cn.bjzfgcjs.idefense.dao.domain;
 
 import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

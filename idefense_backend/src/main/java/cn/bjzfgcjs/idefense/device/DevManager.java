@@ -2,11 +2,8 @@ package cn.bjzfgcjs.idefense.device;
 
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
-import cn.bjzfgcjs.idefense.dao.service.DeviceStorge;
+import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.service.PubMessage;
-import org.redisson.api.RLocalCachedMap;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,7 +20,7 @@ public class DevManager {
     private PubMessage pubMessage;
 
     @Resource
-    private DeviceStorge deviceStorge;
+    private DeviceStorage deviceStorage;
 
     // deviceId : lock; TODO：是否考虑超时解除锁定？
     private static final ConcurrentHashMap<String, Boolean> devLock = new ConcurrentHashMap<>();

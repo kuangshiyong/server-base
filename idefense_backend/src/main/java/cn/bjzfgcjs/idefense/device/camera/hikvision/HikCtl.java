@@ -3,10 +3,8 @@ package cn.bjzfgcjs.idefense.device.camera.hikvision;
 import cn.bjzfgcjs.idefense.common.utils.GsonTool;
 import cn.bjzfgcjs.idefense.common.utils.MiscUtil;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
-import cn.bjzfgcjs.idefense.dao.domain.Position;
-import cn.bjzfgcjs.idefense.dao.service.DeviceStorge;
+import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.device.DevManager;
-import cn.bjzfgcjs.idefense.service.PubMessage;
 import cn.bjzfgcjs.idefense.device.PtzApi;
 import cn.bjzfgcjs.idefense.device.camera.CameraAPI;
 import com.sun.jna.NativeLong;
@@ -17,13 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -40,7 +36,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
     private static final ConcurrentHashMap<String, HikHandler> hikCache = new ConcurrentHashMap<>();
 
     @Resource
-    private DeviceStorge deviceStorge;
+    private DeviceStorage deviceStorage;
 
     @Resource
     private DevManager devManager;

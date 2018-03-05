@@ -5,6 +5,8 @@ import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 //智防机位信息表
 @Table(name = "zf_position")

@@ -5,6 +5,7 @@ import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Table(name = "zf_event")
 public class EventInfo implements Serializable {
     @Id
+    @GeneratedValue
     private Integer ID;
 
     private Integer Type;

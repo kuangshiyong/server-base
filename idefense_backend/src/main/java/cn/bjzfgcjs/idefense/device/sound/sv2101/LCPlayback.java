@@ -4,7 +4,7 @@ import cn.bjzfgcjs.idefense.common.utils.IPAddress;
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.domain.Position;
-import cn.bjzfgcjs.idefense.dao.service.DeviceStorge;
+import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.device.DevManager;
 import cn.bjzfgcjs.idefense.device.CodeTranslator;
 import cn.bjzfgcjs.idefense.device.sound.SoundAPI;
@@ -53,7 +53,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     private static final long WaitFiniTime = 100L; // 单位： ms
 
     @Resource
-    private DeviceStorge deviceStorge;
+    private DeviceStorage deviceStorage;
 
     @Resource
     private DevManager devManager;
@@ -183,7 +183,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     }
 
     private void initParamGroup(DeviceInfo deviceInfo, LCAudioThrDll._PlayParam.ByReference playParam) {
-        Position position = deviceStorge.getPosByPostionCode(deviceInfo.getPosition());
+        Position position = deviceStorage.getPosByPostionCode(deviceInfo.getPosition());
         if (position == null || position.getGroupNo() == 0) { // 单播
             playParam.MultiGroup = 0;
             playParam.CastMode = LC_AUDIO_THR_DLL.cUnicast;
@@ -221,7 +221,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     }
 
     private void initResource(){
-        List<DeviceInfo> deviceInfos = deviceStorge.getDeviceListByType(
+        List<DeviceInfo> deviceInfos = deviceStorage.getDeviceListByType(
                 Integer.valueOf(DeviceInfo.Type.Acoustic.ordinal()).byteValue());
 
         for(DeviceInfo obj : deviceInfos) {

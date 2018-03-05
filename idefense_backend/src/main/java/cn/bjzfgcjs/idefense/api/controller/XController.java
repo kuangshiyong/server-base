@@ -7,7 +7,7 @@ import cn.bjzfgcjs.idefense.core.web.HWebLogBean;
 import cn.bjzfgcjs.idefense.core.web.WebResponse;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.mapper.DeviceInfoMapper;
-import cn.bjzfgcjs.idefense.dao.service.DeviceStorge;
+import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback;
 import cn.bjzfgcjs.idefense.service.PubMessage;
 import org.redisson.api.RedissonClient;
@@ -36,7 +36,7 @@ public class XController {
     private LCPlayback lcPlayback;
 
     @Resource
-    private DeviceStorge deviceStorge;
+    private DeviceStorage deviceStorage;
 
 
     @GetMapping(value = "/test/ttm", produces = "application/json; charset=UTF-8")
@@ -49,7 +49,7 @@ public class XController {
 
     @GetMapping(value = "/test/audio/play", produces = "application/json; charset=UTF-8")
     public Object testAudio(@RequestBody Audio audio)throws Exception {
-        DeviceInfo deviceInfo = deviceStorge.getDeviceByPosType(audio.getPosition(), audio.getType());
+        DeviceInfo deviceInfo = deviceStorage.getDeviceByPosType(audio.getPosition(), audio.getType());
         HWebLogBean.addProp("device", GsonTool.toJson(deviceInfo));
 
         int ret = lcPlayback.checkStatus(deviceInfo);
