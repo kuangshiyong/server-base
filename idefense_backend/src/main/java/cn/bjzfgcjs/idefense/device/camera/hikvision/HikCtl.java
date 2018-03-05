@@ -283,8 +283,16 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         }
     }
 
+    private void releaseResource() {
+        for (String deviceId : hikCache.keySet()) {
+            HikHandler hikHandler = hikCache.get(deviceId);
+            hCNetSDK.NET_DVR_Logout(hikHandler.getUserId());
+        }
+    }
+
     @Override
     public void destroy() throws Exception {
+        releaseResource();
         hCNetSDK.NET_DVR_Cleanup();
     }
 
@@ -302,4 +310,3 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         }
     }
 }
-
