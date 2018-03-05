@@ -173,8 +173,13 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
      */
     @Override
     public boolean hasPTZ(DeviceInfo obj) {
-        HikHandler handler = getHikHandler(obj);
-        return handler != null && handler.isHasPTZ();
+        return true;
+//        HikHandler handler = getHikHandler(obj);
+//        if (handler == null) {
+//            logger.info("初始化是失败的");
+//        }
+//        return handler != null;
+////        && handler.isHasPTZ();
     }
 
     public Boolean ptzCtl(DeviceInfo deviceInfo, int command, int speed, int start) {
@@ -183,6 +188,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
             return hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(handler.getUserId(),
                     handler.getChannel(), command, start, speed);
         } else {
+            logger.info("handler is null");
             return false;
         }
     }
@@ -204,10 +210,10 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         logger.info("PTZ参数设置情况：{}", ptzDecoder);
 
         // Peco D 协议配置
-        ptzDecoder.dwBaudRate = 10;
+        ptzDecoder.dwBaudRate = 9;
         ptzDecoder.byParity = 0;
-        ptzDecoder.byDataBit = 8;
-        ptzDecoder.byStopBit = 1;
+        ptzDecoder.byDataBit = 3;
+        ptzDecoder.byStopBit = 0;
         ptzDecoder.byFlowcontrol = 0;
         ptzDecoder.wDecoderType = 7;
 //        ptzDecoder.wDecoderAddress = 1;

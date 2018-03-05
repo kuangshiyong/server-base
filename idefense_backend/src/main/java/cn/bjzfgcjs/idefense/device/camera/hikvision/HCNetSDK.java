@@ -882,7 +882,7 @@ public interface HCNetSDK extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("sIpV4", "byIPv6");
+            return Arrays.asList("sIpV4", "byRes");
         }
     }
 
@@ -1764,7 +1764,8 @@ public interface HCNetSDK extends StdCallLibrary {
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("dwEnable", "sUserName", "sPassword", "struIP", "wDVRPort", "byRes");
+            return Arrays.asList("dwEnable", "sUserName", "sPassword",
+                    "struIP", "wDVRPort", "byres");
         }
     }
 
