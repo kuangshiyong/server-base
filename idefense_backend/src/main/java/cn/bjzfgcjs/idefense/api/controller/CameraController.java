@@ -1,6 +1,7 @@
 package cn.bjzfgcjs.idefense.api.controller;
 
 import cn.bjzfgcjs.idefense.api.bean.DeviceReq;
+import cn.bjzfgcjs.idefense.common.utils.GsonTool;
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.core.web.WebResponse;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
@@ -102,9 +103,12 @@ public class CameraController {
     @PostMapping(value = "/ptz/run", produces = "application/json; charset=UTF-8")
     public Object runPtzCmd(@RequestBody PtzCmdBean ptzCmdBean) throws Exception {
 
-        DeviceInfo deviceInfo = deviceStorage.getDeviceById(ptzCmdBean.getId());
+        DeviceInfo deviceInfo = deviceStorage.getDeviceByPosType(
+                ptzCmdBean.getPos(), DeviceInfo.Type.CCD);
+
 
         if (hikCtl.hasPTZ(deviceInfo)) {
+            logger.info("服务设备：{}", GsonTool.toJson(deviceInfo));
             PTZCode code = Enum.valueOf(PTZCode.class, ptzCmdBean.getCmd());
             hikCtl.ptzCtl(deviceInfo, code.getKey(), ptzCmdBean.getSpeed(), ptzCmdBean.getStart());
         }

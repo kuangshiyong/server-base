@@ -2,7 +2,7 @@ package cn.bjzfgcjs.idefense.device.bean;
 
 public class PtzCmdBean {
 
-    String id;
+    Integer  pos;
 
     String cmd;
 
@@ -10,12 +10,12 @@ public class PtzCmdBean {
 
     Integer start;
 
-    public String getId() {
-        return id;
+    public Integer getPos() {
+        return pos;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPos(Integer pos) {
+        this.pos = pos;
     }
 
     public String getCmd() {

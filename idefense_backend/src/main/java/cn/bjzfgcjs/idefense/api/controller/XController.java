@@ -47,7 +47,7 @@ public class XController {
         return WebResponse.write("", AppCode.OK);
     }
 
-    @GetMapping(value = "/test/audio/play", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/test/audio/play", produces = "application/json; charset=UTF-8")
     public Object testAudio(@RequestBody Audio audio)throws Exception {
         DeviceInfo deviceInfo = deviceStorage.getDeviceByPosType(
                 audio.getPosition(),
