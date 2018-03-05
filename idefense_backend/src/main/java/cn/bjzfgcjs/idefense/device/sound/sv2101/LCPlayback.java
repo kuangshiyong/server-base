@@ -139,7 +139,6 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
             return AppCode.DEV_OK.getCode();
         } else {
             // TODO: 加入库，及上报调用。
-
             return configCode(res);
         }
     }

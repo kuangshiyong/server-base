@@ -49,11 +49,13 @@ public class XController {
 
     @GetMapping(value = "/test/audio/play", produces = "application/json; charset=UTF-8")
     public Object testAudio(@RequestBody Audio audio)throws Exception {
-        DeviceInfo deviceInfo = deviceStorage.getDeviceByPosType(audio.getPosition(), audio.getType());
+        DeviceInfo deviceInfo = deviceStorage.getDeviceByPosType(
+                audio.getPosition(),
+                DeviceInfo.Type.Acoustic);
         HWebLogBean.addProp("device", GsonTool.toJson(deviceInfo));
 
         int ret = lcPlayback.checkStatus(deviceInfo);
-        if (ret != AppCode.OK.getCode())
+        if (ret != AppCode.DEV_OK.getCode())
             return WebResponse.write("device unreachable", AppCode.lookup(ret));
 
         if (audio.getPlay()) {

@@ -8,9 +8,6 @@ public class Audio {
     @Min(1)
     private Integer position;
 
-    @NotNull
-    private Byte type;
-
     private String file;
 
     private Boolean play;
@@ -27,14 +24,6 @@ public class Audio {
 
     public void setPosition(Integer position) {
         this.position = position;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
     }
 
     public String getFile() {
