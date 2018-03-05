@@ -2,17 +2,14 @@ package cn.bjzfgcjs.idefense.dao.domain;
 
 import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 // 安防系统信息
 @Table(name = "zf_sysinfo")
 public class SysInfo implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long ID;
 

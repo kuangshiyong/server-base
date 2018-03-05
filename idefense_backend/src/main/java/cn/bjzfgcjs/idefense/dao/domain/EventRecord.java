@@ -1,9 +1,6 @@
 package cn.bjzfgcjs.idefense.dao.domain;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 //智防监控事件日志表
@@ -11,7 +8,7 @@ import java.io.Serializable;
 public class EventRecord implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long ID;
 

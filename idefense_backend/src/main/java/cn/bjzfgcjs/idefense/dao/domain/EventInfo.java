@@ -4,17 +4,14 @@ package cn.bjzfgcjs.idefense.dao.domain;
 import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 //智防监控事件信息表
 @Table(name = "zf_event")
 public class EventInfo implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
 
     private Integer Type;
