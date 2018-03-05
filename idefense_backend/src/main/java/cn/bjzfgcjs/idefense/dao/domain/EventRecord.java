@@ -1,6 +1,7 @@
 package cn.bjzfgcjs.idefense.dao.domain;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 public class EventRecord implements Serializable {
 
     @Id
+    @GeneratedValue
     @Column(name = "ID")
     private Long ID;
 

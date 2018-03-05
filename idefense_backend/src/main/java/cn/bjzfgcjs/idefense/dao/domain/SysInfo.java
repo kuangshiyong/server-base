@@ -3,6 +3,7 @@ package cn.bjzfgcjs.idefense.dao.domain;
 import cn.bjzfgcjs.idefense.common.annotation.JsonSkipTag;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -11,10 +12,13 @@ import java.io.Serializable;
 @Table(name = "zf_sysinfo")
 public class SysInfo implements Serializable {
     @Id
+    @GeneratedValue
     @Column(name = "ID")
-    private String ID;
+    private Long ID;
 
-    //add colum, 2018-2-25 wuchao
+    @Column(name = "SessionID")
+    private String SessionID;
+
     private Short Operation;
 
     private Integer Deploy;
@@ -34,7 +38,7 @@ public class SysInfo implements Serializable {
     private String GPS;
 
     @Column(name = "SonudDir")
-    private String SonudDir;
+    private String SoundDir;
 
     @Column(name = "LogDir")
     private String LogDir;
@@ -62,12 +66,28 @@ public class SysInfo implements Serializable {
     @JsonSkipTag
     private Long utime;
 
-    public String getID() {
+    public Long getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public String getSessionID() {
+        return SessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        SessionID = sessionID;
+    }
+
+    public String getSoundDir() {
+        return SoundDir;
+    }
+
+    public void setSoundDir(String soundDir) {
+        SoundDir = soundDir;
     }
 
     public Short getOperation() {
@@ -132,14 +152,6 @@ public class SysInfo implements Serializable {
 
     public void setGPS(String GPS) {
         this.GPS = GPS;
-    }
-
-    public String getSonudDir() {
-        return SonudDir;
-    }
-
-    public void setSonudDir(String sonudDir) {
-        SonudDir = sonudDir;
     }
 
     public String getLogDir() {
