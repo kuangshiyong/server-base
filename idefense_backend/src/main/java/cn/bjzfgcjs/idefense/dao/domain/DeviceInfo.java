@@ -158,13 +158,12 @@ public class DeviceInfo implements Serializable {
         this.utime = utime;
     }
 
-    public enum Type{
-        NULL,      // 未知
-        CCD,       // CCD
-        IR,        // 热成像
-        Terrence,  // 云台
-        Acoustic,  // 声学
-        Radar;     // 雷达
+    public interface Type {
+        public static final byte CCD = 1;
+        public static final byte IR  = 2;
+        public static final byte Terrence = 3;
+        public static final byte Acoustic = 4;
+        public static final byte Radar = 5;
     }
 }
 

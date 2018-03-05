@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -101,8 +102,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         try {
             HikHandler handler = hikCache.get(obj.getID());
             if (handler == null) {
-                handler = login(obj.getID(), obj.getIPAddress(), obj.getIPPort(),
-                        obj.getUserName(), obj.getPassWord());
+                handler = login(obj);
             }
             return handler;
 
@@ -124,15 +124,15 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
      * channel: ch{1-32}
      * subtype： main, sub
      *
-     * @param deviceInfo
+     * @param obj
      * @return  "rtsp://${username}:${passwd}@${ip}:554/${codec}/${channel}/${subtype}/av_stream";
      */
     @Override
-    public String getRtspUrl(DeviceInfo deviceInfo) {
+    public String getRtspUrl(DeviceInfo obj) {
         Map<String, String> paramsMap = new HashMap<String, String>();
-        paramsMap.put("username", deviceInfo.getUserName());
-        paramsMap.put("passwd", deviceInfo.getPassWord());
-        paramsMap.put("ip", deviceInfo.getIPAddress());
+        paramsMap.put("username", obj.getUserName());
+        paramsMap.put("passwd", obj.getPassWord());
+        paramsMap.put("ip", obj.getIPAddress());
         paramsMap.put("codec", "h264");
         paramsMap.put("channel", "ch1");
         paramsMap.put("subtype", "main");
@@ -177,8 +177,6 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         return handler != null && handler.isHasPTZ();
     }
 
-    // rtsp://<username>:<password>@<address>:<port>/Streaming/Channels/<id>/
-    // id: channel + 01（主码流））
     public Boolean ptzCtl(DeviceInfo deviceInfo, int command, int speed, int start) {
         HikHandler handler = getHikHandler(deviceInfo);
         if (handler != null) {
@@ -203,6 +201,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_DECODERCFG_V30,
                 handler.getChannel(), ptzDecoder.getPointer(), ptzDecoder.size(), new IntByReference(0));
         ptzDecoder.read();
+        logger.info("PTZ参数设置情况：{}", ptzDecoder);
 
         // Peco D 协议配置
         ptzDecoder.dwBaudRate = 10;
@@ -212,33 +211,24 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         ptzDecoder.byFlowcontrol = 0;
         ptzDecoder.wDecoderType = 7;
 //        ptzDecoder.wDecoderAddress = 1;
-        logger.info("PTZ参数设置情况：{}", ptzDecoder);
 
         hCNetSDK.NET_DVR_SetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_DECODERCFG_V30,
                 handler.getChannel(), ptzDecoder.getPointer(), ptzDecoder.size());
-
     }
 
-
     /**  登录获取海康的操作资源，缓存于hikCache
-     * @param deviceId
-     * @param ip
-     * @param port
-     * @param username
-     * @param password
-     * @return
-     * @throws Exception
      */
-    private HikHandler login(String deviceId, String ip, Integer port, String username, String password) throws Exception {
+    private HikHandler login(DeviceInfo obj) throws Exception {
         /*****   用户句柄 *****/
         HCNetSDK.NET_DVR_DEVICEINFO_V30 deviceInfoV30 = new HCNetSDK.NET_DVR_DEVICEINFO_V30();
-        NativeLong lUserID = hCNetSDK.NET_DVR_Login_V30(ip, port, username, password, deviceInfoV30);
+        NativeLong lUserID = hCNetSDK.NET_DVR_Login_V30(obj.getIPAddress(),
+                obj.getIPPort(), obj.getUserName(), obj.getPassWord(), deviceInfoV30);
         if(lUserID.longValue() < 0){
-            logger.error("failed to login: {}, errorCode: {}", deviceId, hCNetSDK.NET_DVR_GetLastError());
-            throw new Exception("login error, check your username and password");
+            throw new Exception("login: " + obj.getID() + " error, check your username and password, "
+                    + hCNetSDK.NET_DVR_GetLastError());
         }
         // 查下设备的序列号
-        logger.info("device:{}, serialNo:{}", deviceId, deviceInfoV30.sSerialNumber);
+        logger.info("device:{}, serialNo:{}", obj.getID(), deviceInfoV30.sSerialNumber);
 
         /********** 获取 IPC 通道号  *********/
         IntByReference ibrBytesReturned = new IntByReference(0);
@@ -257,11 +247,10 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
             if(deviceInfoV30.byChanNum > 0) { // 设备为IPC
                 chan = deviceInfoV30.byStartChan;
             } else {
-                logger.error("failed to get channel: {}", deviceId);
-                throw new Exception("didn't get the channel for ");
+                throw new Exception("fail to get the channel of " + obj.getID());
             }
         } else { // 设备支持IP通道
-            logger.info("device support ip channel");
+            logger.info("device:{} support ip channel", obj.getID());
         }
         NativeLong lChannel = new NativeLong(chan);
 
@@ -271,12 +260,28 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         hikHandler.setChannel(lChannel);
         // 获取设备预览句柄
 //        NativeLong lRealHandle = play(chan);
-        hikCache.put(deviceId, hikHandler);
+        hikCache.put(obj.getID(), hikHandler);
 
         return hikHandler;
     }
 
+    /** 初始化 摄像机及其控制PTZ的参数
+     * @param type
+     */
+    private void initResouce(Byte type) { // CCD or IR
+        try {
+            List<DeviceInfo> deviceInfoList = deviceStorage.getDeviceListByType(type);
+            if (deviceInfoList == null) return;
 
+            for (DeviceInfo obj : deviceInfoList) {
+                login(obj);
+                initPtz(obj);
+            }
+        } catch (Exception e) {
+            logger.error("loading cameras failed: {}", e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void destroy() throws Exception {
@@ -292,11 +297,9 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
             hCNetSDK.NET_DVR_SetConnectTime(2000, 1);
             hCNetSDK.NET_DVR_SetReconnect(10000, true);
             // TODO: 启动即登录相机， 并确认机位PTZ情况，保存到缓存里去
-//
-//            Position position = deviceStorge.getPosByPostionCode(deviceInfo.getPosition());
-//            return (position.getHasPTZ() > 0);
+            initResouce(DeviceInfo.Type.CCD);
+            initResouce(DeviceInfo.Type.IR);
         }
     }
-
 }
 

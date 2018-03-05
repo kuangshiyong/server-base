@@ -221,8 +221,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     }
 
     private void initResource(){
-        List<DeviceInfo> deviceInfos = deviceStorage.getDeviceListByType(
-                Integer.valueOf(DeviceInfo.Type.Acoustic.ordinal()).byteValue());
+        List<DeviceInfo> deviceInfos = deviceStorage.getDeviceListByType(DeviceInfo.Type.Acoustic);
 
         for(DeviceInfo obj : deviceInfos) {
             lckCache.put(obj.getID(), new LCHandler());

@@ -24,10 +24,10 @@ public class PubMessage implements InitializingBean {
 
     public RTopic<String> devStatus() {return client.getTopic("dev:status");}
 
-    // 使用之前定义的表“智防监控事件日志表” 的字段来报告
-    public RTopic<String> defenseEvent() {return client.getTopic("radar:ttm");}
+    // 使用之前定义的表“智防监控事件日志表” 的字段来报告, 报告来犯者由那些机位负责
+    public RTopic<String> warnTtmEvent() {return client.getTopic("warn:ttm");}
 
-    public RTopic<String> cameraEvent() {return client.getTopic("warn:camera");}
+    public RTopic<String> warnVideoEvent() {return client.getTopic("warn:camera");}
 
 
     /*****************************  通知订阅消息发布 ***************************************/

@@ -30,7 +30,7 @@ public class DeviceStorage {
     private SysInfoMapper sysInfoMapper;
 
 
-    /////////////////////  设备详情 (DeviceInfo)  ////////////////////////
+    /************************  设备详情 (DeviceInfo) ***************************/
 
     public DeviceInfo getDeviceById(String deviceId) {
         return deviceInfoMapper.selectByPrimaryKey(deviceId);
@@ -57,7 +57,7 @@ public class DeviceStorage {
         return deviceInfoMapper.select(obj);
     }
 
-    ///////////////////// 机位详情 (Position) ///////////////////////////
+    /************************ 机位详情 (Position) ***************************/
 
     public Position getPosByPostionCode(Integer positionCode) {
         Position position = new Position();
@@ -79,7 +79,7 @@ public class DeviceStorage {
         return positionMapper.delete(position);
     }
 
-    /////////////////////// 系统信息 (SysInfo) ///////////////////////
+    /************************ 系统信息 (SysInfo) ***************************/
 
     // 当前系统信息
     public SysInfo getCurSysInfo() {
