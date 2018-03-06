@@ -2,6 +2,7 @@ package cn.bjzfgcjs.idefense.device.camera.hikvision;
 
 import cn.bjzfgcjs.idefense.common.utils.GsonTool;
 import cn.bjzfgcjs.idefense.common.utils.MiscUtil;
+import cn.bjzfgcjs.idefense.common.utils.Now;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.device.DevManager;
@@ -10,6 +11,7 @@ import cn.bjzfgcjs.idefense.device.camera.CameraAPI;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
+import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +56,9 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
 
         NativeLong lListenHandle;  //报警监听句柄
 
-        boolean hasPTZ;
+        Boolean hasPTZ = false;
+
+        Integer status = -1;  // 设备状态：0-正常，1-CPU>85%，2-硬件错误，-1-连接错误
 
         public NativeLong getUserId() {
             return userId;
@@ -87,12 +92,20 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
             this.lListenHandle = lListenHandle;
         }
 
-        public boolean isHasPTZ() {
+        public Boolean getHasPTZ() {
             return hasPTZ;
         }
 
-        public void setHasPTZ(boolean hasPTZ) {
+        public void setHasPTZ(Boolean hasPTZ) {
             this.hasPTZ = hasPTZ;
+        }
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public void setStatus(Integer status) {
+            this.status = status;
         }
     }
 
@@ -150,10 +163,16 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         HCNetSDK.NET_DVR_JPEGPARA jpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
         jpegPara.wPicQuality = 0;
         jpegPara.wPicSize = 1;
-        // TODO: 读取存储路径，
-        // 截图文件命名规则：filename: 日期_UUID.jpeg
-        String filename = "d:/" + MiscUtil.getUUID() + ".jpeg";
-        hCNetSDK.NET_DVR_CaptureJPEGPicture(handler.getUserId(), handler.getChannel(), jpegPara,filename);
+        // 截图文件命名规则 - filename: {yyyyMMdd}_{device id}_{uuid}.jpeg
+        String filename = ("d:/").
+                concat(Now.getSdf4().format(new Date(Now.getMillis()))).concat("_").
+                concat(obj.getID()).concat("_").
+                concat(MiscUtil.getUUID()).concat(".jpeg");
+        if(!hCNetSDK.NET_DVR_CaptureJPEGPicture(handler.getUserId(), handler.getChannel(), jpegPara,filename)) {
+            int errorno = hCNetSDK.NET_DVR_GetLastError();
+            logger.error("snapshot failed: {}, errno ", filename, errorno);
+            return null;
+        }
         return filename;
     }
 
@@ -192,6 +211,8 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         }
     }
 
+
+
     @Override
     public int ptzManage() {
         return 0;
@@ -225,6 +246,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
     /**  登录获取海康的操作资源，缓存于hikCache
      */
     private HikHandler login(DeviceInfo obj) throws Exception {
+
         /*****   用户句柄 *****/
         HCNetSDK.NET_DVR_DEVICEINFO_V30 deviceInfoV30 = new HCNetSDK.NET_DVR_DEVICEINFO_V30();
         NativeLong lUserID = hCNetSDK.NET_DVR_Login_V30(obj.getIPAddress(),
@@ -260,14 +282,13 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         }
         NativeLong lChannel = new NativeLong(chan);
 
-        // 缓存用户句柄及通道
         HikHandler hikHandler = new HikHandler();
         hikHandler.setUserId(lUserID);
+        hikHandler.setStatus(0);
         hikHandler.setChannel(lChannel);
+        hikCache.put(obj.getID(), hikHandler);
         // 获取设备预览句柄
 //        NativeLong lRealHandle = play(chan);
-        hikCache.put(obj.getID(), hikHandler);
-
         return hikHandler;
     }
 

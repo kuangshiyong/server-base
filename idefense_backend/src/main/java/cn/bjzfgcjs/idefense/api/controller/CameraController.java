@@ -9,6 +9,7 @@ import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.device.bean.PtzCmdBean;
 import cn.bjzfgcjs.idefense.device.camera.hikvision.HikCtl;
 import cn.bjzfgcjs.idefense.device.camera.hikvision.PTZCode;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -57,9 +58,12 @@ public class CameraController {
         if (obj == null) {
             WebResponse.write("", AppCode.OBJECT_NOTEXIST);
         }
-
-        // TODO: 执行截图
-        return WebResponse.write("");
+        String snapFile = hikCtl.getSnapshot(obj);
+        if (StringUtils.isBlank(snapFile)) {
+            return WebResponse.write("", AppCode.OBJECT_NOTEXIST);
+        } else {
+            return WebResponse.write(snapFile);
+        }
     }
 
     // 布防警戒

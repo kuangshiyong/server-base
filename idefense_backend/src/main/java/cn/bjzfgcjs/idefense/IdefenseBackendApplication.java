@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
@@ -25,6 +26,7 @@ import java.util.List;
 //@EnableAsync
 @EnableScheduling
 @EnableRetry
+@EnableCaching
 @MapperScan("cn.bjzfgcjs.idefense.dao.mapper")
 @SpringBootApplication(scanBasePackages = "cn.bjzfgcjs.idefense", exclude = {JacksonAutoConfiguration.class})
 public class IdefenseBackendApplication extends WebMvcConfigurationSupport {

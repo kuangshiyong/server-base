@@ -1,6 +1,7 @@
 package cn.bjzfgcjs.idefense.api.controller;
 
 import cn.bjzfgcjs.idefense.common.utils.MiscUtil;
+import cn.bjzfgcjs.idefense.common.utils.Now;
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.core.web.WebResponse;
 import cn.bjzfgcjs.idefense.dao.DeviceStorage;
@@ -54,8 +55,9 @@ public class InfoController {
         }
 
         // 要系统填的参数
-        obj.setUtime(MiscUtil.getNow());
-        obj.setCtime(MiscUtil.getNow());
+        Long now = Now.getMillis();
+        obj.setUtime(now);
+        obj.setCtime(now);
         obj.setSessionID(deviceStorge.getSysSessionId());
 
         if (deviceStorge.addSysInfo(obj) > 0) {
@@ -83,7 +85,7 @@ public class InfoController {
             return WebResponse.write("", AppCode.BAD_REQUEST);
         }
 
-        obj.setUtime(MiscUtil.getNow());
+        obj.setUtime(Now.getMillis());
         obj.setSessionID(deviceStorge.getSysSessionId());
 
         if (deviceStorge.updateSysInfo(obj) > 0) {
@@ -115,7 +117,7 @@ public class InfoController {
             return WebResponse.write("", AppCode.BAD_REQUEST);
         }
 
-        Long now = MiscUtil.getNow();
+        Long now = Now.getMillis();
         obj.setCtime(now);
         obj.setUtime(now);
         if (deviceStorge.addPosition(obj) > 0) {
@@ -131,7 +133,7 @@ public class InfoController {
             return WebResponse.write("", AppCode.BAD_REQUEST);
         }
 
-        obj.setUtime(MiscUtil.getNow());
+        obj.setUtime(Now.getMillis());
         if (deviceStorge.updatePosition(obj) > 0) {
             return WebResponse.write(obj);
         } else {
@@ -174,7 +176,7 @@ public class InfoController {
         }
 
         obj.setID(MiscUtil.getID());
-        Long now = MiscUtil.getNow();
+        Long now = Now.getMillis();
         obj.setCtime(now);
         obj.setUtime(now);
         if (deviceStorge.addDevice(obj) > 0) {
@@ -191,7 +193,7 @@ public class InfoController {
             return WebResponse.write("", AppCode.BAD_REQUEST);
         }
 
-        obj.setUtime(MiscUtil.getNow());
+        obj.setUtime(Now.getMillis());
         if (deviceStorge.updateDevice(obj) > 0) {
             return WebResponse.write(obj);
         } else {

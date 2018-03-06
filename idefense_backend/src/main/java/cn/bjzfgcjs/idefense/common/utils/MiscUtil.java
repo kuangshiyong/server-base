@@ -15,6 +15,4 @@ public class MiscUtil {
     public static void sleep(Long ms) {
         try { Thread.sleep(ms); } catch (Exception e){e.printStackTrace();}
     }
-
-    public static Long getNow() { return System.currentTimeMillis();}
 }
