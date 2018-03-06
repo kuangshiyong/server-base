@@ -8,6 +8,7 @@ import cn.bjzfgcjs.idefense.dao.mapper.DeviceInfoMapper;
 import cn.bjzfgcjs.idefense.dao.mapper.PositionMapper;
 import cn.bjzfgcjs.idefense.dao.mapper.SysInfoMapper;
 import javafx.geometry.Pos;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import tk.mybatis.mapper.entity.Condition;
@@ -89,6 +90,7 @@ public class DeviceStorage {
     }
 
     // 系统信息更新的历史记录
+    @Cacheable
     public List<SysInfo> getSysInfoLog() {
         return sysInfoMapper.selectAll();
     }
@@ -111,5 +113,11 @@ public class DeviceStorage {
     // 新增记录
     public int addSysInfo(SysInfo obj) {
         return sysInfoMapper.insertUseGeneratedKeys(obj);
+    }
+
+    /*********************** 业务查询 *************************/
+    public boolean hasPtz(DeviceInfo obj) {
+        Position position = getPosByPostionCode(obj.getPosition());
+        return position.getHasPTZ() > 0;
     }
 }
