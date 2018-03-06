@@ -152,7 +152,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         jpegPara.wPicSize = 1;
         // TODO: 读取存储路径，
         // 截图文件命名规则：filename: 日期_UUID.jpeg
-        String filename = MiscUtil.getUUID() + ".jpeg";
+        String filename = "d:/" + MiscUtil.getUUID() + ".jpeg";
         hCNetSDK.NET_DVR_CaptureJPEGPicture(handler.getUserId(), handler.getChannel(), jpegPara,filename);
         return filename;
     }
@@ -173,13 +173,12 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
      */
     @Override
     public boolean hasPTZ(DeviceInfo obj) {
-        return true;
-//        HikHandler handler = getHikHandler(obj);
-//        if (handler == null) {
-//            logger.info("初始化是失败的");
-//        }
-//        return handler != null;
-////        && handler.isHasPTZ();
+        HikHandler handler = getHikHandler(obj);
+        if (handler == null) {
+            logger.info("初始化是失败的");
+        }
+        return handler != null;
+//        && handler.isHasPTZ();
     }
 
     public Boolean ptzCtl(DeviceInfo deviceInfo, int command, int speed, int start) {
@@ -200,6 +199,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
 
     private void initPtz(DeviceInfo obj) {
         HikHandler handler = getHikHandler(obj);
+        handler.setHasPTZ(true);
 
         HCNetSDK.NET_DVR_DECODERCFG_V30 ptzDecoder = new HCNetSDK.NET_DVR_DECODERCFG_V30();
         ptzDecoder.write();
@@ -281,7 +281,10 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
 
             for (DeviceInfo obj : deviceInfoList) {
                 login(obj);
-                initPtz(obj);
+                if (deviceStorage.hasPtz(obj)) {
+                    logger.info("devive:{} has ptz", obj.getID());
+                    initPtz(obj);
+                }
             }
         } catch (Exception e) {
             logger.error("loading cameras failed: {}", e.getMessage());
