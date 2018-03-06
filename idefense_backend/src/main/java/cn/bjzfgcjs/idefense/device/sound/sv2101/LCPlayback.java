@@ -72,6 +72,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     // 保存所有音频卡的操作资源
     public static class LCHandler {
         private LCAudioThrDll._PlayParam.ByReference playParam;
+        private boolean play;
 
         public LCHandler() {
             playParam = new LCAudioThrDll._PlayParam.ByReference();
@@ -84,10 +85,19 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
             playParam.OptionByte = 0;
             playParam.MaxBitrate = 0;
             playParam.Options[0] = 0;
+            play = true;
         }
 
         public LCAudioThrDll._PlayParam.ByReference getPlayParam() {
             return playParam;
+        }
+
+        public boolean isPlay() {
+            return play;
+        }
+
+        public void setPlay(boolean play) {
+            this.play = play;
         }
     }
 
@@ -113,7 +123,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
             public void run() {
                 try {
                     int count = StringUtils.isBlank(audioFile) ? 1 : loop;
-                    while (count-- > 0 || loop == SoundAPI.ALWAYS) {
+                    while (count-- > 0 || loop == SoundAPI.ALWAYS && lcHandler.isPlay()) {
                         anounce(deviceInfo, audioFile, volume);
                         if (LC_AUDIO_THR_DLL.lc_wait(lcHandler.getPlayParam()) == LCAudioThrDll.R_OK) {
                             continue;
@@ -147,6 +157,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     public int stop(DeviceInfo deviceInfo) {
         LCHandler lcHandler = getLcHandler(deviceInfo);
         devManager.release(deviceInfo);
+        lcHandler.setPlay(false);
 
         return operateCode(LC_AUDIO_THR_DLL.lc_stop(lcHandler.getPlayParam()));
     }
