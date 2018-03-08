@@ -1,5 +1,7 @@
-package cn.bjzfgcjs.idefense.device.sound.sv2101;
+package cn.bjzfgcjs.idefense.common.utils;
 
+import cn.bjzfgcjs.idefense.device.sound.sv2101.LCAudioThrDll;
+import cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
@@ -14,10 +16,12 @@ import javax.annotation.Resource;
 
 import static com.sun.jna.Native.getLastError;
 
-@Service
-public class PlaybackMsgWnd {
+// 创建Windows下隐形窗口，解决需要窗口数据的场景
 
-    private static final Logger logger = LoggerFactory.getLogger(PlaybackMsgWnd.class);
+@Service
+public class JnaMsgWnd {
+
+    private static final Logger logger = LoggerFactory.getLogger(JnaMsgWnd.class);
 
     private static Throwable exceptionInCreatedThread;
 

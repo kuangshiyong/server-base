@@ -12,6 +12,7 @@ import cn.bjzfgcjs.idefense.device.camera.hikvision.PTZCode;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,6 +27,10 @@ public class CameraController {
 
     @Resource
     private DeviceStorage deviceStorage;
+
+    @Resource
+    private TaskExecutor taskExecutor;
+
 
     // 实时视频
     @PostMapping(value = "/camera/realtime", produces = "application/json; charset=UTF-8")
@@ -109,7 +114,6 @@ public class CameraController {
 
         DeviceInfo deviceInfo = deviceStorage.getDeviceByPosType(
                 ptzCmdBean.getPos(), DeviceInfo.Type.CCD);
-
 
         if (hikCtl.hasPTZ(deviceInfo)) {
             logger.info("服务设备：{}", GsonTool.toJson(deviceInfo));

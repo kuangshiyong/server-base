@@ -24,9 +24,6 @@ public class InfoController {
     @Resource
     private DeviceStorage deviceStorge;
 
-    @Resource
-    private TacticsStorage tacticsStorage;
-
 
     /************************** 系统信息 *************************/
 

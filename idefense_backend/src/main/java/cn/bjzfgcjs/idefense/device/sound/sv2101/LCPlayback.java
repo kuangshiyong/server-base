@@ -1,6 +1,7 @@
 package cn.bjzfgcjs.idefense.device.sound.sv2101;
 
 import cn.bjzfgcjs.idefense.common.utils.IPAddress;
+import cn.bjzfgcjs.idefense.common.utils.MiscUtil;
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.domain.Position;
@@ -72,7 +73,7 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
     // 保存所有音频卡的操作资源
     public static class LCHandler {
         private LCAudioThrDll._PlayParam.ByReference playParam;
-        private boolean play;
+        private boolean play;   // 正在播放
 
         public LCHandler() {
             playParam = new LCAudioThrDll._PlayParam.ByReference();
@@ -109,34 +110,23 @@ public class LCPlayback implements CodeTranslator, SoundAPI, InitializingBean, D
      * @throws Exception
      */
     @Override
-    public int playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, final int loop) {
-        if (devManager.canUse(deviceInfo))
-            devManager.acqurire(deviceInfo);
-        else
-            return AppCode.DEV_BUSY.getCode();
-
+    public void playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, int loop, int interval) {
         LCHandler lcHandler = lckCache.get(deviceInfo.getID());
 
         logger.info("播放的文件：{}", audioFile);
-        taskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int count = StringUtils.isBlank(audioFile) ? 1 : loop;
-                    while (count-- > 0 || loop == SoundAPI.ALWAYS && lcHandler.isPlay()) {
-                        anounce(deviceInfo, audioFile, volume);
-                        if (LC_AUDIO_THR_DLL.lc_wait(lcHandler.getPlayParam()) == LCAudioThrDll.R_OK) {
-                            continue;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    devManager.release(deviceInfo);
+        try {
+            int count = StringUtils.isBlank(audioFile) ? 1 : loop;
+            while (count-- > 0 || loop == SoundAPI.InfiniteLoop && lcHandler.isPlay()) {
+                anounce(deviceInfo, audioFile, volume);
+                if (LC_AUDIO_THR_DLL.lc_wait(lcHandler.getPlayParam()) == LCAudioThrDll.R_OK) {
+                    MiscUtil.sleep((long)interval * 1000);
                 }
             }
-        });
-        return AppCode.OK.getCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            devManager.release(deviceInfo);
+        }
     }
 
     /** 检查状态不对，就得上报情况。

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-public class PubMessage implements InitializingBean {
+public class PublishMsg implements InitializingBean {
 
-    private static final Logger logger = LoggerFactory.getLogger(PubMessage.class);
+    private static final Logger logger = LoggerFactory.getLogger(PublishMsg.class);
 
     @Resource
     private RedissonClient client;

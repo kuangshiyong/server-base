@@ -18,9 +18,9 @@ public interface CameraAPI {
      * @return 录入的录像文件名
      */
     // 录像时长由系统配置确定
-    public void startRecord(DeviceInfo deviceInfo);
+    public void startRecord(DeviceInfo deviceInfo) throws Exception;
 
     // 要控制云台？
-    public boolean hasPTZ(DeviceInfo deviceInfo);
+    public boolean hasPTZ(DeviceInfo deviceInfo) throws Exception;
 
 }

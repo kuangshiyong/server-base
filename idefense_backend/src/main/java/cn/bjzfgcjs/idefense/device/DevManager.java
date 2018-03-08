@@ -3,7 +3,7 @@ package cn.bjzfgcjs.idefense.device;
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.DeviceStorage;
-import cn.bjzfgcjs.idefense.service.PubMessage;
+import cn.bjzfgcjs.idefense.service.PublishMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class DevManager {
     private static final Logger logger = LoggerFactory.getLogger(DevManager.class);
 
     @Resource
-    private PubMessage pubMessage;
+    private PublishMsg publishMsg;
 
     @Resource
     private DeviceStorage deviceStorage;
@@ -46,7 +46,7 @@ public class DevManager {
     // TODO: 设备故障报警消息入库以及发布通知
     public void reportDevStatus(DeviceInfo deviceInfo, Integer status) {
 
-        pubMessage.devStatus().publish("");
+        publishMsg.devStatus().publish("");
 
     }
 }

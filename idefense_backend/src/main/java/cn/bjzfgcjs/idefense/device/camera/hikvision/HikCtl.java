@@ -3,6 +3,7 @@ package cn.bjzfgcjs.idefense.device.camera.hikvision;
 import cn.bjzfgcjs.idefense.common.utils.GsonTool;
 import cn.bjzfgcjs.idefense.common.utils.MiscUtil;
 import cn.bjzfgcjs.idefense.common.utils.Now;
+import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 import cn.bjzfgcjs.idefense.dao.DeviceStorage;
 import cn.bjzfgcjs.idefense.device.DevManager;
@@ -111,7 +112,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
 
     /*************************** 操作接口实现 ************************/
 
-    private HikHandler getHikHandler(DeviceInfo obj) {
+    private HikHandler getHikHandler(DeviceInfo obj) throws Exception {
         try {
             HikHandler handler = hikCache.get(obj.getID());
             if (handler == null) {
@@ -121,7 +122,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
 
         } catch (Exception e){
             logger.error("login camera device：{} failed, {}", GsonTool.toJson(obj), e.getStackTrace());
-            return null;
+            throw new Exception("take over Hikvision device failed: " + obj.getID());
         }
     }
 
@@ -158,7 +159,6 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
     @Override
     public String getSnapshot(DeviceInfo obj) throws Exception {
         HikHandler handler = getHikHandler(obj);
-        if (handler == null) return null;
 
         HCNetSDK.NET_DVR_JPEGPARA jpegPara = new HCNetSDK.NET_DVR_JPEGPARA();
         jpegPara.wPicQuality = 0;
@@ -176,12 +176,37 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         return filename;
     }
 
-    @Override
-    public void startRecord(DeviceInfo deviceInfo) {
+    public void setOSD(DeviceInfo obj) throws Exception {
 
     }
 
-    // set OSD
+    public AppCode changeResolution(DeviceInfo obj) throws Exception {
+        HikHandler handler = getHikHandler(obj);
+        // 读取当前支持的分辨率
+        HCNetSDK.NET_DVR_COMPRESSIONCFG_V30 compressioncfg = new HCNetSDK.NET_DVR_COMPRESSIONCFG_V30();
+        compressioncfg.write();
+        hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_COMPRESSCFG_V30,
+                handler.getChannel(), compressioncfg.getPointer(), compressioncfg.size(),  new IntByReference(0));
+        compressioncfg.read();
+
+        logger.info("摄像机当前码率支持的分辨率有：网传-{}, 事件-{} ", compressioncfg.struNetPara.byResolution,
+                compressioncfg.struEventRecordPara.byResolution);
+
+        // 使用FFPMEG录像
+
+        return AppCode.OK;
+    }
+
+    @Override
+    public void startRecord(DeviceInfo obj) throws Exception {
+        HikHandler handler = getHikHandler(obj);
+
+        String filename = ("d:/").
+                concat(Now.getSdf4().format(new Date(Now.getMillis()))).concat("_").
+                concat(obj.getID()).concat("_").
+                concat(MiscUtil.getUUID()).concat(".jpeg");
+
+    }
 
     // 布防，撤控
 
@@ -191,7 +216,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
      * @return
      */
     @Override
-    public boolean hasPTZ(DeviceInfo obj) {
+    public boolean hasPTZ(DeviceInfo obj) throws Exception {
         HikHandler handler = getHikHandler(obj);
         return handler != null && handler.getHasPTZ();
     }
@@ -203,7 +228,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
      * @param start
      * @return
      */
-    public Boolean ptzCtl(DeviceInfo obj, int command, int speed, int start) {
+    public Boolean ptzCtl(DeviceInfo obj, int command, int speed, int start) throws Exception {
         HikHandler handler = getHikHandler(obj);
 
         logger.info("执行PTZ控制");
@@ -216,7 +241,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
      * @param cmd
      * @param index
      */
-    public void ptzPreset(DeviceInfo obj, int cmd, int index) {
+    public void ptzPreset(DeviceInfo obj, int cmd, int index) throws Exception {
         HikHandler handler = getHikHandler(obj);
         if (handler == null ) return;
 
@@ -253,15 +278,16 @@ NET_DVR_GET_PRESET_NAME
 
 
  */
-
-
-
     @Override
     public int ptzManage() {
         return 0;
     }
 
-    private void initPtz(DeviceInfo obj) {
+    /** 初始化串口参数按照中安要求设定。
+     * @param obj
+     * @throws Exception
+     */
+    private void initPtz(DeviceInfo obj) throws Exception {
         HikHandler handler = getHikHandler(obj);
         handler.setHasPTZ(true);
 
@@ -271,7 +297,7 @@ NET_DVR_GET_PRESET_NAME
         hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_DECODERCFG_V30,
                 handler.getChannel(), ptzDecoder.getPointer(), ptzDecoder.size(), new IntByReference(0));
         ptzDecoder.read();
-        logger.info("PTZ参数设置情况：{}", ptzDecoder);
+//        logger.info("PTZ参数设置情况：{}", ptzDecoder);
 
         // Peco D 协议配置
         ptzDecoder.dwBaudRate = 9;
@@ -285,6 +311,8 @@ NET_DVR_GET_PRESET_NAME
         hCNetSDK.NET_DVR_SetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_DECODERCFG_V30,
                 handler.getChannel(), ptzDecoder.getPointer(), ptzDecoder.size());
     }
+
+    /********************************   PTZ 操作 结束  ***********************************/
 
     /**  登录获取海康的操作资源，缓存于hikCache
      */

@@ -44,6 +44,7 @@ public enum AppCode {
     // 设备通用代码：[1000, 1100)
     DEV_OK(1000, "DEV_OK"),        // 设备正常
     DEV_BUSY(1001, "DEV_BUSY"),    // 设备忙
+    DEV_NOT_INIT(1002, "DEV_NOT_INIT"),  // 设备没初始化操作资源
 
 
     // 第三方厂商的设备错误码 都要转为 标准错误码

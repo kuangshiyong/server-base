@@ -4,9 +4,9 @@ import cn.bjzfgcjs.idefense.dao.domain.DeviceInfo;
 
 public interface SoundAPI {
 
-    public static final int ALWAYS = -1;
+    public static final int InfiniteLoop = -1;
 
-    public int playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, int loop);
+    public void playLoop(DeviceInfo deviceInfo, String audioFile, Integer volume, int loop, int interval);
 
     public int stop(DeviceInfo deviceInfo);
 
