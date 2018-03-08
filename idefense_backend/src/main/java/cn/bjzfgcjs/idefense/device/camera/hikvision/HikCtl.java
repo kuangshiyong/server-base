@@ -193,23 +193,66 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
     @Override
     public boolean hasPTZ(DeviceInfo obj) {
         HikHandler handler = getHikHandler(obj);
-        if (handler == null) {
-            logger.info("初始化是失败的");
-        }
-        return handler != null;
-//        && handler.isHasPTZ();
+        return handler != null && handler.getHasPTZ();
     }
 
-    public Boolean ptzCtl(DeviceInfo deviceInfo, int command, int speed, int start) {
-        HikHandler handler = getHikHandler(deviceInfo);
-        if (handler != null) {
-            return hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(handler.getUserId(),
-                    handler.getChannel(), command, start, speed);
-        } else {
-            logger.info("handler is null");
-            return false;
-        }
+    /** 云台控制 Pan Tilt Zoom
+     * @param obj
+     * @param command
+     * @param speed
+     * @param start
+     * @return
+     */
+    public Boolean ptzCtl(DeviceInfo obj, int command, int speed, int start) {
+        HikHandler handler = getHikHandler(obj);
+
+        logger.info("执行PTZ控制");
+        return hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(handler.getUserId(),
+                handler.getChannel(), command, start, speed);
     }
+
+    /** 内容：预置点的操作, Set Clear Goto
+     * @param obj
+     * @param cmd
+     * @param index
+     */
+    public void ptzPreset(DeviceInfo obj, int cmd, int index) {
+        HikHandler handler = getHikHandler(obj);
+        if (handler == null ) return;
+
+        hCNetSDK.NET_DVR_PTZPreset_Other(handler.getUserId(), handler.getChannel(),
+                cmd, index);
+    }
+
+    /** 工作内容： 巡航参数，OSD，守望参数，定时任务，预置点
+     * @param obj
+     * @param cmd
+     * @param name
+     */
+//    public void ptzConfig(DeviceInfo obj, int cmd, String name) {
+//        HikHandler handler = getHikHandler(obj);
+//        if (handler == null ) return;
+//
+//        hCNetSDK.NET_DVR_SetDVRConfig(handler.getUserId(), "设置预置点名称",
+//                handler.getChannel(), );
+//    }
+
+//    public void ptz {
+//        hCNetSDK.NET_DVR_SetDeviceConfig();
+//    }
+
+/*
+
+NET_DVR_GET_CRUISE
+  NET_DVR_GET_PTZOSDCFG
+  NET_DVR_GET_BASICPARAMCFG
+  NET_DVR_GET_POWEROFFMEMCFG
+  NET_DVR_GET_PTZ_PARKACTION_CFG
+NET_DVR_GET_SCH_TASK
+NET_DVR_GET_PRESET_NAME
+
+
+ */
 
 
 

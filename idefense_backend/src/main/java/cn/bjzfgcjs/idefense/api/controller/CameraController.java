@@ -114,10 +114,15 @@ public class CameraController {
         if (hikCtl.hasPTZ(deviceInfo)) {
             logger.info("服务设备：{}", GsonTool.toJson(deviceInfo));
             PTZCode code = Enum.valueOf(PTZCode.class, ptzCmdBean.getCmd());
-            hikCtl.ptzCtl(deviceInfo, code.getKey(), ptzCmdBean.getSpeed(), ptzCmdBean.getStart());
+            if (hikCtl.ptzCtl(deviceInfo, code.getKey(), ptzCmdBean.getSpeed(), ptzCmdBean.getStart())) {
+                return WebResponse.write("", AppCode.OK);
+            } else {
+                return WebResponse.write("", AppCode.SERVICE_NULL);
+            }
+        } else {
+            logger.info("param:{}", ptzCmdBean);
+            return WebResponse.write("", AppCode.OBJECT_NOTEXIST);
         }
-        logger.info("param:{}", ptzCmdBean);
-        return WebResponse.write("", AppCode.OK);
     }
 }
 
