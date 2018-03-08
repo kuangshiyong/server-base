@@ -81,14 +81,15 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
         username: hzzf
         password: hzzf888888
-        url: jdbc:mysql://127.0.0.1:3306/idefense?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://192.168.2.104:3306/idefense?useUnicode=true&characterEncoding=utf8&useSSL=false
         hikari:
-            connection-timeout: 3000
-            maximum-pool-size: 100
+             connection-timeout: 3000
+             maximum-pool-size: 20
+             max-lifetime: 5000
     main:
         banner-mode: 'off'
 
     redis:
-         host: 127.0.0.1
+         host: 192.168.2.104
 
 

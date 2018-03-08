@@ -27,14 +27,14 @@ public class SysInfo implements Serializable {
 
     private String Customername;
 
-    private String Desc;
+    private String Introduction;
 
     private String Location;
 
     @Column(name = "GPS")
     private String GPS;
 
-    @Column(name = "SonudDir")
+    @Column(name = "SoundDir")
     private String SoundDir;
 
     @Column(name = "LogDir")
@@ -127,12 +127,12 @@ public class SysInfo implements Serializable {
         Customername = customername;
     }
 
-    public String getDesc() {
-        return Desc;
+    public String getIntroduction() {
+        return Introduction;
     }
 
-    public void setDesc(String desc) {
-        Desc = desc;
+    public void setIntroduction(String introduction) {
+        Introduction = introduction;
     }
 
     public String getLocation() {
