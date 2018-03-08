@@ -62,17 +62,17 @@ public class IdefenseBackendApplication extends WebMvcConfigurationSupport {
 
 		return scheduler;
 	}
-
-	@Bean(destroyMethod="shutdown")
-	RedissonClient redisson(@Value("classpath:/redisson.yaml") String configFile) throws IOException {
-		Config config = Config.fromYAML(new ClassPathResource(configFile).getInputStream());
-		return Redisson.create(config);
-	}
-
-	@Bean
-	CacheManager cacheManager(RedissonClient redissonClient) throws IOException {
-		return new RedissonSpringCacheManager(redissonClient, "classpath:/cache-config.json");
-	}
+//
+//	@Bean(destroyMethod="shutdown")
+//	RedissonClient redisson(@Value("redisson.yaml") String configFile) throws IOException {
+//		Config config = Config.fromYAML(new ClassPathResource(configFile).getInputStream());
+//		return Redisson.create(config);
+//	}
+//
+//	@Bean
+//	CacheManager cacheManager(RedissonClient redissonClient) throws IOException {
+//		return new RedissonSpringCacheManager(redissonClient, "cache-config.json");
+//	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
