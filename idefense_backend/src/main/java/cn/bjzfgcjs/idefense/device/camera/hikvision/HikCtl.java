@@ -11,6 +11,7 @@ import cn.bjzfgcjs.idefense.device.PtzApi;
 import cn.bjzfgcjs.idefense.device.camera.CameraAPI;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.ptr.IntByReference;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static cn.bjzfgcjs.idefense.device.camera.hikvision.HCNetSDK.NET_DVR_SET_SHOWSTRING_V30;
 
 @Service
 public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBean {
@@ -232,6 +235,7 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         HikHandler handler = getHikHandler(obj);
 
         logger.info("执行PTZ控制");
+        ptzConfigLimit(obj);
         return hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(handler.getUserId(),
                 handler.getChannel(), command, start, speed);
     }
@@ -248,12 +252,12 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
         hCNetSDK.NET_DVR_PTZPreset_Other(handler.getUserId(), handler.getChannel(),
                 cmd, index);
     }
-
-    /** 工作内容： 巡航参数，OSD，守望参数，定时任务，预置点
-     * @param obj
-     * @param cmd
-     * @param name
-     */
+//
+//    /** 工作内容： 巡航参数，OSD，守望参数，定时任务，预置点
+//     * @param obj
+//     * @param cmd
+//     * @param name
+//     */
 //    public void ptzConfig(DeviceInfo obj, int cmd, String name) {
 //        HikHandler handler = getHikHandler(obj);
 //        if (handler == null ) return;
@@ -262,9 +266,58 @@ public class HikCtl implements CameraAPI, PtzApi, InitializingBean, DisposableBe
 //                handler.getChannel(), );
 //    }
 
-//    public void ptz {
-//        hCNetSDK.NET_DVR_SetDeviceConfig();
-//    }
+    public void ptzConfigLimit(DeviceInfo obj) throws Exception{
+        HikHandler handler = getHikHandler(obj);
+        if (handler == null ) return;
+
+
+        HCNetSDK.NET_DVR_PICCFG_V30 cfg = new HCNetSDK.NET_DVR_PICCFG_V30();
+        cfg.write();
+
+        hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_PICCFG_V30,
+                handler.getChannel(), cfg.getPointer(), cfg.size(), new IntByReference(0));
+        cfg.read();
+        logger.info("修改前：{}",new String(cfg.sChanName));
+        cfg.dwShowChanName = 1;
+        cfg.dwShowOsd = 1;
+        cfg.sChanName = "测试".getBytes();
+        hCNetSDK.NET_DVR_SetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_SET_PICCFG_V30, handler.getChannel(),
+                cfg.getPointer(), cfg.size());
+        hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_PICCFG_V30,
+                new NativeLong(2), cfg.getPointer(), cfg.size(), new IntByReference(0));
+        logger.info("修改后通道名：{}", new String(cfg.sChanName));
+
+
+
+//        HCNetSDK.NET_DVR_PTZ_LIMITCOND ptzLimitReq = new HCNetSDK.NET_DVR_PTZ_LIMITCOND();
+//        ptzLimitReq.dwChan = 2; // handler.getChannel().intValue();
+//        ptzLimitReq.dwSize = ptzLimitReq.size();
+//        HCNetSDK.NET_DVR_PTZ_LIMITCFG ptzLimitRes = new HCNetSDK.NET_DVR_PTZ_LIMITCFG();
+//        ptzLimitReq.write();
+//        ptzLimitRes.write();
+//
+//        IntByReference pInt = new IntByReference(0);
+//        Pointer lpStatusList = pInt.getPointer();
+//        boolean res = hCNetSDK.NET_DVR_GetDeviceConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_LIMITCFG,
+//                1, ptzLimitReq.getPointer(), ptzLimitReq.size(), lpStatusList,
+//                ptzLimitRes.getPointer(), ptzLimitRes.size());
+//
+//        if (res) {
+//            ptzLimitRes.read();
+//            logger.info("读取到PTZ限制参数：{}", ptzLimitRes);
+//        } else {
+//            logger.info("获取限制参数失败：{}", hCNetSDK.NET_DVR_GetLastError());
+//        }
+
+//        HCNetSDK.NET_DVR_PTZSCOPE scope = new HCNetSDK.NET_DVR_PTZSCOPE();
+//        scope.write();
+//
+//        hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK. NET_DVR_GET_PTZSCOPE,
+//                handler.getChannel(), scope.getPointer(), scope.size(), new IntByReference(0));
+//        scope.read();
+//        logger.info("PTZ 范围：{}", scope);
+
+    }
 
 /*
 
@@ -293,12 +346,6 @@ NET_DVR_GET_PRESET_NAME
 
         HCNetSDK.NET_DVR_DECODERCFG_V30 ptzDecoder = new HCNetSDK.NET_DVR_DECODERCFG_V30();
         ptzDecoder.write();
-        // 取出来看下格式：
-        hCNetSDK.NET_DVR_GetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_DECODERCFG_V30,
-                handler.getChannel(), ptzDecoder.getPointer(), ptzDecoder.size(), new IntByReference(0));
-        ptzDecoder.read();
-//        logger.info("PTZ参数设置情况：{}", ptzDecoder);
-
         // Peco D 协议配置
         ptzDecoder.dwBaudRate = 9;
         ptzDecoder.byParity = 0;
@@ -306,7 +353,6 @@ NET_DVR_GET_PRESET_NAME
         ptzDecoder.byStopBit = 0;
         ptzDecoder.byFlowcontrol = 0;
         ptzDecoder.wDecoderType = 7;
-//        ptzDecoder.wDecoderAddress = 1;
 
         hCNetSDK.NET_DVR_SetDVRConfig(handler.getUserId(), HCNetSDK.NET_DVR_GET_DECODERCFG_V30,
                 handler.getChannel(), ptzDecoder.getPointer(), ptzDecoder.size());

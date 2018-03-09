@@ -1100,7 +1100,7 @@ public interface HCNetSDK extends StdCallLibrary {
         public byte[] byRelRecordChan = new byte[64];                    /* 报警触发的录象通道*/
 
         protected List<String> getFieldOrder() {
-            return Arrays.asList("byMotionScope", "byMotionSensitive", "byEnableHandleMotion", "byEnableDisplay",
+            return Arrays.asList("byMotionScope", "byMotionSensitive", "byEnableHandleMotion", "byPrecision",
                     "reservedData", "struMotionHandleType", "struAlarmTime", "byRelRecordChan");
         }
     }
@@ -2759,7 +2759,7 @@ public interface HCNetSDK extends StdCallLibrary {
         public short wStringSize;                /* 该行字符的长度，不能大于44个字符 */
         public short wShowStringTopLeftX;        /* 字符显示位置的x坐标 */
         public short wShowStringTopLeftY;        /* 字符名称显示位置的y坐标 */
-        public byte[] sString = new byte[44];                /* 要显示的字符内容 */
+        public byte[] sString = new byte[44];    /* 要显示的字符内容 */
 
         @Override
         protected List<String> getFieldOrder() {
@@ -4751,6 +4751,8 @@ EMAIL参数结构
     //参数配置 begin
     boolean  NET_DVR_GetDeviceConfig(NativeLong lUserID, int dwCommand,int dwCount, Pointer lpInBuffer, int dwInBufferSize, Pointer lpStatusList,Pointer lpOutBuffer, int dwOutBufferSize);
 
+    boolean NET_DVR_SetDeviceConfig(NativeLong lUserID, int dwCommand, int dwCount, Pointer lpInBuffer, int dwInBufferSize, Pointer lpStatusList, Pointer lpInParamBuffer, int dwInParamBufferSize);
+
     boolean NET_DVR_GetDVRConfig(NativeLong lUserID, int dwCommand, NativeLong lChannel, Pointer lpOutBuffer, int dwOutBufferSize, IntByReference lpBytesReturned);
 
     boolean NET_DVR_SetDVRConfig(NativeLong lUserID, int dwCommand, NativeLong lChannel, Pointer lpInBuffer, int dwInBufferSize);
@@ -4810,11 +4812,6 @@ EMAIL参数结构
     boolean NET_DVR_SetRtspConfig(NativeLong lUserID, int dwCommand, NET_DVR_RTSPCFG lpInBuffer, int dwInBufferSize);
 
     boolean NET_DVR_GetRtspConfig(NativeLong lUserID, int dwCommand, NET_DVR_RTSPCFG lpOutBuffer, int dwOutBufferSize);
-
-    boolean NET_DVR_GetDeviceConfig(NativeLong lUserID, int dwCommand, int dwCount, LPVOID lpInBuffer, int dwInBufferSize, LPVOID lpStatusList, LPVOID lpOutBuffer, int dwOutBufferSize);
-
-    boolean NET_DVR_SetDeviceConfig(NativeLong lUserID, int dwCommand, int dwCount, LPVOID lpInBuffer, int dwInBufferSize, LPVOID lpStatusList, LPVOID lpInParamBuffer, int dwInParamBufferSize);
-
 }
 
 //播放库函数声明,PlayCtrl.dll
