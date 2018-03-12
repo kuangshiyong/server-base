@@ -30,6 +30,8 @@ public class DeviceInfo implements Serializable {
     //设备类型; 0-未定义，1-CCD, 2-IR, 3-云台, 4-声学，5-雷达***另行规定***
     private Byte Type;
 
+    private String Config;  // 配置信息
+
     private String Model;
 
     private String Firmware;
@@ -102,6 +104,14 @@ public class DeviceInfo implements Serializable {
         Type = type;
     }
 
+    public String getConfig() {
+        return Config;
+    }
+
+    public void setConfig(String config) {
+        Config = config;
+    }
+
     public String getModel() {
         return Model;
     }
@@ -159,8 +169,9 @@ public class DeviceInfo implements Serializable {
     }
 
     public interface Type {
+        public static final byte UNKNOWN = 0;
         public static final byte CCD = 1;
-        public static final byte IR  = 2;
+        public static final byte IR  = 2;     // 热成像
         public static final byte Terrence = 3;
         public static final byte Acoustic = 4;
         public static final byte Radar = 5;
