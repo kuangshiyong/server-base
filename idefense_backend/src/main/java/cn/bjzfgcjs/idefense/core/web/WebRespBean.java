@@ -9,15 +9,15 @@ public class WebRespBean {
     // 错误描述
     private String errmsg;
     // 可变业务包体
-    private Object res;
+    private Object result;
 
     public WebRespBean() {
     }
 
-    public WebRespBean(int code, String errmsg, Object res) {
+    public WebRespBean(int code, String errmsg, Object result) {
         this.code = code;
         this.errmsg = errmsg;
-        this.res = res;
+        this.result = result;
     }
 
     public int getCode() {
@@ -36,11 +36,11 @@ public class WebRespBean {
         this.errmsg = errmsg;
     }
 
-    public Object getRes() {
-        return res;
+    public Object getResult() {
+        return result;
     }
 
-    public void setRes(Object res) {
-        this.res = res;
+    public void setResult(Object result) {
+        this.result = result;
     }
 }
