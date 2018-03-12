@@ -121,6 +121,8 @@ public interface HCNetSDK extends StdCallLibrary {
     public static final int MAX_IP_CHANNEL = 32;   //允许加入的最多IP通道数
     public static final int MAX_IP_ALARMIN = 128;   //允许加入的最多报警输入数
     public static final int MAX_IP_ALARMOUT = 64; //允许加入的最多报警输出数
+    public static final int MAX_IP_ALARMIN_V40 = 4096;  //允许加入的最多报警输入数
+    public static final int MAX_IP_ALARMOUT_V40 = 4096; //允许加入的最多报警输出数
 
     /* 最大支持的通道数 最大模拟加上最大IP支持 */
     public static final int MAX_CHANNUM_V30 = (MAX_ANALOG_CHANNUM + MAX_IP_CHANNEL);//64
@@ -852,8 +854,18 @@ public interface HCNetSDK extends StdCallLibrary {
     /*************************************************
      参数配置结构、参数(其中_V30为9000新增)
      **************************************************/
+    /***************** 更新自最新的SDK MFC 头文件 ************************/
+    public static final int NET_DVR_GET_PICCFG_V40 = 6179;    //获取图象参数 支持变长    NetSDK_
+    public static final int NET_DVR_SET_PICCFG_V40 = 6180;    //设置图象参数， 支持变长
 
-/////////////////////////////////////////////////////////////////////////
+    public static final int MAX_ALARMOUT_V40 = (MAX_IP_ALARMOUT_V40 +MAX_ANALOG_ALARMOUT); //4128
+    public static final int MAX_FORTIFY_NUM =  10;   //最大布防个数
+    public static final int MAX_INTERVAL_NUM = 4;    //最大时间间隔个数
+    public static final int MAX_CHANNUM_V40 = 512;
+    public static final int MAX_MULTI_AREA_NUM = 24;
+
+
+    /////////////////////////////////////////////////////////////////////////
 //校时结构参数
     public static class NET_DVR_TIME extends Structure {//校时结构参数
         public int dwYear;        //年
@@ -3979,7 +3991,7 @@ EMAIL参数结构
 
         @Override
         protected List<String> getFieldOrder() {
-            return Arrays.asList("fx", "fy", "fWidth", "fHeight");
+            return Arrays.asList("fX", "fY", "fWidth", "fHeight");
         }
     }
 
@@ -4115,7 +4127,6 @@ EMAIL参数结构
                     "byEnableVehicleMisinfoFilter", "struAlertParam", "struAlarmSched", "struHandleException",
                     "dwMaxRelRecordChanNum", "dwRelRecordChanNum", "byRelRecordChan", "struHolidayTime", "byRes2");
         }
-
     }
 
     public static class NET_DVR_CHANNEL_GROUP extends Structure
@@ -4204,10 +4215,315 @@ EMAIL参数结构
         }
     }
 
+    public static class NET_DVR_DNMODE extends Structure {
+        public byte byObjectSize;      //占比参数(0~100)
+        public byte byMotionSensitive; /*移动侦测灵敏度, 0 - 5,越高越灵敏,0xff关闭*/
+        public byte[] byRes = new byte[6];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("byObjectSize", "byMotionSensitive", "byRes");
+        }
+    }
+
+    public static class NET_DVR_MOTION_MULTI_AREAPARAM extends Structure {
+        public byte byAreaNo;  //区域编号(IPC- 1~8)
+        public byte[] byRes = new byte[3];
+        public NET_VCA_RECT struRect;  //单个区域的坐标信息(矩形) size = 16;
+        public NET_DVR_DNMODE struDayNightDisable; //关闭模式
+        public NET_DVR_DNMODE struDayModeParam;    //白天模式
+        public NET_DVR_DNMODE struNightModeParam;  //夜晚模式
+        public byte[] byRes1 = new byte[8];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("byAreaNo", "byRes", "struRect", "struDayNightDisable", "struDayModeParam", "struNightModeParam", "byRes1");
+        }
+    }
+
+    public static class NET_DVR_DAYTIME extends Structure {
+        public byte byHour;   //0~24
+        public byte byMinute; //0~60
+        public byte bySecond; //0~60
+        public byte byRes;
+        public short wMilliSecond; //0~1000
+        public byte[] byRes1 = new byte[2];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("byHour", "byMinute", "bySecond", "byRes", "wMilliSecond", "byRes1");
+        }
+    }
+
+    public static class NET_DVR_SCHEDULE_DAYTIME extends Structure {
+        public NET_DVR_DAYTIME struStartTime; //开始时间
+        public NET_DVR_DAYTIME struStopTime;  //结束时间
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struStartTime", "struStopTime");
+        }
+    }
+
+    public static class NET_DVR_MOTION_SINGLE_AREA extends Structure {
+        /* 侦测区域,0-96位,表示64行,共有96*64个小宏块,目前有效的是22*18,为1表示是移动侦测区域,0-表示不是 */
+        public byte[] byMotionScope = new byte[((64) * (96))];
+        public byte byMotionSensitive; /*移动侦测灵敏度, 0 - 5,越高越灵敏,0xff关闭*/
+        public byte[] byRes = new byte[3];
+
+        @Override
+        protected List<String > getFieldOrder() {
+            return Arrays.asList("byMotionScope", "byMotionSensitive", "byRes");
+        }
+    }
+
+    //1328
+    public static class NET_DVR_MOTION_MULTI_AREA extends Structure {
+        public byte byDayNightCtrl;   //日夜控制 0~关闭,1~自动切换,2~定时切换(默认关闭)
+        public byte byAllMotionSensitive; /*移动侦测灵敏度, 0 - 5,越高越灵敏,0xff关闭，全部区域的灵敏度范围*/
+        public byte[] byRes = new byte[2];
+        public NET_DVR_SCHEDULE_DAYTIME struScheduleTime; //切换时间  16
+        //最大支持24个区域
+        public NET_DVR_MOTION_MULTI_AREAPARAM[] struMotionMultiAreaParam = new NET_DVR_MOTION_MULTI_AREAPARAM[MAX_MULTI_AREA_NUM];
+        public byte[] byRes1 = new byte[60];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("byDayNightCtrl", "byAllMotionSensitive", "byRes", "struScheduleTime", "struMotionMultiAreaParam", "byRes1");
+        }
+    }
+
+    public static class NET_DVR_MOTION_MODE_PARAM extends Structure {
+        public NET_DVR_MOTION_SINGLE_AREA struMotionSingleArea; //普通模式下的单区域设置
+        public NET_DVR_MOTION_MULTI_AREA struMotionMultiArea;   //专家模式下的多区域设置
+
+        @Override
+        protected List<String > getFieldOrder() {
+            return Arrays.asList("struMotionSingleArea", "struMotionMultiArea");
+        }
+    }
+
+    /* 信号丢失触发报警输出 */
+    public static class NET_DVR_VILOST_V40 extends Structure {
+        public int dwEnableVILostAlarm; /* 是否启动信号丢失报警 ,0-否,1-是*/
+        public int dwHandleType;  //异常处理,异常处理方式的"或"结果
+        /*0x00: 无响应*/
+        /*0x01: 监视器上警告*/
+        /*0x02: 声音警告*/
+        /*0x04: 上传中心*/
+        /*0x08: 触发报警输出*/
+        /*0x10: 触发JPRG抓图并上传Email*/
+        /*0x20: 无线声光报警器联动*/
+        /*0x40: 联动电子地图(目前只有PCNVR支持)*/
+        /*0x200: 抓图并上传FTP*/
+        /*0x1000:抓图上传到云*/
+        public int dwMaxRelAlarmOutChanNum; //触发的报警输出通道数（只读）最大支持数量
+        public int[] dwRelAlarmOut = new int[MAX_ALARMOUT_V40]; /*触发报警输出号，按值表示,采用紧凑型排列，
+                                        从下标0dwRelAlarmOut -1有效，如果中间遇到0xffffffff,则后续无效*/
+        /*布防时间*/
+        public NET_DVR_SCHEDTIME[] struAlarmTime = new NET_DVR_SCHEDTIME[((MAX_DAYS) * (MAX_TIMESEGMENT_V30))];
+        public byte byVILostAlarmThreshold;  /*信号丢失报警阈值，当值低于阈值，认为信号丢失，取值0-99*/
+        public byte[] byRes = new byte[63];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwEnableVILostAlarm", "dwHandleType", "dwMaxRelAlarmOutChanNum", "dwRelAlarmOut", "struAlarmTime", "byVILostAlarmThreshold", "byRes");
+        }
+    }
+
+    public static class NET_DVR_MOTION_V40 extends Structure {
+        public NET_DVR_MOTION_MODE_PARAM struMotionMode; //(5.1.0新增)
+        public byte byEnableHandleMotion; /* 是否处理移动侦测 0－否 1－是*/
+        public byte byEnableDisplay;      /*启用移动侦测高亮显示，0-否，1-是*/
+        public byte byConfigurationMode;  //0~普通,1~专家(5.1.0新增)
+        public byte byKeyingEnable;      //启用键控移动侦测 0-不启用，1-启用
+        /* 异常处理方式 */
+        public int dwHandleType;  //异常处理,异常处理方式的"或"结果
+        /*0x00: 无响应*/
+        /*0x01: 监视器上警告*/
+        /*0x02: 声音警告*/
+        /*0x04: 上传中心*/
+        /*0x08: 触发报警输出*/
+        /*0x10: 触发JPRG抓图并上传Email*/
+        /*0x20: 无线声光报警器联动*/
+        /*0x40: 联动电子地图(目前只有PCNVR支持)*/
+        /*0x200: 抓图并上传FTP*/
+        /*0x1000: 抓图上传到云*/
+        public int dwMaxRelAlarmOutChanNum; //触发的报警输出通道数（只读）最大支持数量
+        public int[] dwRelAlarmOut = new int[MAX_ALARMOUT_V40]; //实际触发的报警输出号，按值表示,
+                // 采用紧凑型排列，从下标0 - dwRelAlarmOut -1有效，如果中间遇到0xffffffff,则后续无效
+        // 布防时间
+        public NET_DVR_SCHEDTIME[] struAlarmTime = new NET_DVR_SCHEDTIME[((MAX_DAYS) * (MAX_TIMESEGMENT_V30))];
+        /*触发的录像通道*/
+        public int dwMaxRecordChanNum;  //设备支持的最大关联录像通道数-只读
+        public int[] dwRelRecordChan = new int[MAX_CHANNUM_V40]; /* 实际触发录像通道，按值表示,采用紧凑型排列，
+                          从下标0 - dwRelRecordChan -1有效，如果中间遇到0xffffffff,则后续无效*/
+        public byte byDiscardFalseAlarm;   //启用去误报 0-无效，1-不启用，2-启用
+        public byte[] byRes = new byte[127];  //保留字节
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struMotionMode", "byEnableHandleMotion", "byEnableDisplay", "byConfigurationMode", "byKeyingEnable", "dwHandleType", "dwMaxRelAlarmOutChanNum", "dwRelAlarmOut", "struAlarmTime", "dwMaxRecordChanNum", "dwRelRecordChan", "byDiscardFalseAlarm", "byRes");
+        }
+    }
+
+    //遮挡报警
+    public static class NET_DVR_HIDEALARM_V40 extends Structure {
+        public int dwEnableHideAlarm; /* 是否启动遮挡报警，0-否，1-低灵敏度，2-中灵敏度，3-高灵敏度*/
+        public short wHideAlarmAreaTopLeftX; /* 遮挡区域的x坐标 */
+        public short wHideAlarmAreaTopLeftY; /* 遮挡区域的y坐标 */
+        public short wHideAlarmAreaWidth;    /* 遮挡区域的宽 */
+        public short wHideAlarmAreaHeight;   /* 遮挡区域的高*/
+        /* 信号丢失触发报警输出 */
+        public int dwHandleType; //异常处理,异常处理方式的"或"结果
+        /*0x00: 无响应*/
+        /*0x01: 监视器上警告*/
+        /*0x02: 声音警告*/
+        /*0x04: 上传中心*/
+        /*0x08: 触发报警输出*/
+        /*0x10: 触发JPRG抓图并上传Email*/
+        /*0x20: 无线声光报警器联动*/
+        /*0x40: 联动电子地图(目前只有PCNVR支持)*/
+        /*0x200: 抓图并上传FTP*/
+        /*0x1000:抓图上传到云*/
+        public int dwMaxRelAlarmOutChanNum;  //触发的报警输出通道数（只读）最大支持数量
+        public int[] dwRelAlarmOut = new int[MAX_ALARMOUT_V40]; /*触发报警输出号，按值表示,采用紧凑型排列，
+               从下标0 - dwRelAlarmOut -1有效，如果中间遇到0xffffffff,则后续无效 */
+        /*布防时间*/
+        public NET_DVR_SCHEDTIME[] struAlarmTime = new NET_DVR_SCHEDTIME[((MAX_DAYS) * (MAX_TIMESEGMENT_V30))];
+        public byte[] byRes = new byte[64];
+
+        @Override
+        protected List<String > getFieldOrder() {
+            return Arrays.asList("dwEnableHideAlarm", "wHideAlarmAreaTopLeftX", "wHideAlarmAreaTopLeftY", "wHideAlarmAreaWidth", "wHideAlarmAreaHeight", "dwHandleType", "dwMaxRelAlarmOutChanNum", "dwRelAlarmOut", "struAlarmTime", "byRes");
+        }
+    }
+
+    public static class NET_DVR_RGB_COLOR extends Structure {
+        public byte byRed;
+        public byte byGreen;
+        public byte byBlue;
+        public byte byRes;
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("byRed", "byGreen", "byBlue", "byRes");
+        }
+    }
+
+    public static class NET_DVR_PICCFG_V40 extends Structure {
+        public int dwSize;
+        public byte[] sChanName = new byte[NAME_LEN];
+        public int dwVideoFormat;   /* 只读 视频制式 1-NTSC 2-PAL  */
+        public NET_DVR_VICOLOR struViColor;  // 图像参数按时间段设置
+        public int dwShowChanName;   // 预览的图象上是否显示通道名称,0-不显示,1-显示
+        public short wShowNameTopLeftX;  /* 通道名称显示位置的x坐标 */
+        public short wShowNameTopLeftY;  /* 通道名称显示位置的y坐标 */
+        public int dwEnableHide;         /* 是否启动遮挡 ,0-否,1-是*/
+        public NET_DVR_SHELTER[] struShelter = new NET_DVR_SHELTER[MAX_SHELTERNUM];
+        public int dwShowOsd;   // 预览的图象上是否显示OSD,0-不显示,1-显示
+        public short wOSDTopLeftX;   /* OSD的x坐标 */
+        public short wOSDTopLeftY;   /* OSD的y坐标 */
+        public byte byOSDType;      /* OSD类型(主要是年月日格式) */
+        /* 0: XXXX-XX-XX 年月日 */
+        /* 1: XX-XX-XXXX 月日年 */
+        /* 2: XXXX年XX月XX日 */
+        /* 3: XX月XX日XXXX年 */
+        /* 4: XX-XX-XXXX 日月年*/
+        /* 5: XX日XX月XXXX年 */
+        /*6: xx/xx/xxxx(月/日/年) */
+        /*7: xxxx/xx/xx(年/月/日) */
+        /*8: xx/xx/xxxx(日/月/年)*/
+        public byte byDispWeek;    /* 是否显示星期 */
+        public byte byOSDAttrib;    /* OSD属性:透明，闪烁 */
+        /* 0: 不显示OSD */
+        /* 1: 透明，闪烁 */
+        /* 2: 透明，不闪烁 */
+        /* 3: 不透明，闪烁 */
+        /* 4: 不透明，不闪烁 */
+        public byte byHourOSDType; /* OSD小时制:0-24小时制,1-12小时制 */
+        public byte byFontSize;    //16*16(中)/8*16(英)，1-32*32(中)/16*32(英)，2-64*64(中)/32*64(英)
+                                   //3-48*48(中)/24*48(英) 4-24*24(中)/12*24(英) 5-96*96(中)/48*96(英)
+                                   // 6-128*128(中)/64*128(英)  0xff-自适应(adaptive)
+        public byte byOSDColorType; //0-默认（黑白）；1-自定义
+        /* 当对齐方式选择国标模式时，可以分别对右下角、左下角两个区域做字符叠加。
+   右下角区域：
+   共支持6行字符叠加，可以通过NET_DVR_SET_SHOWSTRING_V30/ NET_DVR_GET_SHOWSTRING_V30字符叠加接口，对应NET_DVR_SHOWSTRINGINFO结构体数组中的第0至第5个下标的值。叠加字符的方式为从下到上的方式。
+   左下角区域：
+   共支持2行字符叠加，可以通过NET_DVR_SET_SHOWSTRING_V3/ NET_DVR_GET_SHOWSTRING_V30字符叠加接口，对应NET_DVR_SHOWSTRINGINFO结构体数组中的第6和第7个下标的值。叠加字符的方式为从下到上的方式。
+   */
+        public byte byAlignment; //对齐方式 0-自适应，1-右对齐, 2-左对齐，3-国标模式
+        public byte byOSDMilliSecondEnable; //视频叠加时间支持毫秒；0~不叠加, 1-叠加
+        public NET_DVR_VILOST_V40 struVILost; //视频信号丢失报警（支持组）
+        public NET_DVR_VILOST_V40 struAULost; /*音频信号丢失报警（支持组）*/
+        public NET_DVR_MOTION_V40 struMotion; //移动侦测报警（支持组）
+        public NET_DVR_HIDEALARM_V40 struHideAlarm; //遮挡报警（支持组）
+        public NET_DVR_RGB_COLOR struOsdColor;  //OSD颜色
+        public int dwBoundary; //边界值，左对齐，右对齐以及国标模式的边界值，0-表示默认值，
+                               // 单位：像素;在国标模式下，单位修改为字符个数（范围是，0,1,2）
+        public byte[] byRes = new byte[120];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("dwSize", "sChanName", "dwVideoFormat", "struViColor", "dwShowChanName", "wShowNameTopLeftX", "wShowNameTopLeftY", "dwEnableHide", "struShelter", "dwShowOsd", "wOSDTopLeftX", "wOSDTopLeftY", "byOSDType", "byDispWeek", "byOSDAttrib", "byHourOSDType", "byFontSize", "byOSDColorType", "byAlignment", "byOSDMilliSecondEnable", "struVILost", "struAULost", "struMotion", "struHideAlarm", "struOsdColor", "dwBoundary", "byRes");
+        }
+    }
+
+    public static final int NET_DVR_DEV_ADDRESS_MAX_LEN = 129;
+    public static final int NET_DVR_LOGIN_USERNAME_MAX_LEN = 64;
+    public static final int NET_DVR_LOGIN_PASSWD_MAX_LEN = 64;
+
+    public static class NET_DVR_USER_LOGIN_INFO extends Structure {
+        public byte[] sDeviceAddress = new byte[NET_DVR_DEV_ADDRESS_MAX_LEN];
+        public byte byUseTransport; //是否启用能力集透传，0--不启用透传，默认，1--启用透传
+        public short wPort;
+        public byte[] sUserName = new byte[NET_DVR_LOGIN_USERNAME_MAX_LEN];
+        public byte[] sPassword = new byte[NET_DVR_LOGIN_PASSWD_MAX_LEN];
+        public FLoginResultCallBack cbLoginResult;
+        public Pointer pUser;
+        public boolean bUseAsynLogin;
+        public byte byProxyType;  //0:不使用代理，1：使用标准代理，2：使用EHome代理
+        public byte byUseUTCTime; //0-不进行转换，默认,1-接口上输入输出全部使用UTC时间,
+                                  // SDK完成UTC时间与设备时区的转换,2-接口上输入输出全部使用平台本地时间，
+                                  // SDK完成平台本地时间与设备时区的转换
+        public byte[] byRes2 = new byte[2];
+        public NativeLong iProxyID; //代理服务器序号，添加代理服务器信息时，相对应的服务器数组下表值
+        public byte[] byRes3 = new byte[120];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("sDeviceAddress", "byUseTransport", "wPort", "sUserName", "sPassword", "cbLoginResult", "pUser", "bUseAsynLogin", "byProxyType", "byUseUTCTime", "byRes2", "iProxyID", "byRes3");
+        }
+    }
+
+    public static class NET_DVR_DEVICEINFO_V40 extends Structure {
+        public NET_DVR_DEVICEINFO_V30 struDeviceV30;
+        public byte bySupportLock; //设备支持锁定功能，该字段由SDK根据设备返回值来赋值的。
+                                   // bySupportLock为1时，dwSurplusLockTime 和 byRetryLoginTime有效
+        public byte byRetryLoginTime; //剩余可尝试登陆的次数，用户名，密码错误时，此参数有效
+        public byte byPasswordLevel;  //admin密码安全等级0-无效，1-默认密码，2-有效密码,3-风险较高的密码。
+                         // 当用户的密码为出厂默认密码（12345）或者风险较高的密码时，上层客户端需要提示用户更改密码。
+        public byte byProxyType;  //代理类型，0-不使用代理, 1-使用socks5代理, 2-使用EHome代理
+        public int dwSurplusLockTime; //剩余时间，单位秒，用户锁定时，此参数有效
+        public byte byCharEncodeType; //字符编码类型
+        public byte bySupportDev5;  //支持v50版本的设备参数获取，设备名称和设备类型名称长度扩展为64字节
+        public byte[] byRes2 = new byte[254];
+
+        @Override
+        protected List<String> getFieldOrder() {
+            return Arrays.asList("struDeviceV30", "bySupportLock", "byRetryLoginTime", "byPasswordLevel", "byProxyType", "dwSurplusLockTime", "byCharEncodeType", "bySupportDev5", "byRes2");
+        }
+    }
+
     /***API函数声明,详细说明见API手册***/
     public static interface FRealDataCallBack_V30 extends StdCallCallback {
         public void invoke(NativeLong lRealHandle, int dwDataType,
                            ByteByReference pBuffer, int dwBufSize, Pointer pUser);
+    }
+
+    public static interface FLoginResultCallBack extends StdCallCallback {
+        public void invoke(NativeLong lUserID, DWORD dwResult,
+                           NET_DVR_DEVICEINFO_V30 lpDeviceInfo, Pointer pUser);
     }
 
     public static interface FMSGCallBack extends StdCallCallback {
@@ -4333,6 +4649,8 @@ EMAIL参数结构
     NativeLong NET_DVR_Login(String sDVRIP, short wDVRPort, String sUserName, String sPassword, NET_DVR_DEVICEINFO lpDeviceInfo);
 
     NativeLong NET_DVR_Login_V30(String sDVRIP, int wDVRPort, String sUserName, String sPassword, NET_DVR_DEVICEINFO_V30 lpDeviceInfo);
+
+    NativeLong NET_DVR_Login_V40(NET_DVR_USER_LOGIN_INFO lpUserLoginInfo, NET_DVR_DEVICEINFO_V40 lpDeviceInfo);
 
     boolean NET_DVR_Logout(NativeLong lUserID);
 
