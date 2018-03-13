@@ -15,7 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 // 安防策略总表
-@Table(name = "zf_tactis")
+@Table(name = "zf_tactics")
 public class Tactics implements Serializable {
     @Id
     @Column(name = "ID")
