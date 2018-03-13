@@ -1,6 +1,7 @@
 package cn.bjzfgcjs.idefense.api.controller;
 
 import cn.bjzfgcjs.idefense.api.bean.DeviceReq;
+import cn.bjzfgcjs.idefense.common.utils.GsonTool;
 import cn.bjzfgcjs.idefense.common.utils.MiscUtil;
 import cn.bjzfgcjs.idefense.core.AppCode;
 import cn.bjzfgcjs.idefense.core.web.WebResponse;
@@ -50,6 +51,7 @@ public class TacticsController {
 
     @PostMapping(value = "/tactics/run", produces = "application/json; charset=UTF-8")
     public Object addPosition(@RequestBody tacticReq obj) throws Exception {
+        logger.info("query:{},", GsonTool.toJson(obj));
          AppCode ret = tacticService.runTactic(obj.getPosition(), obj.getTacticId());
 
         return WebResponse.write("", ret);
