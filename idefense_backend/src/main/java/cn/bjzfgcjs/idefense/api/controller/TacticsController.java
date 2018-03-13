@@ -26,10 +26,31 @@ public class TacticsController {
     @Resource
     private TacticService tacticService;
 
+    public static class tacticReq {
+        public Integer position;
+        public Long tacticId;
+
+        public Integer getPosition() {
+            return position;
+        }
+
+        public void setPosition(Integer position) {
+            this.position = position;
+        }
+
+        public Long getTacticId() {
+            return tacticId;
+        }
+
+        public void setTacticId(Long tacticId) {
+            this.tacticId = tacticId;
+        }
+    }
+
 
     @PostMapping(value = "/tactics/run", produces = "application/json; charset=UTF-8")
-    public Object addPosition(@RequestParam Integer position, @RequestParam Long tacticId) throws Exception {
-         AppCode ret = tacticService.runTactic(position, tacticId);
+    public Object addPosition(@RequestBody tacticReq obj) throws Exception {
+         AppCode ret = tacticService.runTactic(obj.getPosition(), obj.getTacticId());
 
         return WebResponse.write("", ret);
     }

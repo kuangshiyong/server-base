@@ -40,7 +40,7 @@ public class XController {
 
 
     @GetMapping(value = "/test/ttm", produces = "application/json; charset=UTF-8")
-    public Object runRedisPublish(@RequestParam String topic, @RequestParam String content) throws Exception {
+    public Object runRadarPublish(@RequestParam String topic, @RequestParam String content) throws Exception {
         try {
             publishMsg.radarMessage().publish(content);
         } catch (Exception e) {}
