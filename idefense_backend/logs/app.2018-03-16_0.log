@@ -1,0 +1,605 @@
+2018-03-16 09:16:39.479 INFO  [restartedMain] IdefenseBackendApplication | Starting IdefenseBackendApplication on DESKTOP-H014RSM with PID 11780 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 09:16:39.479 INFO  [restartedMain] IdefenseBackendApplication | The following profiles are active: dev
+2018-03-16 09:16:39.557 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@37e816: startup date [Fri Mar 16 09:16:39 CST 2018]; root of context hierarchy
+2018-03-16 09:16:39.791 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 09:16:40.605 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 09:16:40.792 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 09:16:42.373 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 09:16:42.388 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 09:16:42.388 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 09:16:42.529 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 09:16:42.529 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2972 ms
+2018-03-16 09:16:42.952 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 09:16:42.952 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 09:16:42.952 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 09:16:42.952 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 09:16:42.952 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 09:16:42.952 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 09:16:44.080 INFO  [restartedMain] Version | Redisson 3.3.2
+2018-03-16 09:16:44.486 INFO  [redisson-netty-1-4] MasterConnectionPool | 10 connections initialized for /127.0.0.1:6379
+2018-03-16 09:16:44.486 INFO  [redisson-netty-1-13] MasterPubSubConnectionPool | 1 connections initialized for /127.0.0.1:6379
+2018-03-16 09:16:44.564 WARN  [restartedMain] HikariConfig | HikariPool-1 - maxLifetime is less than 30000ms, setting to default 1800000ms.
+2018-03-16 09:16:44.564 INFO  [restartedMain] HikariDataSource | HikariPool-1 - Starting...
+2018-03-16 09:16:44.830 INFO  [restartedMain] HikariDataSource | HikariPool-1 - Start completed.
+2018-03-16 09:16:45.112 INFO  [restartedMain] HikCtl | device:7D0FEA8B-D1EB-4B23-8304-A55CEF25990E, serialNo:[68, 83, 45, 50, 90, 67, 78, 51, 48, 48, 55, 40, 67, 41, 50, 48, 49, 55, 49, 50, 50, 53, 67, 67, 67, 72, 49, 54, 48, 56, 50, 57, 49, 57, 56, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2018-03-16 09:16:45.222 INFO  [restartedMain] HikCtl | 通道号: 01
+2018-03-16 09:16:45.222 INFO  [restartedMain] HikCtl | devive:7D0FEA8B-D1EB-4B23-8304-A55CEF25990E has ptz
+2018-03-16 09:16:45.300 INFO  [restartedMain] HikCtl | device:935C31D4-F84B-49E8-8BD0-CCA9ADF43826, serialNo:[68, 83, 45, 50, 84, 68, 50, 51, 51, 54, 45, 55, 53, 50, 48, 49, 56, 48, 49, 49, 53, 65, 65, 67, 72, 49, 55, 50, 52, 55, 57, 53, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+2018-03-16 09:16:45.315 INFO  [restartedMain] HikCtl | 通道号: 01
+2018-03-16 09:16:45.331 INFO  [restartedMain] HikCtl | devive:935C31D4-F84B-49E8-8BD0-CCA9ADF43826 has ptz
+2018-03-16 09:16:45.331 INFO  [restartedMain] ThreadPoolTaskExecutor | Initializing ExecutorService 
+2018-03-16 09:16:45.347 INFO  [restartedMain] ThreadPoolTaskExecutor | Initializing ExecutorService  'defenseScheduler'
+2018-03-16 09:16:46.082 INFO  [restartedMain] DefaultSecurityFilterChain | Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@11244f0, org.springframework.security.web.context.SecurityContextPersistenceFilter@1a133d7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@73ae4b, org.springframework.security.web.access.ExceptionTranslationFilter@1cac62c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@224a37]
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/camera/snapshot],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.snapshot(cn.bjzfgcjs.idefense.api.bean.DeviceReq) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/ptz/limit],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.setPtzLimit(cn.bjzfgcjs.idefense.api.bean.DeviceReq) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/ptz/set],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.setPtzSet(cn.bjzfgcjs.idefense.api.bean.DeviceReq) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/camera/realtime],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.getRtspUrl(cn.bjzfgcjs.idefense.api.bean.DeviceReq) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/camera/record],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.onRecording(cn.bjzfgcjs.idefense.api.bean.DeviceReq) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/ptz/run],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.runPtzCmd(cn.bjzfgcjs.idefense.device.bean.PtzCmdBean) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/camera/event],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.CameraController.setAlert(cn.bjzfgcjs.idefense.api.bean.DeviceReq) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/file/upload]}" onto public java.lang.String cn.bjzfgcjs.idefense.api.controller.FileController.pictureUpload(org.springframework.web.multipart.MultipartFile)
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/installation],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.getPosition(java.lang.Integer) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/systeminfo],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.addSysInfo(cn.bjzfgcjs.idefense.dao.domain.SysInfo) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/systeminfo],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.getSysInfo() throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/systeminfo],methods=[PUT],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.updateSysInfo(cn.bjzfgcjs.idefense.dao.domain.SysInfo) throws java.lang.Exception
+2018-03-16 09:16:46.223 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/installation],methods=[PUT],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.updatePosition(cn.bjzfgcjs.idefense.dao.domain.Position) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/deviceInfo],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.addDevice(cn.bjzfgcjs.idefense.dao.domain.DeviceInfo) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/deviceInfo],methods=[PUT],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.updateDevice(cn.bjzfgcjs.idefense.dao.domain.DeviceInfo) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/installation],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.addPosition(cn.bjzfgcjs.idefense.dao.domain.Position) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/installation],methods=[DELETE],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.delPosition(java.lang.Integer) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/deviceInfo],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.InfoController.getDevice(java.lang.Integer,java.lang.Byte) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/tactics/run],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.TacticsController.addPosition(cn.bjzfgcjs.idefense.api.controller.TacticsController$tacticReq) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/tcpclient],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.TcpClientController.getData(java.lang.String,java.lang.Integer,java.lang.String) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/tcpserver],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.TcpServerController.getData(java.lang.Integer) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/test/ttm],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.XController.runRadarPublish(java.lang.String,java.lang.String) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/idefense/test/audio/play],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.Object cn.bjzfgcjs.idefense.api.controller.XController.testAudio(cn.bjzfgcjs.idefense.api.bean.Audio) throws java.lang.Exception
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-03-16 09:16:46.239 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-03-16 09:16:46.332 INFO  [restartedMain] SimpleUrlHandlerMapping | Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler]
+2018-03-16 09:16:46.364 INFO  [restartedMain] DefaultSecurityFilterChain | Creating filter chain: org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration$LazyEndpointPathRequestMatcher@b3645a, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1f64f7c, org.springframework.security.web.context.SecurityContextPersistenceFilter@d30df4, org.springframework.security.web.header.HeaderWriterFilter@cfe8c9, org.springframework.web.filter.CorsFilter@fbd6fa, org.springframework.security.web.authentication.logout.LogoutFilter@187edde, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1314fa2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4f5bf6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@18ebf6d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@347ee5, org.springframework.security.web.session.SessionManagementFilter@17d8ff2, org.springframework.security.web.access.ExceptionTranslationFilter@d78504, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@14b684d]
+2018-03-16 09:16:46.457 INFO  [restartedMain] RequestMappingHandlerAdapter | Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@37e816: startup date [Fri Mar 16 09:16:39 CST 2018]; root of context hierarchy
+2018-03-16 09:16:47.761 INFO  [restartedMain] OptionalLiveReloadServer | LiveReload server is running on port 35729
+2018-03-16 09:16:47.902 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@8b2cce: startup date [Fri Mar 16 09:16:47 CST 2018]; parent: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@37e816
+2018-03-16 09:16:47.937 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'handlerExceptionResolver' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration; factoryMethodName=handlerExceptionResolver; initMethodName=null; destroyMethodName=(inferred); defined in org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=endpointWebMvcChildContextConfiguration; factoryMethodName=compositeHandlerExceptionResolver; initMethodName=null; destroyMethodName=(inferred); defined in org.springframework.boot.actuate.autoconfigure.EndpointWebMvcChildContextConfiguration]
+2018-03-16 09:16:48.140 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8081 (http)
+2018-03-16 09:16:48.140 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 09:16:48.140 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 09:16:48.187 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 09:16:48.187 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 285 ms
+2018-03-16 09:16:48.218 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 09:16:48.218 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/configprops || /configprops.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/dump || /dump.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/mappings || /mappings.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/info || /info.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/metrics/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.MetricsMvcEndpoint.value(java.lang.String)
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/metrics || /metrics.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/shutdown || /shutdown.json],methods=[POST],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.ShutdownMvcEndpoint.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/heapdump || /heapdump.json],methods=[GET],produces=[application/octet-stream]}" onto public void org.springframework.boot.actuate.endpoint.mvc.HeapdumpMvcEndpoint.invoke(boolean,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.io.IOException,javax.servlet.ServletException
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/env/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EnvironmentMvcEndpoint.value(java.lang.String)
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/env || /env.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/beans || /beans.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/auditevents || /auditevents.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public org.springframework.http.ResponseEntity<?> org.springframework.boot.actuate.endpoint.mvc.AuditEventsMvcEndpoint.findByPrincipalAndAfterAndType(java.lang.String,java.util.Date,java.lang.String)
+2018-03-16 09:16:48.297 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/health || /health.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.HealthMvcEndpoint.invoke(javax.servlet.http.HttpServletRequest,java.security.Principal)
+2018-03-16 09:16:48.313 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/loggers/{name:.*}],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.LoggersMvcEndpoint.get(java.lang.String)
+2018-03-16 09:16:48.313 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/loggers/{name:.*}],methods=[POST],consumes=[application/vnd.spring-boot.actuator.v1+json || application/json],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.LoggersMvcEndpoint.set(java.lang.String,java.util.Map<java.lang.String, java.lang.String>)
+2018-03-16 09:16:48.313 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/loggers || /loggers.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.313 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/autoconfig || /autoconfig.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.313 INFO  [restartedMain] EndpointHandlerMapping | Mapped "{[/trace || /trace.json],methods=[GET],produces=[application/vnd.spring-boot.actuator.v1+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+2018-03-16 09:16:48.328 INFO  [restartedMain] RequestMappingHandlerMapping | Mapped "{[/error]}" onto public java.util.Map<java.lang.String, java.lang.Object> org.springframework.boot.actuate.endpoint.mvc.ManagementErrorEndpoint.invoke()
+2018-03-16 09:16:48.344 INFO  [restartedMain] RequestMappingHandlerAdapter | Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@8b2cce: startup date [Fri Mar 16 09:16:47 CST 2018]; parent: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@37e816
+2018-03-16 09:16:48.438 INFO  [restartedMain] Http11NioProtocol | Initializing ProtocolHandler ["http-nio-127.0.0.1-8081"]
+2018-03-16 09:16:48.453 INFO  [restartedMain] Http11NioProtocol | Starting ProtocolHandler ["http-nio-127.0.0.1-8081"]
+2018-03-16 09:16:48.453 INFO  [restartedMain] NioSelectorPool | Using a shared selector for servlet write/read
+2018-03-16 09:16:48.469 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat started on port(s): 8081 (http)
+2018-03-16 09:16:48.485 INFO  [restartedMain] Http11NioProtocol | Initializing ProtocolHandler ["http-nio-8080"]
+2018-03-16 09:16:48.485 INFO  [restartedMain] Http11NioProtocol | Starting ProtocolHandler ["http-nio-8080"]
+2018-03-16 09:16:48.485 INFO  [restartedMain] NioSelectorPool | Using a shared selector for servlet write/read
+2018-03-16 09:16:48.485 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat started on port(s): 8080 (http)
+2018-03-16 09:16:48.485 INFO  [restartedMain] IdefenseBackendApplication | Started IdefenseBackendApplication in 9.539 seconds (JVM running for 10.718)
+2018-03-16 14:29:58.145 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 6852 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:29:58.145 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:29:58.179 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@12410b7: startup date [Fri Mar 16 14:29:58 CST 2018]; root of context hierarchy
+2018-03-16 14:29:58.348 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:29:58.859 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:29:58.884 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:29:58.905 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:29:59.006 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:29:59.930 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:29:59.937 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:29:59.938 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:30:00.068 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:30:00.068 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 1889 ms
+2018-03-16 14:30:00.355 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:30:00.356 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:30:00.356 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:30:00.356 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:30:00.356 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:30:00.357 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:30:00.357 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:30:00.357 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:30:00.357 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:30:00.510 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:30:00.514 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:30:00.524 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:30:00.550 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:30:00.760 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:30:51.865 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 7600 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:30:51.866 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:30:51.896 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1ef269d: startup date [Fri Mar 16 14:30:51 CST 2018]; root of context hierarchy
+2018-03-16 14:30:52.058 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:30:52.591 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:30:52.611 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:30:52.631 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:30:52.729 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:30:53.617 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:30:53.625 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:30:53.625 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:30:53.782 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:30:53.782 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 1886 ms
+2018-03-16 14:30:54.060 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:30:54.060 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:30:54.060 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:30:54.060 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:30:54.061 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:30:54.061 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:30:54.061 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:30:54.061 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:30:54.061 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:30:54.232 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:30:54.233 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:30:54.243 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:30:54.249 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:30:54.369 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:31:53.756 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 13460 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:31:53.756 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:31:53.794 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1abf379: startup date [Fri Mar 16 14:31:53 CST 2018]; root of context hierarchy
+2018-03-16 14:31:54.000 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:31:54.708 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:31:54.737 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:31:54.762 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:31:54.904 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:31:56.021 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:31:56.029 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:31:56.030 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:31:56.212 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:31:56.212 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2418 ms
+2018-03-16 14:31:56.550 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:31:56.550 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:31:56.550 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:31:56.550 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:31:56.550 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:31:56.551 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:31:56.551 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:31:56.551 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:31:56.551 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:31:56.735 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:31:56.736 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:31:56.749 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:31:56.755 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:31:56.902 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:33:42.596 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 8244 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:33:42.597 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:33:42.636 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1dc29d4: startup date [Fri Mar 16 14:33:42 CST 2018]; root of context hierarchy
+2018-03-16 14:33:42.840 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:33:43.544 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:33:43.571 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:33:43.596 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:33:43.737 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:33:44.828 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:33:44.836 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:33:44.837 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:33:44.980 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:33:44.980 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2344 ms
+2018-03-16 14:33:45.364 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:33:45.364 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:33:45.365 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:33:45.365 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:33:45.365 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:33:45.365 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:33:45.365 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:33:45.366 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:33:45.366 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:33:45.577 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:33:45.578 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:33:45.591 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:33:45.598 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:33:45.743 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:43:09.542 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 8372 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:43:09.542 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:43:09.573 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@a933f4: startup date [Fri Mar 16 14:43:09 CST 2018]; root of context hierarchy
+2018-03-16 14:43:09.792 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:43:10.258 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:43:10.289 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:43:10.305 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:43:10.403 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:43:11.305 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:43:11.321 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:43:11.321 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:43:11.452 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:43:11.452 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 1879 ms
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:43:11.733 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:43:11.905 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:43:11.905 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:43:11.921 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:43:11.921 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:43:12.030 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:45:12.205 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 6704 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:45:12.205 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:45:12.254 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@9cd849: startup date [Fri Mar 16 14:45:12 CST 2018]; root of context hierarchy
+2018-03-16 14:45:12.454 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:45:13.150 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:45:13.177 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:45:13.192 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:45:13.347 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:45:14.425 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:45:14.425 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:45:14.425 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:45:14.613 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:45:14.613 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2359 ms
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:45:14.941 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:45:15.113 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:45:15.113 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:45:15.132 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:45:15.138 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:45:15.273 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:47:21.756 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 5716 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:47:21.771 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:47:21.802 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1ef269d: startup date [Fri Mar 16 14:47:21 CST 2018]; root of context hierarchy
+2018-03-16 14:47:21.959 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:47:22.477 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:47:22.508 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:47:22.524 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:47:22.617 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:47:23.494 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:47:23.509 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:47:23.509 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:47:23.634 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:47:23.634 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 1832 ms
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:47:23.931 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:47:24.088 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:47:24.088 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:47:24.103 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:47:24.103 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:47:24.216 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:47:55.906 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 13416 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:47:55.906 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:47:55.938 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@fd56ba: startup date [Fri Mar 16 14:47:55 CST 2018]; root of context hierarchy
+2018-03-16 14:47:56.148 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:47:56.816 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:47:56.847 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:47:56.878 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:47:57.019 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:47:58.099 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:47:58.099 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:47:58.099 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:47:58.252 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:47:58.252 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2314 ms
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:47:58.616 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:47:58.804 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:47:58.804 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:47:58.804 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:47:58.819 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:47:58.960 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:48:54.128 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 10088 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:48:54.128 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:48:54.159 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@1b7f197: startup date [Fri Mar 16 14:48:54 CST 2018]; root of context hierarchy
+2018-03-16 14:48:54.374 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:48:55.048 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:48:55.079 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:48:55.110 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:48:55.252 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:48:56.354 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:48:56.368 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:48:56.369 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:48:56.535 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:48:56.535 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2376 ms
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:48:56.879 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:48:57.066 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:48:57.066 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:48:57.082 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:48:57.097 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:48:57.244 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:49:20.208 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 1224 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:49:20.208 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:49:20.254 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@12cb478: startup date [Fri Mar 16 14:49:20 CST 2018]; root of context hierarchy
+2018-03-16 14:49:20.449 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:49:21.143 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:49:21.170 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:49:21.187 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:49:21.339 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:49:22.435 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:49:22.435 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:49:22.435 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:49:22.592 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:49:22.592 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 2338 ms
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:49:22.982 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:49:23.151 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:49:23.153 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:49:23.165 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:49:23.172 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:49:23.304 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+
+2018-03-16 14:49:28.108 INFO  [restartedMain] MainTest | Starting MainTest on DESKTOP-H014RSM with PID 11572 (D:\server-base\idefense_backend\out\production\classes started by ZFGC in D:\server-base\idefense_backend)
+2018-03-16 14:49:28.108 INFO  [restartedMain] MainTest | The following profiles are active: dev
+2018-03-16 14:49:28.141 INFO  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@888666: startup date [Fri Mar 16 14:49:28 CST 2018]; root of context hierarchy
+2018-03-16 14:49:28.305 INFO  [background-preinit] Version | HV000001: Hibernate Validator 5.3.5.Final
+2018-03-16 14:49:28.812 INFO  [restartedMain] DefaultListableBeanFactory | Overriding bean definition for bean 'dataSource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Generic; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Generic.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari; factoryMethodName=dataSource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]]
+2018-03-16 14:49:28.827 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:49:28.859 WARN  [restartedMain] ClassPathMapperScanner | No MyBatis mapper was found in '[cn.bjzfgcjs.idefense.common.utils]' package. Please check your configuration.
+2018-03-16 14:49:28.952 INFO  [restartedMain] RepositoryConfigurationDelegate | Multiple Spring Data modules found, entering strict repository configuration mode!
+2018-03-16 14:49:29.829 INFO  [restartedMain] TomcatEmbeddedServletContainer | Tomcat initialized with port(s): 8080 (http)
+2018-03-16 14:49:29.844 INFO  [restartedMain] StandardService | Starting service [Tomcat]
+2018-03-16 14:49:29.844 INFO  [restartedMain] StandardEngine | Starting Servlet Engine: Apache Tomcat/8.5.16
+2018-03-16 14:49:30.001 INFO  [localhost-startStop-1] [/] | Initializing Spring embedded WebApplicationContext
+2018-03-16 14:49:30.001 INFO  [localhost-startStop-1] ContextLoader | Root WebApplicationContext: initialization completed in 1860 ms
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'metricsFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'requestContextFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] DelegatingFilterProxyRegistrationBean | Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'webRequestLoggingFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] FilterRegistrationBean | Mapping filter: 'applicationContextIdFilter' to: [/*]
+2018-03-16 14:49:30.274 INFO  [localhost-startStop-1] ServletRegistrationBean | Mapping servlet: 'dispatcherServlet' to [/]
+2018-03-16 14:49:30.425 WARN  [restartedMain] AnnotationConfigEmbeddedWebApplicationContext | Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jnaMsgWnd': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2018-03-16 14:49:30.425 INFO  [restartedMain] StandardService | Stopping service [Tomcat]
+2018-03-16 14:49:30.440 WARN  [localhost-startStop-1] WebappClassLoaderBase | The web application [ROOT] appears to have started a thread named [Abandoned connection cleanup thread] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.lang.Object.wait(Native Method)
+ java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+ com.mysql.jdbc.AbandonedConnectionCleanupThread.run(AbandonedConnectionCleanupThread.java:43)
+2018-03-16 14:49:30.440 INFO  [restartedMain] AutoConfigurationReportLoggingInitializer | 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2018-03-16 14:49:30.566 ERROR [restartedMain] LoggingFailureAnalysisReporter | 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+A component required a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'cn.bjzfgcjs.idefense.device.sound.sv2101.LCPlayback' in your configuration.
+

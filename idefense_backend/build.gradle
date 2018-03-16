@@ -61,7 +61,7 @@ dependencies {
 	compile('mysql:mysql-connector-java:5.1.38')
 	compile('javax.persistence:persistence-api:1.0.2')
 	compile('com.zaxxer:HikariCP:2.6.1')
-
+	compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
     compile 'com.github.linux-china:spring-boot-starter-redisson:3.3.2'
 	// https://mvnrepository.com/artifact/org.redisson/redisson
 //	compile group: 'org.redisson', name: 'redisson', version: '3.6.1'
@@ -73,9 +73,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/net.sf.marineapi/marineapi
 //	compile group: 'net.sf.marineapi', name: 'marineapi', version: '0.10.0'
     compile group: 'org.vesalainen.nmea', name: 'parser', version: '1.8.0'
-
+	compile group: 'gnu.io', name: 'rxtx', version: '2.1.7'
 	//compile 'net.bramp.ffmpeg:ffmpeg:0.6.2'
-
+	compile group: 'io.netty', name: 'netty-all', version: '4.1.6.Final'
 	compile 'org.apache.commons:commons-lang3:3.5'
 	compile('commons-io:commons-io:2.4')
 	compile('commons-validator:commons-validator:1.6')
